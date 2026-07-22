@@ -483,23 +483,51 @@ let lightingMode = 0;
 const lightingModeLabel = document.getElementById('lighting-mode-label');
 const toggleLightBtn = document.getElementById('toggle-light-btn');
 
+let isLightMode = false;
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeIconSun = document.getElementById('theme-icon-sun');
+const themeIconMoon = document.getElementById('theme-icon-moon');
+
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    isLightMode = !isLightMode;
+    if (isLightMode) {
+      themeIconSun.style.display = 'block';
+      themeIconMoon.style.display = 'none';
+      themeToggleBtn.style.background = 'rgba(255, 255, 255, 0.8)';
+      themeToggleBtn.style.color = '#000';
+    } else {
+      themeIconSun.style.display = 'none';
+      themeIconMoon.style.display = 'block';
+      themeToggleBtn.style.background = 'rgba(15, 23, 42, 0.6)';
+      themeToggleBtn.style.color = '#fff';
+    }
+    updateLightingAndBackground();
+  });
+}
+
 function updateLightingAndBackground() {
   let baseBgColor;
-  if (lightingMode === 0) {
-    baseBgColor = new THREE.Color(0x07090e);
-    keyLight.color.setHex(0xfff7ed);
-    keyLight.intensity = 2.2;
-    lightingModeLabel.textContent = 'Studio Dark Lighting';
-  } else if (lightingMode === 1) {
-    baseBgColor = new THREE.Color(0x1a1510);
-    keyLight.color.setHex(0xfde68a);
-    keyLight.intensity = 2.6;
-    lightingModeLabel.textContent = 'Warm Workshop';
+  if (isLightMode) {
+    baseBgColor = new THREE.Color(0xf1f5f9); // slate-100
+    // Adjust keyLight for light mode if needed, but we can keep it as is
   } else {
-    baseBgColor = new THREE.Color(0x040a14);
-    keyLight.color.setHex(0x38bdf8);
-    keyLight.intensity = 2.0;
-    lightingModeLabel.textContent = 'Cyber Blueprint';
+    if (lightingMode === 0) {
+      baseBgColor = new THREE.Color(0x07090e);
+      keyLight.color.setHex(0xfff7ed);
+      keyLight.intensity = 2.2;
+      lightingModeLabel.textContent = 'Studio Dark Lighting';
+    } else if (lightingMode === 1) {
+      baseBgColor = new THREE.Color(0x1a1510);
+      keyLight.color.setHex(0xfde68a);
+      keyLight.intensity = 2.6;
+      lightingModeLabel.textContent = 'Warm Workshop';
+    } else {
+      baseBgColor = new THREE.Color(0x040a14);
+      keyLight.color.setHex(0x38bdf8);
+      keyLight.intensity = 2.0;
+      lightingModeLabel.textContent = 'Cyber Blueprint';
+    }
   }
 
   const slider = document.getElementById('wood-shade-slider');
@@ -509,11 +537,25 @@ function updateLightingAndBackground() {
   const darknessFactor = 1.0 - shadeVal; 
   
   // Lerp the background towards a lighter neutral grey to maintain contrast with dark woods
-  const lightBgColor = new THREE.Color(0x6b7280); 
+  // If in light mode, no need to lighten it further since it's already white
+  const lightBgColor = isLightMode ? new THREE.Color(0xf1f5f9) : new THREE.Color(0x6b7280); 
   const finalBgColor = new THREE.Color().copy(baseBgColor).lerp(lightBgColor, darknessFactor * 0.5); // Max 50% blend
   
   scene.background = finalBgColor;
   scene.fog.color = finalBgColor;
+  
+  if (isLightMode) {
+    floorMat.color.setHex(0xe2e8f0);
+    if (gridHelper) {
+      gridHelper.material.opacity = 0.3;
+      gridHelper.material.transparent = true;
+    }
+  } else {
+    floorMat.color.setHex(0x090b10);
+    if (gridHelper) {
+      gridHelper.material.opacity = 1.0;
+    }
+  }
 }
 
 toggleLightBtn.addEventListener('click', () => {
