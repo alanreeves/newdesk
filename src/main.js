@@ -93,29 +93,69 @@ const dimsGroup = new THREE.Group();
 dimsGroup.visible = false;
 scene.add(dimsGroup);
 
-function create3DDimensions() {
+function createTextSprite(message) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  
+  ctx.font = 'bold 36px monospace';
+  ctx.fillStyle = '#fbbf24';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = 6;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
+  
+  ctx.fillText(message, 128, 32);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  const spriteMaterial = new THREE.SpriteMaterial({ map: texture, depthTest: false, transparent: true });
+  const sprite = new THREE.Sprite(spriteMaterial);
+  sprite.scale.set(0.6, 0.15, 1);
+  return sprite;
+}
+
+function addDim(x1, y1, z1, x2, y2, z2, label) {
+  const p1 = new THREE.Vector3(x1, y1, z1);
+  const p2 = new THREE.Vector3(x2, y2, z2);
+  
   const lineMat = new THREE.LineDashedMaterial({
-    color: 0xfbbf24,
-    dashSize: 0.05,
-    gapSize: 0.03,
-    linewidth: 2
+    color: 0xfbbf24, dashSize: 0.04, gapSize: 0.02, linewidth: 2, depthTest: false
   });
+  
+  const geo = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+  const line = new THREE.Line(geo, lineMat);
+  line.computeLineDistances();
+  line.renderOrder = 999;
+  dimsGroup.add(line);
 
-  const wPoints = [
-    new THREE.Vector3(-1.55, 0.02, 0.5),
-    new THREE.Vector3(1.55, 0.02, 0.5)
-  ];
-  const wLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(wPoints), lineMat);
-  wLine.computeLineDistances();
-  dimsGroup.add(wLine);
+  if (label) {
+    const sprite = createTextSprite(label);
+    const midPoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+    // Offset slightly so line doesn't strike through text
+    midPoint.y += 0.04;
+    sprite.position.copy(midPoint);
+    sprite.renderOrder = 1000;
+    dimsGroup.add(sprite);
+  }
+}
 
-  const hPoints = [
-    new THREE.Vector3(1.65, 0, 0),
-    new THREE.Vector3(1.65, 0.76, 0)
-  ];
-  const hLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(hPoints), lineMat);
-  hLine.computeLineDistances();
-  dimsGroup.add(hLine);
+function create3DDimensions() {
+  // Overall Dimensions
+  addDim(-1.55, 0.02, 0.6, 1.55, 0.02, 0.6, "Total Width: 310 cm");
+  addDim(-1.7, 0.76, -0.45, -1.7, 0.76, 0.45, "Depth: 90 cm");
+  addDim(1.7, 0, 0, 1.7, 0.76, 0, "Height: 76 cm");
+
+  // Compartment Widths along the front
+  addDim(-1.55, 0.02, 0.48, -1.10, 0.02, 0.48, "45cm"); // Left Pedestal
+  addDim(-1.10, 0.02, 0.48, -0.45, 0.02, 0.48, "65cm"); // Op 1
+  addDim(-0.45, 0.02, 0.48, -0.15, 0.02, 0.48, "30cm"); // PC
+  addDim(-0.15, 0.02, 0.48, 0.45, 0.02, 0.48, "60cm");  // Amps
+  addDim(0.45, 0.02, 0.48, 1.10, 0.02, 0.48, "65cm");   // Op 2
+  addDim(1.10, 0.02, 0.48, 1.55, 0.02, 0.48, "45cm");   // Right Pedestal
 }
 create3DDimensions();
 
