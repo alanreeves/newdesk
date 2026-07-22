@@ -164,7 +164,7 @@ function initPerimeterBadges() {
     });
   });
 }
-initPerimeterBadges();
+// initPerimeterBadges(); // REMOVED
 
 function updatePerimeterBadges() {
   if (pinsOverlay.style.display === 'none') return;
@@ -383,14 +383,7 @@ toggleDimsBtn.addEventListener('click', () => {
   toggleDimsBtn.classList.toggle('active', isDimsVisible);
 });
 
-let isTagsVisible = true;
-const toggleTagsBtn = document.getElementById('toggle-tags-btn');
-
-toggleTagsBtn.addEventListener('click', () => {
-  isTagsVisible = !isTagsVisible;
-  pinsOverlay.style.display = isTagsVisible ? 'block' : 'none';
-  toggleTagsBtn.classList.toggle('active', isTagsVisible);
-});
+// toggleTagsBtn removed
 
 // Lighting Presets
 let lightingMode = 0;
@@ -510,7 +503,7 @@ const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  updatePerimeterBadges();
+  // updatePerimeterBadges(); // REMOVED
   renderer.render(scene, camera);
 }
 

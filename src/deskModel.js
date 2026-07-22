@@ -567,18 +567,18 @@ export function buildDeskScene() {
   indAmpMesh.position.set(0.15, 0.54, 0.08);
   indAmpMesh.castShadow = true;
 
-  const indAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), blackPlasticMaterial);
+  const indAmpTex = textureLoader.load('/induction_amp.png');
+  indAmpTex.colorSpace = THREE.SRGBColorSpace;
+  const indAmpMat = new THREE.MeshStandardMaterial({ map: indAmpTex, roughness: 0.3, metalness: 0.6 });
+  const indAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), indAmpMat);
   indAmpFace.position.set(0.15, 0.54, 0.261);
-
-  const indDisplay = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.022, 0.004), new THREE.MeshBasicMaterial({ color: 0x10b981 }));
-  indDisplay.position.set(0.04, 0.54, 0.266);
 
   indAmpMesh.userData = {
     id: 'induction_amp',
     name: 'Induction Loop Amplifier',
     category: 'ASSISTIVE AUDIO',
-    dims: '19" Rack Mount (2U) • 482mm x 360mm x 88mm',
-    location: 'Underdesk Central Rack Bay (Upper Slot)',
+    dims: 'Standalone Unit • 430mm x 360mm x 88mm',
+    location: 'Central Equipment Shelf (Upper)',
     specs: ['Drives perimeter hearing loop wire for hearing aid compatibility', 'Convection cooled with front ventilation grills'],
     note: 'Ensures accessibility compliance for hearing-impaired attendees.'
   };
@@ -586,24 +586,23 @@ export function buildDeskScene() {
   equipmentPins.push({ userData: indAmpMesh.userData, worldPos: new THREE.Vector3(0.15, 0.54, 0.28) });
   rootGroup.add(indAmpMesh);
   rootGroup.add(indAmpFace);
-  rootGroup.add(indDisplay);
 
   const houseAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.088, 0.38), darkMetalMaterial);
   houseAmpMesh.position.set(0.15, 0.42, 0.08);
   houseAmpMesh.castShadow = true;
 
-  const houseAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), blackPlasticMaterial);
+  const houseAmpTex = textureLoader.load('/house_amp.png');
+  houseAmpTex.colorSpace = THREE.SRGBColorSpace;
+  const houseAmpMat = new THREE.MeshStandardMaterial({ map: houseAmpTex, roughness: 0.2, metalness: 0.8 });
+  const houseAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), houseAmpMat);
   houseAmpFace.position.set(0.15, 0.42, 0.261);
-
-  const houseMeters = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.026, 0.004), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
-  houseMeters.position.set(0.24, 0.42, 0.266);
 
   houseAmpMesh.userData = {
     id: 'house_amp',
     name: 'House Loudspeaker Amplifier',
     category: 'AUDIO POWER',
-    dims: '19" Rack Mount (2U) • 482mm x 380mm x 88mm',
-    location: 'Underdesk Central Rack Bay (Middle Slot)',
+    dims: 'Standalone Unit • 430mm x 380mm x 88mm',
+    location: 'Central Equipment Shelf (Middle)',
     specs: ['2x 1200W Class-D Power Amplifier for main speakers', 'Forced-air front-to-back cooling system'],
     note: 'Powers main studio and house loudspeakers.'
   };
@@ -611,7 +610,6 @@ export function buildDeskScene() {
   equipmentPins.push({ userData: houseAmpMesh.userData, worldPos: new THREE.Vector3(0.15, 0.42, 0.28) });
   rootGroup.add(houseAmpMesh);
   rootGroup.add(houseAmpFace);
-  rootGroup.add(houseMeters);
 
   const pduMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.044, 0.08), blackPlasticMaterial);
   pduMesh.position.set(0.15, 0.28, 0.20);
