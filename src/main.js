@@ -438,6 +438,49 @@ toggleDimsBtn.addEventListener('click', () => {
 
 // toggleTagsBtn removed
 
+let isKeyboardStored = false;
+const toggleKeyboardBtn = document.getElementById('toggle-keyboard-btn');
+const keyboardToggleText = document.getElementById('keyboard-toggle-text');
+
+if (toggleKeyboardBtn) {
+  toggleKeyboardBtn.addEventListener('click', () => {
+    if (!deskData.keyboardGroup || !deskData.keyboardShelfGroup) return;
+    
+    toggleKeyboardBtn.disabled = true; // disable during animation
+    isKeyboardStored = !isKeyboardStored;
+    
+    const tl = gsap.timeline({
+      onComplete: () => {
+        toggleKeyboardBtn.disabled = false;
+        toggleKeyboardBtn.classList.toggle('active', isKeyboardStored);
+        keyboardToggleText.textContent = isKeyboardStored ? 'Retrieve Keyboard' : 'Store Keyboard';
+      }
+    });
+
+    if (isKeyboardStored) {
+      // 1. Shelf slides out
+      tl.to(deskData.keyboardShelfGroup.position, { z: 0.45, duration: 0.6, ease: 'power2.out' });
+      // 2. Keyboard lifts, moves forward and drops onto shelf
+      tl.to(deskData.keyboardGroup.position, { y: 0.05, duration: 0.2, ease: 'power1.out' }, '+=0.1')
+        .to(deskData.keyboardGroup.position, { z: 0.37, duration: 0.5, ease: 'power2.inOut' }, '<')
+        .to(deskData.keyboardGroup.position, { y: -0.06, duration: 0.3, ease: 'power2.in' });
+      // 3. Both slide back under desk
+      tl.to(deskData.keyboardShelfGroup.position, { z: 0, duration: 0.6, ease: 'power2.inOut' }, '+=0.2')
+        .to(deskData.keyboardGroup.position, { z: -0.08, duration: 0.6, ease: 'power2.inOut' }, '<');
+    } else {
+      // 1. Both slide out
+      tl.to(deskData.keyboardShelfGroup.position, { z: 0.45, duration: 0.6, ease: 'power2.out' })
+        .to(deskData.keyboardGroup.position, { z: 0.37, duration: 0.6, ease: 'power2.out' }, '<');
+      // 2. Keyboard lifts and moves back to desk
+      tl.to(deskData.keyboardGroup.position, { y: 0.05, duration: 0.3, ease: 'power1.out' }, '+=0.2')
+        .to(deskData.keyboardGroup.position, { z: 0, duration: 0.5, ease: 'power2.inOut' }, '<')
+        .to(deskData.keyboardGroup.position, { y: 0, duration: 0.2, ease: 'power2.in' });
+      // 3. Shelf slides back under desk
+      tl.to(deskData.keyboardShelfGroup.position, { z: 0, duration: 0.6, ease: 'power2.inOut' }, '+=0.1');
+    }
+  });
+}
+
 // Lighting Presets
 let lightingMode = 0;
 const lightingModeLabel = document.getElementById('lighting-mode-label');

@@ -869,25 +869,45 @@ export function buildDeskScene() {
   rootGroup.add(secMonitor);
   rootGroup.add(secDisplay);
 
-  const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.012, 0.13), blackPlasticMaterial);
+  const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.012, 0.16), blackPlasticMaterial);
   keyboard.position.set(-0.85, H_DESK + 0.008, 0.18);
 
   const mouse = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.024, 0.10), blackPlasticMaterial);
   mouse.position.set(-0.52, H_DESK + 0.014, 0.18);
+
+  animatedGroups.keyboardGroup = new THREE.Group();
+  animatedGroups.keyboardGroup.add(keyboard);
+  animatedGroups.keyboardGroup.add(mouse);
+  rootGroup.add(animatedGroups.keyboardGroup);
+
+  // Sliding Keyboard Shelf
+  animatedGroups.keyboardShelfGroup = new THREE.Group();
+  
+  const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.60, 0.015, 0.25), oakMaterial);
+  shelfTray.position.set(-0.775, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
+  shelfTray.castShadow = true;
+  shelfTray.receiveShadow = true;
+  animatedGroups.keyboardShelfGroup.add(shelfTray);
+
+  const shelfRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
+  shelfRailL.position.set(-0.775 - 0.31, H_DESK - THICKNESS - 0.01, 0.19);
+  const shelfRailR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
+  shelfRailR.position.set(-0.775 + 0.31, H_DESK - THICKNESS - 0.01, 0.19);
+  rootGroup.add(shelfRailL);
+  rootGroup.add(shelfRailR);
+  rootGroup.add(animatedGroups.keyboardShelfGroup);
 
   keyboard.userData = {
     id: 'peripherals',
     name: 'Wireless Keyboard & Mouse',
     category: 'PERIPHERALS',
     dims: 'Full-size Wireless Keyboard & Precision Mouse',
-    location: 'Flat Desktop Surface in front of 32" Primary Monitor',
+    location: 'Flat Desktop Surface (or stored in pull-out shelf)',
     specs: ['2.4GHz low-latency wireless connection with rechargeable batteries'],
     note: 'Positioned comfortably for operator 1 desk control.'
   };
   interactiveEquipment.push(keyboard);
   equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.85, H_DESK + 0.05, 0.18) });
-  rootGroup.add(keyboard);
-  rootGroup.add(mouse);
 
   const micRx = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.044, 0.18), darkMetalMaterial);
   micRx.position.set(-0.04, H_DESK + 0.022, -0.18);
@@ -993,6 +1013,8 @@ export function buildDeskScene() {
     rightDrawersGroup: animatedGroups.rightDrawersGroup,
     cablesGroup: animatedGroups.cablesGroup,
     trenchLidGroup: animatedGroups.trenchLidGroup,
+    keyboardGroup: animatedGroups.keyboardGroup,
+    keyboardShelfGroup: animatedGroups.keyboardShelfGroup,
     interactiveEquipment,
     equipmentPins
   };
