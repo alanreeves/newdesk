@@ -300,7 +300,7 @@ export function buildDeskScene() {
   const interactiveEquipment = [];
   const equipmentPins = [];
 
-  const W_TOTAL = 3.10;
+  const W_TOTAL = 2.90;
   const D_TOTAL = 0.90;
   const H_DESK = 0.76;
   const THICKNESS = 0.03;
@@ -310,30 +310,30 @@ export function buildDeskScene() {
   const halfW = W_TOTAL / 2;
   const halfD = D_TOTAL / 2;
 
-  desktopShape.moveTo(-1.51, -halfD);
-  desktopShape.lineTo(1.51, -halfD);
+  desktopShape.moveTo(-halfW + 0.04, -halfD);
+  desktopShape.lineTo(halfW - 0.04, -halfD);
   desktopShape.quadraticCurveTo(halfW, -halfD, halfW, -halfD + 0.04);
   
   desktopShape.lineTo(halfW, halfD - 0.04);
-  desktopShape.quadraticCurveTo(halfW, halfD, 1.51, halfD);
+  desktopShape.quadraticCurveTo(halfW, halfD, halfW - 0.04, halfD);
 
   // Sculpted Ergonomic Front Edge Profile
-  desktopShape.bezierCurveTo(1.20, halfD, 0.90, halfD - 0.09, 0.55, halfD - 0.08);
-  desktopShape.bezierCurveTo(0.25, halfD - 0.07, 0.10, halfD - 0.01, 0.0, halfD - 0.01);
-  desktopShape.bezierCurveTo(-0.10, halfD - 0.01, -0.25, halfD - 0.07, -0.55, halfD - 0.08);
-  desktopShape.bezierCurveTo(-0.90, halfD - 0.09, -1.20, halfD, -1.51, halfD);
+  desktopShape.bezierCurveTo(1.10, halfD, 0.80, halfD - 0.09, 0.45, halfD - 0.08);
+  desktopShape.bezierCurveTo(0.20, halfD - 0.07, 0.10, halfD - 0.01, 0.0, halfD - 0.01);
+  desktopShape.bezierCurveTo(-0.10, halfD - 0.01, -0.20, halfD - 0.07, -0.45, halfD - 0.08);
+  desktopShape.bezierCurveTo(-0.80, halfD - 0.09, -1.10, halfD, -halfW + 0.04, halfD);
 
   desktopShape.quadraticCurveTo(-halfW, halfD, -halfW, halfD - 0.04);
   desktopShape.lineTo(-halfW, -halfD + 0.04);
-  desktopShape.quadraticCurveTo(-halfW, -halfD, -1.51, -halfD);
+  desktopShape.quadraticCurveTo(-halfW, -halfD, -halfW + 0.04, -halfD);
 
   // Rear Cable Tidy Trench Cutout (Full Length)
   const trenchHole = new THREE.Path();
-  trenchHole.moveTo(-1.55, -0.41);
-  trenchHole.lineTo(1.55, -0.41);
-  trenchHole.lineTo(1.55, -0.31);
-  trenchHole.lineTo(-1.55, -0.31);
-  trenchHole.lineTo(-1.55, -0.41);
+  trenchHole.moveTo(-halfW, -0.41);
+  trenchHole.lineTo(halfW, -0.41);
+  trenchHole.lineTo(halfW, -0.31);
+  trenchHole.lineTo(-halfW, -0.31);
+  trenchHole.lineTo(-halfW, -0.41);
 
   desktopShape.holes.push(trenchHole);
 
@@ -356,7 +356,7 @@ export function buildDeskScene() {
     const x = posAttr.getX(i);
     const z = posAttr.getZ(i);
     // Map world X, Z to UV (scale down to stretch texture and reduce tiling)
-    uvAttr.setXY(i, (x + 1.55) * 0.7, (z + 0.45) * 0.7);
+    uvAttr.setXY(i, (x + 1.45) * 0.7, (z + 0.45) * 0.7);
   }
   uvAttr.needsUpdate = true;
 
@@ -368,7 +368,7 @@ export function buildDeskScene() {
 
   // Cable Tidy Trench Floor (with cutouts)
   const floorShape = new THREE.Shape();
-  const fw = 1.55;
+  const fw = 1.45;
   floorShape.moveTo(-fw, -0.41);
   floorShape.lineTo(fw, -0.41);
   floorShape.lineTo(fw, -0.31);
@@ -380,8 +380,8 @@ export function buildDeskScene() {
   const numSlots = 12;
   const slots = [];
   for (let i = 0; i < numSlots; i++) {
-    // 3.10m total width, 40cm from each end means from 1.15 to -1.15
-    slots.push(1.15 - i * (2.30 / (numSlots - 1)));
+    // 2.90m total width, 40cm from each end means from 1.05 to -1.05
+    slots.push(1.05 - i * (2.10 / (numSlots - 1)));
   }
 
   slots.forEach(sx => {
@@ -507,11 +507,11 @@ export function buildDeskScene() {
   rootGroup.add(animatedGroups.trenchLidGroup);
 
   const plinths = [
-    { start: -1.55, end: -1.10, fullDepth: true },  // Left pedestal
-    { start: -1.10, end: -0.45, fullDepth: false }, // Left operator
-    { start: -0.45, end: 0.45, fullDepth: true },   // PC & Rack bays
-    { start: 0.45, end: 1.10, fullDepth: false },   // Right operator
-    { start: 1.10, end: 1.55, fullDepth: true }     // Right pedestal
+    { start: -1.45, end: -1.00, fullDepth: true },  // Left pedestal
+    { start: -1.00, end: -0.40, fullDepth: false }, // Left operator
+    { start: -0.40, end: 0.40, fullDepth: true },   // PC & Rack bays
+    { start: 0.40, end: 1.00, fullDepth: false },   // Right operator
+    { start: 1.00, end: 1.45, fullDepth: true }     // Right pedestal
   ];
 
   plinths.forEach(p => {
@@ -537,7 +537,7 @@ export function buildDeskScene() {
     rootGroup.add(pMesh);
   });
 
-  const verticalDivs = [-1.55, -1.10, -0.45, -0.15, 0.45, 1.10, 1.55];
+  const verticalDivs = [-1.45, -1.00, -0.40, -0.10, 0.40, 1.00, 1.45];
   verticalDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -550,19 +550,19 @@ export function buildDeskScene() {
   });
 
   const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backLeftPedestal.position.set(-1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backLeftPedestal.position.set(-1.225, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backLeftPedestal);
 
-  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
-  backLeftOperator.position.set(-0.775, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.60, H_DESK, THICKNESS), oakMaterial);
+  backLeftOperator.position.set(-0.70, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backLeftOperator);
 
-  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
-  backRightOperator.position.set(0.775, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.60, H_DESK, THICKNESS), oakMaterial);
+  backRightOperator.position.set(0.70, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backRightOperator);
 
   const backRightPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backRightPedestal.position.set(1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backRightPedestal.position.set(1.225, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
@@ -597,16 +597,16 @@ export function buildDeskScene() {
     }
   };
 
-  buildPedestalDrawers(-1.325, animatedGroups.leftDrawersGroup);
-  buildPedestalDrawers(1.325, animatedGroups.rightDrawersGroup);
+  buildPedestalDrawers(-1.225, animatedGroups.leftDrawersGroup);
+  buildPedestalDrawers(1.225, animatedGroups.rightDrawersGroup);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
 
   // 3. UNDERDESK CENTER-LEFT: SLIDING TOWER PC
   const railL = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.02, D_TOTAL - 0.1), darkMetalMaterial);
-  railL.position.set(-0.43, 0.06, 0);
+  railL.position.set(-0.38, 0.06, 0);
   const railR = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.02, D_TOTAL - 0.1), darkMetalMaterial);
-  railR.position.set(-0.17, 0.06, 0);
+  railR.position.set(-0.12, 0.06, 0);
   rootGroup.add(railL);
   rootGroup.add(railR);
 
@@ -614,14 +614,14 @@ export function buildDeskScene() {
     new THREE.BoxGeometry(0.26, 0.018, D_TOTAL - 0.12),
     darkMetalMaterial
   );
-  pcTray.position.set(-0.30, 0.06, 0);
+  pcTray.position.set(-0.25, 0.06, 0);
   animatedGroups.pcSlideGroup.add(pcTray);
 
   const pcChassis = new THREE.Mesh(
     new THREE.BoxGeometry(0.22, 0.48, 0.46),
     blackPlasticMaterial
   );
-  pcChassis.position.set(-0.30, 0.07 + 0.24, 0);
+  pcChassis.position.set(-0.25, 0.07 + 0.24, 0);
   pcChassis.castShadow = true;
   animatedGroups.pcSlideGroup.add(pcChassis);
 
@@ -629,10 +629,10 @@ export function buildDeskScene() {
     new THREE.BoxGeometry(0.21, 0.46, 0.008),
     darkMetalMaterial
   );
-  pcMeshFront.position.set(-0.30, 0.07 + 0.24, 0.231);
+  pcMeshFront.position.set(-0.25, 0.07 + 0.24, 0.231);
   animatedGroups.pcSlideGroup.add(pcMeshFront);
 
-  [-0.30].forEach(px => {
+  [-0.25].forEach(px => {
     [0.22, 0.38].forEach(py => {
       const ring = new THREE.Mesh(
         new THREE.TorusGeometry(0.065, 0.006, 16, 32),
@@ -648,7 +648,7 @@ export function buildDeskScene() {
     name: 'Workstation Tower PC',
     category: 'COMPUTING',
     dims: '220mm (W) x 460mm (D) x 480mm (H)',
-    location: 'Sliding Pull-out Bay (-0.30m Center-Left)',
+    location: 'Sliding Pull-out Bay (-0.25m Center-Left)',
     specs: [
       'Heavy-duty ball-bearing slide rails (slides forwards and backwards)',
       'Front cool air intake & rear warm air exhaust clearance',
@@ -657,32 +657,32 @@ export function buildDeskScene() {
     note: 'Unit slides smoothly forward and backward for quick rear maintenance.'
   };
   interactiveEquipment.push(pcChassis);
-  equipmentPins.push({ userData: pcChassis.userData, worldPos: new THREE.Vector3(-0.30, 0.45, 0.20) });
+  equipmentPins.push({ userData: pcChassis.userData, worldPos: new THREE.Vector3(-0.25, 0.45, 0.20) });
   rootGroup.add(animatedGroups.pcSlideGroup);
 
   // 4. UNDERDESK CENTER-RIGHT: RACK EQUIPMENT BAY
   const rackRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.62, 0.02), darkMetalMaterial);
-  rackRailL.position.set(-0.13, 0.36, D_TOTAL / 2 - 0.08);
+  rackRailL.position.set(-0.09, 0.36, D_TOTAL / 2 - 0.08);
   const rackRailR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.62, 0.02), darkMetalMaterial);
-  rackRailR.position.set(0.43, 0.36, D_TOTAL / 2 - 0.08);
+  rackRailR.position.set(0.39, 0.36, D_TOTAL / 2 - 0.08);
   rootGroup.add(rackRailL);
   rootGroup.add(rackRailR);
 
   const rackShelf = new THREE.Mesh(
-    new THREE.BoxGeometry(0.56, THICKNESS, D_TOTAL - 0.12),
+    new THREE.BoxGeometry(0.48, THICKNESS, D_TOTAL - 0.12),
     oakMaterial
   );
   rackShelf.position.set(0.15, 0.22, 0);
   rootGroup.add(rackShelf);
 
-  const indAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.088, 0.36), darkMetalMaterial);
+  const indAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.36), darkMetalMaterial);
   indAmpMesh.position.set(0.15, 0.54, 0.08);
   indAmpMesh.castShadow = true;
 
   const indAmpTex = textureLoader.load('/induction_amp.png');
   indAmpTex.colorSpace = THREE.SRGBColorSpace;
   const indAmpMat = new THREE.MeshStandardMaterial({ map: indAmpTex, roughness: 0.3, metalness: 0.6 });
-  const indAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), indAmpMat);
+  const indAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.008), indAmpMat);
   indAmpFace.position.set(0.15, 0.54, 0.261);
 
   indAmpMesh.userData = {
@@ -699,19 +699,19 @@ export function buildDeskScene() {
   rootGroup.add(indAmpMesh);
   rootGroup.add(indAmpFace);
 
-  const houseAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.088, 0.38), darkMetalMaterial);
+  const houseAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.38), darkMetalMaterial);
   houseAmpMesh.position.set(0.15, 0.42, 0.08);
   houseAmpMesh.castShadow = true;
 
   const houseAmpTex = textureLoader.load('/house_amp.png');
   houseAmpTex.colorSpace = THREE.SRGBColorSpace;
   const houseAmpMat = new THREE.MeshStandardMaterial({ map: houseAmpTex, roughness: 0.2, metalness: 0.8 });
-  const houseAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.088, 0.008), houseAmpMat);
+  const houseAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.008), houseAmpMat);
   houseAmpFace.position.set(0.15, 0.42, 0.261);
 
   houseAmpMesh.userData = {
     id: 'house_amp',
-    name: 'House Loudspeaker Amplifier',
+    name: 'Balcony Speakers Amp',
     category: 'AUDIO POWER',
     dims: 'Standalone Unit • 430mm x 380mm x 88mm',
     location: 'Central Equipment Shelf (Middle)',
@@ -724,8 +724,8 @@ export function buildDeskScene() {
   rootGroup.add(houseAmpFace);
 
   const pduLocs = [
-    { x: -0.775, y: 0.66, z: -0.39, name: 'Left Operator PDU' },
-    { x: 0.775, y: 0.66, z: -0.39, name: 'Right Operator PDU' }
+    { x: -0.70, y: 0.66, z: -0.39, name: 'Left Operator PDU' },
+    { x: 0.70, y: 0.66, z: -0.39, name: 'Right Operator PDU' }
   ];
 
   pduLocs.forEach((loc, idx) => {
@@ -792,7 +792,7 @@ export function buildDeskScene() {
   mixerGeo.computeVertexNormals();
 
   const mixerMesh = new THREE.Mesh(mixerGeo, mixerMaterials);
-  mixerMesh.position.set(0.82, H_DESK + 0.055, 0.02);
+  mixerMesh.position.set(0.70, H_DESK + 0.055, 0.02);
   mixerMesh.castShadow = true;
 
   mixerMesh.userData = {
@@ -809,24 +809,24 @@ export function buildDeskScene() {
     note: 'Primary console for live sound, broadcast feed, and audio multitrack mixing.'
   };
   interactiveEquipment.push(mixerMesh);
-  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.82, H_DESK + 0.16, 0.02) });
+  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.70, H_DESK + 0.16, 0.02) });
   rootGroup.add(mixerMesh);
 
   const mainMonitor = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.41, 0.02), blackPlasticMaterial);
-  mainMonitor.position.set(-0.85, H_DESK + 0.24, -0.15);
+  mainMonitor.position.set(-0.70, H_DESK + 0.24, -0.15);
   mainMonitor.castShadow = true;
 
   const mainDisplay = new THREE.Mesh(
     new THREE.PlaneGeometry(0.70, 0.39),
     new THREE.MeshBasicMaterial({ map: createDAWScreenTexture() })
   );
-  mainDisplay.position.set(-0.85, H_DESK + 0.24, -0.139);
+  mainDisplay.position.set(-0.70, H_DESK + 0.24, -0.139);
 
   const mainStand = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 16), darkMetalMaterial);
-  mainStand.position.set(-0.85, H_DESK + 0.09, -0.15);
+  mainStand.position.set(-0.70, H_DESK + 0.09, -0.15);
 
   const mainStandBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.008, 32), darkMetalMaterial);
-  mainStandBase.position.set(-0.85, H_DESK + 0.004, -0.15);
+  mainStandBase.position.set(-0.70, H_DESK + 0.004, -0.15);
 
   mainMonitor.userData = {
     id: 'main_monitor',
@@ -845,14 +845,14 @@ export function buildDeskScene() {
   rootGroup.add(mainStandBase);
 
   const secMonitor = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.15, 0.015), blackPlasticMaterial);
-  secMonitor.position.set(-0.34, H_DESK + 0.14, -0.12);
+  secMonitor.position.set(-0.25, H_DESK + 0.14, -0.12);
   secMonitor.rotation.y = -0.22;
 
   const secDisplay = new THREE.Mesh(
     new THREE.PlaneGeometry(0.22, 0.14),
     new THREE.MeshBasicMaterial({ map: createSecondaryScreenTexture() })
   );
-  secDisplay.position.set(-0.34, H_DESK + 0.14, -0.111);
+  secDisplay.position.set(-0.25, H_DESK + 0.14, -0.111);
   secDisplay.rotation.y = -0.22;
 
   secMonitor.userData = {
@@ -865,15 +865,15 @@ export function buildDeskScene() {
     note: 'Provides real-time system monitoring without taking main screen space.'
   };
   interactiveEquipment.push(secMonitor);
-  equipmentPins.push({ userData: secMonitor.userData, worldPos: new THREE.Vector3(-0.34, H_DESK + 0.22, -0.12) });
+  equipmentPins.push({ userData: secMonitor.userData, worldPos: new THREE.Vector3(-0.25, H_DESK + 0.22, -0.12) });
   rootGroup.add(secMonitor);
   rootGroup.add(secDisplay);
 
   const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.012, 0.16), blackPlasticMaterial);
-  keyboard.position.set(-0.85, H_DESK + 0.008, 0.18);
+  keyboard.position.set(-0.70, H_DESK + 0.008, 0.18);
 
   const mouse = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.024, 0.10), blackPlasticMaterial);
-  mouse.position.set(-0.52, H_DESK + 0.014, 0.18);
+  mouse.position.set(-0.38, H_DESK + 0.014, 0.18);
 
   animatedGroups.keyboardGroup = new THREE.Group();
   animatedGroups.keyboardGroup.add(keyboard);
@@ -883,16 +883,16 @@ export function buildDeskScene() {
   // Sliding Keyboard Shelf
   animatedGroups.keyboardShelfGroup = new THREE.Group();
   
-  const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.60, 0.015, 0.25), oakMaterial);
-  shelfTray.position.set(-0.775, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
+  const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.015, 0.25), oakMaterial);
+  shelfTray.position.set(-0.70, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
   shelfTray.castShadow = true;
   shelfTray.receiveShadow = true;
   animatedGroups.keyboardShelfGroup.add(shelfTray);
 
   const shelfRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailL.position.set(-0.775 - 0.31, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailL.position.set(-0.70 - 0.28, H_DESK - THICKNESS - 0.01, 0.19);
   const shelfRailR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailR.position.set(-0.775 + 0.31, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailR.position.set(-0.70 + 0.28, H_DESK - THICKNESS - 0.01, 0.19);
   rootGroup.add(shelfRailL);
   rootGroup.add(shelfRailR);
   rootGroup.add(animatedGroups.keyboardShelfGroup);
@@ -907,11 +907,11 @@ export function buildDeskScene() {
     note: 'Positioned comfortably for operator 1 desk control.'
   };
   interactiveEquipment.push(keyboard);
-  equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.85, H_DESK + 0.05, 0.18) });
+  equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.70, H_DESK + 0.05, 0.18) });
 
   // 6. STREAM DECK XL
   const streamDeckGroup = new THREE.Group();
-  streamDeckGroup.position.set(-0.35, H_DESK, 0.15); // Place on desktop
+  streamDeckGroup.position.set(-0.25, H_DESK, 0.15); // Place on desktop
   
   // Base Wedge
   const sdBaseGeo = new THREE.BoxGeometry(0.182, 0.015, 0.112);
@@ -941,10 +941,10 @@ export function buildDeskScene() {
   }
 
   const sdCableCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-0.35, H_DESK + 0.01, 0.10),      // back of stream deck
-    new THREE.Vector3(-0.35, H_DESK + 0.005, 0.05),     // down to desk
-    new THREE.Vector3(-0.314, H_DESK + 0.005, -0.30),   // across desk to cutout
-    new THREE.Vector3(-0.314, H_DESK - 0.02, -0.34)     // down into cutout
+    new THREE.Vector3(-0.25, H_DESK + 0.01, 0.10),      // back of stream deck
+    new THREE.Vector3(-0.25, H_DESK + 0.005, 0.05),     // down to desk
+    new THREE.Vector3(-0.214, H_DESK + 0.005, -0.30),   // across desk to cutout
+    new THREE.Vector3(-0.214, H_DESK - 0.02, -0.34)     // down into cutout
   ]);
   const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.003, 8, false), new THREE.MeshBasicMaterial({ color: 0x2563eb }));
   animatedGroups.cablesGroup.add(sdCable);
@@ -1005,7 +1005,7 @@ export function buildDeskScene() {
 
   router.userData = {
     id: 'network_router',
-    name: 'Gigabit Managed Network Router',
+    name: 'BT Router',
     category: 'NETWORKING',
     dims: '220mm (W) x 160mm (D) x 38mm (H)',
     location: 'Flat Desktop Surface (Center Rear)',
@@ -1017,11 +1017,11 @@ export function buildDeskScene() {
   rootGroup.add(router);
   rootGroup.add(routerLeds);
 
-  const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.20, 0.04, 0.08), darkMetalMaterial);
-  powerTray.position.set(-0.65, H_DESK - THICKNESS - 0.02, -0.36);
+  const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
+  powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.36);
 
-  const netTray = new THREE.Mesh(new THREE.BoxGeometry(1.20, 0.04, 0.08), darkMetalMaterial);
-  netTray.position.set(0.65, H_DESK - THICKNESS - 0.02, -0.36);
+  const netTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
+  netTray.position.set(0.60, H_DESK - THICKNESS - 0.02, -0.36);
 
   const pwrMat = new THREE.MeshBasicMaterial({ color: 0x111111 }); // Black
   const dataMat = new THREE.MeshBasicMaterial({ color: 0x2563eb }); // Blue
@@ -1044,12 +1044,12 @@ export function buildDeskScene() {
 
   // 1. QU24: 6 XLR cables (Blue)
   for (let i = 0; i < 6; i++) {
-    drawCable(0.55 + i * 0.04, H_DESK + 0.08, -0.21, false);
+    drawCable(0.45 + i * 0.04, H_DESK + 0.08, -0.21, false);
   }
 
   // 2. Monitor: 1 Power, 1 Display
-  drawCable(-0.82, H_DESK + 0.05, -0.22, true);  
-  drawCable(-0.88, H_DESK + 0.05, -0.22, false); 
+  drawCable(-0.72, H_DESK + 0.05, -0.22, true);  
+  drawCable(-0.78, H_DESK + 0.05, -0.22, false); 
 
   // 3. Router: 1 Power, 1 Ethernet
   drawCable(0.20, H_DESK + 0.019, -0.26, true);
@@ -1064,7 +1064,20 @@ export function buildDeskScene() {
     new THREE.BoxGeometry(0.06, H_DESK - 0.05, 0.06), 
     new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 })
   );
-  cableTrunking.position.set(-1.58, (H_DESK - 0.05) / 2, -0.36);
+  cableTrunking.position.set(-1.48, (H_DESK - 0.05) / 2, -0.36);
+  
+  cableTrunking.userData = {
+    id: 'cable_trunking',
+    name: 'Cable Trunking',
+    category: 'INFRASTRUCTURE',
+    dims: '60mm x 60mm Vertical Cable Spine',
+    location: 'Left Outer Edge',
+    specs: ['Matte Black PVC', 'High-capacity vertical cable management'],
+    note: 'Routes the main cable bundle from the trench cleanly to the floor power sockets.'
+  };
+  interactiveEquipment.push(cableTrunking);
+  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.48, H_DESK - 0.1, -0.36) });
+  
   rootGroup.add(cableTrunking);
 
   powerTray.userData = {
