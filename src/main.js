@@ -483,27 +483,42 @@ let lightingMode = 0;
 const lightingModeLabel = document.getElementById('lighting-mode-label');
 const toggleLightBtn = document.getElementById('toggle-light-btn');
 
-toggleLightBtn.addEventListener('click', () => {
-  lightingMode = (lightingMode + 1) % 3;
+function updateLightingAndBackground() {
+  let baseBgColor;
   if (lightingMode === 0) {
-    scene.background = new THREE.Color(0x07090e);
-    scene.fog.color = new THREE.Color(0x07090e);
-    keyLight.color = new THREE.Color(0xfff7ed);
+    baseBgColor = new THREE.Color(0x07090e);
+    keyLight.color.setHex(0xfff7ed);
     keyLight.intensity = 2.2;
     lightingModeLabel.textContent = 'Studio Dark Lighting';
   } else if (lightingMode === 1) {
-    scene.background = new THREE.Color(0x1a1510);
-    scene.fog.color = new THREE.Color(0x1a1510);
-    keyLight.color = new THREE.Color(0xfde68a);
+    baseBgColor = new THREE.Color(0x1a1510);
+    keyLight.color.setHex(0xfde68a);
     keyLight.intensity = 2.6;
     lightingModeLabel.textContent = 'Warm Workshop';
   } else {
-    scene.background = new THREE.Color(0x040a14);
-    scene.fog.color = new THREE.Color(0x040a14);
-    keyLight.color = new THREE.Color(0x38bdf8);
+    baseBgColor = new THREE.Color(0x040a14);
+    keyLight.color.setHex(0x38bdf8);
     keyLight.intensity = 2.0;
     lightingModeLabel.textContent = 'Cyber Blueprint';
   }
+
+  const slider = document.getElementById('wood-shade-slider');
+  const shadeVal = slider ? parseFloat(slider.value) : 1.0;
+  
+  // As shadeVal goes down (towards Mahogany at 0.0), darknessFactor goes up to 1.0
+  const darknessFactor = 1.0 - shadeVal; 
+  
+  // Lerp the background towards a lighter neutral grey to maintain contrast with dark woods
+  const lightBgColor = new THREE.Color(0x6b7280); 
+  const finalBgColor = new THREE.Color().copy(baseBgColor).lerp(lightBgColor, darknessFactor * 0.5); // Max 50% blend
+  
+  scene.background = finalBgColor;
+  scene.fog.color = finalBgColor;
+}
+
+toggleLightBtn.addEventListener('click', () => {
+  lightingMode = (lightingMode + 1) % 3;
+  updateLightingAndBackground();
 });
 
 // ==========================================
@@ -586,6 +601,64 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+const woodShadeSlider = document.getElementById('wood-shade-slider');
+const woodTypeLabel = document.getElementById('wood-type-label');
+const timberBanner = document.getElementById('timber-banner');
+const timberBannerText = document.getElementById('timber-banner-text');
+const timberColorSwatch = document.getElementById('timber-color-swatch');
+let timberBannerTimeout;
+
+if (woodShadeSlider && woodTypeLabel) {
+  const timberTypes = [
+    { val: 0.00, color: new THREE.Color(0x4a1c15), name: "Deep Mahogany" },
+    { val: 0.33, color: new THREE.Color(0x6b3e2e), name: "Dark Walnut" },
+    { val: 0.66, color: new THREE.Color(0xba7c54), name: "Warm Teak" },
+    { val: 1.00, color: new THREE.Color(0xffffff), name: "Light Oak" }
+  ];
+
+  woodShadeSlider.addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    
+    // Find the two stops to interpolate between
+    let lower = timberTypes[0];
+    let upper = timberTypes[timberTypes.length - 1];
+    
+    for (let i = 0; i < timberTypes.length - 1; i++) {
+      if (val >= timberTypes[i].val && val <= timberTypes[i+1].val) {
+        lower = timberTypes[i];
+        upper = timberTypes[i+1];
+        break;
+      }
+    }
+    
+    const range = upper.val - lower.val;
+    const t = range === 0 ? 0 : (val - lower.val) / range;
+    
+    // Interpolate color
+    const blendedColor = new THREE.Color().copy(lower.color).lerp(upper.color, t);
+    deskData.oakMaterial.color.copy(blendedColor);
+    
+    // Update label (use closest stop for the name)
+    const closest = (val - lower.val) < (upper.val - val) ? lower : upper;
+    woodTypeLabel.textContent = closest.name;
+    
+    // Update and show floating banner
+    if (timberBanner && timberBannerText && timberColorSwatch) {
+      timberBannerText.textContent = closest.name;
+      timberColorSwatch.style.backgroundColor = '#' + blendedColor.getHexString();
+      timberBanner.style.opacity = '1';
+      
+      clearTimeout(timberBannerTimeout);
+      timberBannerTimeout = setTimeout(() => {
+        timberBanner.style.opacity = '0';
+      }, 1500);
+    }
+    
+    // Update lighting contrast
+    updateLightingAndBackground();
+  });
+}
 
 // ==========================================
 // 8. ANIMATION LOOP

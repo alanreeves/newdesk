@@ -97,6 +97,17 @@
         </button>
       </div>
     </div>
+
+    <div class="panel-section">
+      <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" x2="12" y1="1" y2="3"/><line x1="12" x2="12" y1="21" y2="23"/><line x1="4.22" x2="5.64" y1="4.22" y2="5.64"/><line x1="18.36" x2="19.78" y1="18.36" y2="19.78"/><line x1="1" x2="3" y1="12" y2="12"/><line x1="21" x2="23" y1="12" y2="12"/><line x1="4.22" x2="5.64" y1="19.78" y2="18.36"/><line x1="18.36" x2="19.78" y1="5.64" y2="4.22"/></svg>
+          <span>WOOD FINISH</span>
+        </div>
+        <span id="wood-type-label" style="font-size: 11px; font-weight: 500; color: #38bdf8;">Light Oak</span>
+      </div>
+      <input type="range" id="wood-shade-slider" min="0" max="1" step="0.01" value="1" style="width: 100%; margin-top: 10px; cursor: pointer;" title="Adjust wood finish" />
+    </div>
   </aside>
 
   <!-- Bottom Floating Zoom Bar -->
@@ -155,6 +166,20 @@
     <div class="tooltip-title">Equipment Name</div>
     <div class="tooltip-sub">Click to inspect full details</div>
   </div>
+
+  <!-- Floating Timber Banner -->
+    <div id="timber-banner" style="position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.85); color: #fff; padding: 12px 24px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500; border: 1px solid rgba(56, 189, 248, 0.4); display: flex; align-items: center; gap: 12px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); backdrop-filter: blur(8px);">
+      <div id="timber-color-swatch" style="width: 18px; height: 18px; border-radius: 50%; background: #ffffff; border: 1px solid rgba(255,255,255,0.2);"></div>
+      <span>Timber Grade: <strong id="timber-banner-text" style="color: #38bdf8;">Light Oak</strong></span>
+    </div>
+
+    <!-- Modals -->
+    <div id="spec-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="modal-close" class="modal-close-btn">&times;</button>
+        <div id="modal-body"></div>
+      </div>
+    </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>

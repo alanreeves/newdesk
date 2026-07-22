@@ -1107,6 +1107,7 @@ export function buildDeskScene() {
     keyboardGroup: animatedGroups.keyboardGroup,
     keyboardShelfGroup: animatedGroups.keyboardShelfGroup,
     interactiveEquipment,
-    equipmentPins
+    equipmentPins,
+    oakMaterial
   };
 }
