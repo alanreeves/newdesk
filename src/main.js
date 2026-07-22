@@ -32,7 +32,7 @@ container.appendChild(renderer.domElement);
 // Orbit Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-controls.dampingFactor = 0.05;
+controls.dampingFactor = 0.15;
 controls.target.set(0, 0.58, 0);
 controls.maxPolarAngle = Math.PI / 2 + 0.05;
 controls.minDistance = 0.8;
