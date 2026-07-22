@@ -1059,6 +1059,14 @@ export function buildDeskScene() {
   drawCable(-0.02, H_DESK + 0.022, -0.27, true);
   drawCable(-0.06, H_DESK + 0.022, -0.27, false);
 
+  // Vertical Cable Container on the outside left hand side
+  const cableTrunking = new THREE.Mesh(
+    new THREE.BoxGeometry(0.06, H_DESK - 0.05, 0.06), 
+    new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 })
+  );
+  cableTrunking.position.set(-1.58, (H_DESK - 0.05) / 2, -0.36);
+  rootGroup.add(cableTrunking);
+
   powerTray.userData = {
     id: 'cable_trays',
     name: 'Recessed Cable Tidy Trench & Trays',
