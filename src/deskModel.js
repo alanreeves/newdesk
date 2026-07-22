@@ -909,6 +909,59 @@ export function buildDeskScene() {
   interactiveEquipment.push(keyboard);
   equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.85, H_DESK + 0.05, 0.18) });
 
+  // 6. STREAM DECK XL
+  const streamDeckGroup = new THREE.Group();
+  streamDeckGroup.position.set(-0.35, H_DESK, 0.15); // Place on desktop
+  
+  // Base Wedge
+  const sdBaseGeo = new THREE.BoxGeometry(0.182, 0.015, 0.112);
+  const sdBase = new THREE.Mesh(sdBaseGeo, blackPlasticMaterial);
+  sdBase.rotation.x = 0.25; // slope it forward
+  sdBase.position.y = 0.015;
+  streamDeckGroup.add(sdBase);
+
+  // Buttons (8 columns x 4 rows)
+  const sdBtnSize = 0.015;
+  const sdBtnSpacingX = 0.02;
+  const sdBtnSpacingZ = 0.022;
+  const sdColors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff, 0xff8800];
+  
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 8; c++) {
+      const btnGeo = new THREE.BoxGeometry(sdBtnSize, 0.004, sdBtnSize);
+      const color = sdColors[(r * 8 + c) % sdColors.length];
+      const btnMat = new THREE.MeshBasicMaterial({ color });
+      const btn = new THREE.Mesh(btnGeo, btnMat);
+      
+      const bx = -0.07 + c * sdBtnSpacingX;
+      const bz = -0.033 + r * sdBtnSpacingZ;
+      btn.position.set(bx, 0.008, bz);
+      sdBase.add(btn);
+    }
+  }
+
+  const sdCableCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-0.35, H_DESK + 0.01, 0.10),      // back of stream deck
+    new THREE.Vector3(-0.35, H_DESK + 0.005, 0.05),     // down to desk
+    new THREE.Vector3(-0.314, H_DESK + 0.005, -0.30),   // across desk to cutout
+    new THREE.Vector3(-0.314, H_DESK - 0.02, -0.34)     // down into cutout
+  ]);
+  const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.003, 8, false), blackPlasticMaterial);
+  animatedGroups.cablesGroup.add(sdCable);
+  
+  sdBase.userData = {
+    id: 'stream_deck',
+    name: 'Elgato Stream Deck XL',
+    category: 'PERIPHERALS',
+    dims: '182 x 112 x 34 mm',
+    location: 'Right of keyboard',
+    specs: ['32 customizable LCD keys', 'USB-C connection'],
+    note: 'Used for triggering DAW macros and system shortcuts.'
+  };
+  interactiveEquipment.push(sdBase);
+  equipmentPins.push({ userData: sdBase.userData, worldPos: new THREE.Vector3(-0.35, H_DESK + 0.05, 0.15) });
+  rootGroup.add(streamDeckGroup);
+
   const micRx = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.044, 0.18), darkMetalMaterial);
   micRx.position.set(-0.04, H_DESK + 0.022, -0.18);
 
