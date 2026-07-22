@@ -946,7 +946,7 @@ export function buildDeskScene() {
     new THREE.Vector3(-0.314, H_DESK + 0.005, -0.30),   // across desk to cutout
     new THREE.Vector3(-0.314, H_DESK - 0.02, -0.34)     // down into cutout
   ]);
-  const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.003, 8, false), blackPlasticMaterial);
+  const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.003, 8, false), new THREE.MeshBasicMaterial({ color: 0x2563eb }));
   animatedGroups.cablesGroup.add(sdCable);
   
   sdBase.userData = {
@@ -1023,24 +1023,41 @@ export function buildDeskScene() {
   const netTray = new THREE.Mesh(new THREE.BoxGeometry(1.20, 0.04, 0.08), darkMetalMaterial);
   netTray.position.set(0.65, H_DESK - THICKNESS - 0.02, -0.36);
 
-  const powerMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
-  const dataMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+  const pwrMat = new THREE.MeshBasicMaterial({ color: 0x111111 }); // Black
+  const dataMat = new THREE.MeshBasicMaterial({ color: 0x2563eb }); // Blue
+  
+  const getClosestSlotX = (xPos) => {
+    return slots.reduce((prev, curr) => Math.abs(curr - xPos) < Math.abs(prev - xPos) ? curr : prev);
+  };
 
-  for (let c = 0; c < 4; c++) {
-    const curveP = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-1.20 + c * 0.1, H_DESK - 0.04, -0.36),
-      new THREE.Vector3(-0.70, H_DESK - 0.04, -0.36),
-      new THREE.Vector3(-0.30, 0.28, -0.20)
+  const drawCable = (startX, startY, startZ, isPower) => {
+    const slotX = getClosestSlotX(startX);
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(startX, startY, startZ),
+      new THREE.Vector3(startX, H_DESK + 0.005, startZ - 0.04), // droop onto desk
+      new THREE.Vector3(slotX, H_DESK + 0.005, -0.30),          // across desk to slot
+      new THREE.Vector3(slotX, H_DESK - 0.02, -0.34)            // down into slot
     ]);
-    animatedGroups.cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curveP, 24, 0.005, 8, false), powerMat));
+    const cableMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 16, 0.003, 8, false), isPower ? pwrMat : dataMat);
+    animatedGroups.cablesGroup.add(cableMesh);
+  };
 
-    const curveD = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(1.20 - c * 0.1, H_DESK - 0.04, -0.36),
-      new THREE.Vector3(0.50, H_DESK - 0.04, -0.36),
-      new THREE.Vector3(0.22, H_DESK + 0.01, -0.18)
-    ]);
-    animatedGroups.cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curveD, 24, 0.005, 8, false), dataMat));
+  // 1. QU24: 6 XLR cables (Blue)
+  for (let i = 0; i < 6; i++) {
+    drawCable(0.55 + i * 0.04, H_DESK + 0.08, -0.21, false);
   }
+
+  // 2. Monitor: 1 Power, 1 Display
+  drawCable(-0.82, H_DESK + 0.05, -0.22, true);  
+  drawCable(-0.88, H_DESK + 0.05, -0.22, false); 
+
+  // 3. Router: 1 Power, 1 Ethernet
+  drawCable(0.20, H_DESK + 0.019, -0.26, true);
+  drawCable(0.24, H_DESK + 0.019, -0.26, false);
+
+  // 4. Mic Receiver: 1 Power, 1 Audio
+  drawCable(-0.02, H_DESK + 0.022, -0.27, true);
+  drawCable(-0.06, H_DESK + 0.022, -0.27, false);
 
   powerTray.userData = {
     id: 'cable_trays',

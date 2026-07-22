@@ -398,11 +398,15 @@ toggleDrawersBtn.addEventListener('click', () => {
 
 let isCablesHighlighted = false;
 const toggleCablesBtn = document.getElementById('toggle-cables-btn');
+const cablesToggleText = document.getElementById('cables-toggle-text');
 
 toggleCablesBtn.addEventListener('click', () => {
   isCablesHighlighted = !isCablesHighlighted;
   toggleCablesBtn.classList.toggle('active', isCablesHighlighted);
   deskData.cablesGroup.visible = isCablesHighlighted;
+  if (cablesToggleText) {
+    cablesToggleText.textContent = isCablesHighlighted ? 'Hide Cables' : 'Show Cables';
+  }
 });
 
 let isLidOpen = false;
