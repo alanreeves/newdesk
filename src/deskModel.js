@@ -394,30 +394,54 @@ export function buildDeskScene() {
     rootGroup.add(grommet);
   });
 
-  const plinthMesh = new THREE.Mesh(
-    new THREE.BoxGeometry(W_TOTAL, 0.035, D_TOTAL - 0.04),
-    oakMaterial
-  );
-  plinthMesh.position.set(0, 0.0175, 0);
-  rootGroup.add(plinthMesh);
+  const plinths = [
+    { start: -1.55, end: -1.10, fullDepth: true },  // Left pedestal
+    { start: -1.10, end: -0.45, fullDepth: false }, // Left operator
+    { start: -0.45, end: 0.45, fullDepth: true },   // PC & Rack bays
+    { start: 0.45, end: 1.10, fullDepth: false },   // Right operator
+    { start: 1.10, end: 1.55, fullDepth: true }     // Right pedestal
+  ];
+
+  plinths.forEach(p => {
+    const pWidth = p.end - p.start;
+    const pCenterX = p.start + pWidth / 2;
+    
+    let pDepth, pCenterZ;
+    if (p.fullDepth) {
+      pDepth = D_TOTAL - 0.04; // 0.86
+      pCenterZ = 0;
+    } else {
+      pDepth = 0.30; // Back 30cm only
+      pCenterZ = -(D_TOTAL - 0.04) / 2 + pDepth / 2;
+    }
+
+    const pMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(pWidth, 0.035, pDepth),
+      oakMaterial
+    );
+    pMesh.position.set(pCenterX, 0.0175, pCenterZ);
+    pMesh.castShadow = true;
+    pMesh.receiveShadow = true;
+    rootGroup.add(pMesh);
+  });
 
   const verticalDivs = [-1.55, -1.10, -0.45, -0.15, 0.45, 1.10, 1.55];
   verticalDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
-      new THREE.BoxGeometry(THICKNESS, H_DESK - 0.035 - THICKNESS, D_TOTAL - 0.04),
+      new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
       oakMaterial
     );
-    vMesh.position.set(x, (H_DESK + 0.035) / 2, 0);
+    vMesh.position.set(x, (H_DESK - THICKNESS) / 2, 0);
     vMesh.castShadow = true;
     vMesh.receiveShadow = true;
     rootGroup.add(vMesh);
   });
 
-  const backLeft = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK - 0.035, THICKNESS), oakMaterial);
+  const backLeft = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
   backLeft.position.set(-1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backLeft);
 
-  const backRight = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK - 0.035, THICKNESS), oakMaterial);
+  const backRight = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
   backRight.position.set(1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backRight);
 
