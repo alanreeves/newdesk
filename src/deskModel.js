@@ -601,15 +601,33 @@ export function buildDeskScene() {
   rootGroup.add(pduSwitch);
 
   // 5. TOP DESK EQUIPMENT
-  const mixerMat = new THREE.MeshStandardMaterial({
-    map: createMixerSurfaceTexture(),
+  const mixerTexture = textureLoader.load('/qu24_real.jpg');
+  mixerTexture.colorSpace = THREE.SRGBColorSpace;
+  // Zoom in to crop out the white border of the image
+  mixerTexture.repeat.set(0.82, 0.78); // Scale the image up (smaller repeat = larger image)
+  mixerTexture.offset.set(0.09, 0.11);  // Center the cropped area
+  
+  const mixerTopMat = new THREE.MeshStandardMaterial({
+    map: mixerTexture,
     roughness: 0.4,
     metalness: 0.3
   });
+  
+  const mixerSideMat = new THREE.MeshStandardMaterial({
+    color: 0x111318,
+    roughness: 0.8,
+    metalness: 0.2
+  });
 
-  const mixerMesh = new THREE.Mesh(new THREE.BoxGeometry(0.632, 0.11, 0.50), mixerMat);
+  const mixerMaterials = [
+    mixerSideMat, mixerSideMat,
+    mixerTopMat, mixerSideMat, 
+    mixerSideMat, mixerSideMat
+  ];
+
+  const mixerMesh = new THREE.Mesh(new THREE.BoxGeometry(0.632, 0.11, 0.50), mixerMaterials);
   mixerMesh.position.set(0.82, H_DESK + 0.055, 0.02);
-  mixerMesh.rotation.x = -0.12;
+  mixerMesh.rotation.x = 0.12;
   mixerMesh.castShadow = true;
 
   mixerMesh.userData = {
