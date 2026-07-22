@@ -327,17 +327,13 @@ export function buildDeskScene() {
   desktopShape.lineTo(-halfW, -halfD + 0.04);
   desktopShape.quadraticCurveTo(-halfW, -halfD, -1.51, -halfD);
 
-  // Rear Cable Tidy Trench Cutout
+  // Rear Cable Tidy Trench Cutout (Full Length)
   const trenchHole = new THREE.Path();
-  trenchHole.moveTo(-1.27, -0.41);
-  trenchHole.lineTo(1.27, -0.41);
-  trenchHole.quadraticCurveTo(1.30, -0.41, 1.30, -0.38);
-  trenchHole.lineTo(1.30, -0.34);
-  trenchHole.quadraticCurveTo(1.30, -0.31, 1.27, -0.31);
-  trenchHole.lineTo(-1.27, -0.31);
-  trenchHole.quadraticCurveTo(-1.30, -0.31, -1.30, -0.34);
-  trenchHole.lineTo(-1.30, -0.38);
-  trenchHole.quadraticCurveTo(-1.30, -0.41, -1.27, -0.41);
+  trenchHole.moveTo(-1.55, -0.41);
+  trenchHole.lineTo(1.55, -0.41);
+  trenchHole.lineTo(1.55, -0.31);
+  trenchHole.lineTo(-1.55, -0.31);
+  trenchHole.lineTo(-1.55, -0.41);
 
   desktopShape.holes.push(trenchHole);
 
@@ -370,29 +366,93 @@ export function buildDeskScene() {
   desktopMesh.receiveShadow = true;
   rootGroup.add(desktopMesh);
 
-  // Recessed Floor Base for Cable Tidy Trench
-  const trenchFloorMesh = new THREE.Mesh(
-    new THREE.BoxGeometry(2.62, 0.015, 0.12),
-    darkMetalMaterial
-  );
-  trenchFloorMesh.position.set(0, H_DESK - THICKNESS - 0.04, -0.36);
+  // Cable Tidy Trench Floor (with cutouts)
+  const floorShape = new THREE.Shape();
+  const fw = 1.55;
+  floorShape.moveTo(-fw, -0.41);
+  floorShape.lineTo(fw, -0.41);
+  floorShape.lineTo(fw, -0.31);
+  floorShape.lineTo(-fw, -0.31);
+  floorShape.lineTo(-fw, -0.41);
+
+  const slotWidth = 0.025;
+  const slotRadius = slotWidth / 2;
+  const numSlots = 8;
+  const slots = [];
+  for (let i = 0; i < numSlots; i++) {
+    // 3.10m total width, 40cm from each end means from 1.15 to -1.15
+    slots.push(1.15 - i * (2.30 / (numSlots - 1)));
+  }
+
+  slots.forEach(sx => {
+    const hole = new THREE.Path();
+    // Capsule shape for the floor (2.5cm wide x 6cm deep)
+    hole.moveTo(sx + slotRadius, -0.39 + slotRadius);
+    hole.lineTo(sx + slotRadius, -0.33 - slotRadius);
+    // Top arc (counter-clockwise from 0 to PI goes through +y)
+    hole.absarc(sx, -0.33 - slotRadius, slotRadius, 0, Math.PI, false);
+    hole.lineTo(sx - slotRadius, -0.39 + slotRadius);
+    // Bottom arc (counter-clockwise from PI to 2PI goes through -y)
+    hole.absarc(sx, -0.39 + slotRadius, slotRadius, Math.PI, Math.PI * 2, false);
+    floorShape.holes.push(hole);
+  });
+
+  const floorGeo = new THREE.ExtrudeGeometry(floorShape, { depth: 0.015, bevelEnabled: false });
+  floorGeo.rotateX(Math.PI / 2);
+  const trenchFloorMesh = new THREE.Mesh(floorGeo, darkMetalMaterial);
+  trenchFloorMesh.position.set(0, H_DESK - THICKNESS - 0.04, 0);
   rootGroup.add(trenchFloorMesh);
 
-  const trenchBackWall = new THREE.Mesh(
-    new THREE.BoxGeometry(2.62, 0.05, 0.01),
-    darkMetalMaterial
-  );
+  const trenchBackWall = new THREE.Mesh(new THREE.BoxGeometry(3.10, 0.05, 0.01), darkMetalMaterial);
   trenchBackWall.position.set(0, H_DESK - 0.02, -0.415);
   rootGroup.add(trenchBackWall);
 
-  [-1.0, 0, 1.0].forEach(gx => {
-    const grommet = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.025, 0.025, 0.02, 32),
-      blackPlasticMaterial
-    );
-    grommet.position.set(gx, H_DESK - THICKNESS - 0.03, -0.36);
-    rootGroup.add(grommet);
-  });
+  // Cable Tidy Lid & Hinge
+  animatedGroups.trenchLidGroup = new THREE.Group();
+  // Pivot point is at the hinge: y = H_DESK, z = -0.41
+  animatedGroups.trenchLidGroup.position.set(0, H_DESK, -0.41);
+
+  const lidShape = new THREE.Shape();
+  lidShape.moveTo(-fw, 0); 
+  lidShape.lineTo(fw, 0);
+  lidShape.lineTo(fw, 0.10); 
+  
+  // Cut U-shaped slots on the opening edge (2.5cm wide, 6cm deep)
+  for (let i = 0; i < slots.length; i++) {
+    const sx = slots[i];
+    lidShape.lineTo(sx + slotRadius, 0.10);
+    lidShape.lineTo(sx + slotRadius, 0.04 + slotRadius);
+    // Bottom of the U (clockwise from 0 to PI goes through -y)
+    lidShape.absarc(sx, 0.04 + slotRadius, slotRadius, 0, Math.PI, true);
+    lidShape.lineTo(sx - slotRadius, 0.10);
+  }
+  lidShape.lineTo(-fw, 0.10);
+  lidShape.lineTo(-fw, 0);
+
+  const lidGeo = new THREE.ExtrudeGeometry(lidShape, { steps: 1, depth: THICKNESS, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 2 });
+  lidGeo.rotateX(Math.PI / 2);
+  
+  const lPos = lidGeo.attributes.position;
+  const lUv = lidGeo.attributes.uv;
+  for (let i = 0; i < lPos.count; i++) {
+    lUv.setXY(i, (lPos.getX(i) + 1.55) * 0.7, (lPos.getZ(i) + 0.04) * 0.7);
+  }
+  lUv.needsUpdate = true;
+
+  const lidMesh = new THREE.Mesh(lidGeo, oakMaterial);
+  lidMesh.position.set(0, 0, 0);
+  lidMesh.castShadow = true;
+  animatedGroups.trenchLidGroup.add(lidMesh);
+
+  // Piano Hinge
+  const hingeGeo = new THREE.CylinderGeometry(0.004, 0.004, 3.10, 16);
+  hingeGeo.rotateZ(Math.PI / 2);
+  const silverMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.2 });
+  const hingeMesh = new THREE.Mesh(hingeGeo, silverMaterial);
+  hingeMesh.position.set(0, -0.004, 0);
+  animatedGroups.trenchLidGroup.add(hingeMesh);
+
+  rootGroup.add(animatedGroups.trenchLidGroup);
 
   const plinths = [
     { start: -1.55, end: -1.10, fullDepth: true },  // Left pedestal
@@ -872,6 +932,7 @@ export function buildDeskScene() {
     leftDrawersGroup: animatedGroups.leftDrawersGroup,
     rightDrawersGroup: animatedGroups.rightDrawersGroup,
     cablesGroup: animatedGroups.cablesGroup,
+    trenchLidGroup: animatedGroups.trenchLidGroup,
     interactiveEquipment,
     equipmentPins
   };

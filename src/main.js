@@ -405,6 +405,28 @@ toggleCablesBtn.addEventListener('click', () => {
   deskData.cablesGroup.visible = isCablesHighlighted;
 });
 
+let isLidOpen = false;
+const toggleLidBtn = document.getElementById('toggle-lid-btn');
+const lidToggleText = document.getElementById('lid-toggle-text');
+
+toggleLidBtn.addEventListener('click', () => {
+  if (!deskData.trenchLidGroup) return;
+  isLidOpen = !isLidOpen;
+  
+  // Rotate lid around X axis (hinge is at z = -0.41, lid moves backwards when opening)
+  // An opening of -Math.PI / 2 radians (90 degrees backwards)
+  const targetRotX = isLidOpen ? -Math.PI * 0.45 : 0; 
+  
+  gsap.to(deskData.trenchLidGroup.rotation, {
+    x: targetRotX,
+    duration: 1.2,
+    ease: 'power3.inOut'
+  });
+
+  toggleLidBtn.classList.toggle('active', isLidOpen);
+  lidToggleText.textContent = isLidOpen ? 'Close Cable Trench' : 'Open Cable Trench';
+});
+
 let isDimsVisible = false;
 const toggleDimsBtn = document.getElementById('toggle-dims-btn');
 
