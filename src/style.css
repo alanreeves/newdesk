@@ -164,7 +164,7 @@ html, body {
   top: 90px;
   left: 16px;
   z-index: 10;
-  width: 250px;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -201,20 +201,30 @@ html, body {
   letter-spacing: 0.1em;
   font-family: var(--font-mono);
   margin-bottom: 10px;
+  justify-content: center;
+}
+
+.section-title span {
+  display: none;
 }
 
 .button-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
 .preset-btn {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-muted);
-  padding: 8px 6px;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
@@ -241,7 +251,8 @@ html, body {
 .toggle-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  align-items: center;
 }
 
 .action-btn {
@@ -249,12 +260,12 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
   color: var(--text-main);
-  padding: 9px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
 }

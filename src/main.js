@@ -356,7 +356,6 @@ controls.addEventListener('change', () => {
 
 let isPcSlidOut = false;
 const slidePcBtn = document.getElementById('slide-pc-btn');
-const pcSlideText = document.getElementById('pc-slide-text');
 
 slidePcBtn.addEventListener('click', () => {
   isPcSlidOut = !isPcSlidOut;
@@ -369,12 +368,11 @@ slidePcBtn.addEventListener('click', () => {
   });
 
   slidePcBtn.classList.toggle('active', isPcSlidOut);
-  pcSlideText.textContent = isPcSlidOut ? 'Retract PC Tower' : 'Slide Out PC Tower';
+  if (slidePcBtn) slidePcBtn.title = isPcSlidOut ? 'Retract PC Tower' : 'Slide Out PC Tower';
 });
 
 let isDrawersOpen = false;
 const toggleDrawersBtn = document.getElementById('toggle-drawers-btn');
-const drawerToggleText = document.getElementById('drawer-toggle-text');
 
 toggleDrawersBtn.addEventListener('click', () => {
   isDrawersOpen = !isDrawersOpen;
@@ -393,25 +391,21 @@ toggleDrawersBtn.addEventListener('click', () => {
   });
 
   toggleDrawersBtn.classList.toggle('active', isDrawersOpen);
-  drawerToggleText.textContent = isDrawersOpen ? 'Close Drawers' : 'Open Drawers';
+  if (toggleDrawersBtn) toggleDrawersBtn.title = isDrawersOpen ? 'Close Drawers' : 'Open Drawers';
 });
 
 let isCablesHighlighted = false;
 const toggleCablesBtn = document.getElementById('toggle-cables-btn');
-const cablesToggleText = document.getElementById('cables-toggle-text');
 
 toggleCablesBtn.addEventListener('click', () => {
   isCablesHighlighted = !isCablesHighlighted;
   toggleCablesBtn.classList.toggle('active', isCablesHighlighted);
   deskData.cablesGroup.visible = isCablesHighlighted;
-  if (cablesToggleText) {
-    cablesToggleText.textContent = isCablesHighlighted ? 'Hide Cables' : 'Show Cables';
-  }
+  if (toggleCablesBtn) toggleCablesBtn.title = isCablesHighlighted ? 'Hide Cables' : 'Show Cables';
 });
 
 let isLidOpen = false;
 const toggleLidBtn = document.getElementById('toggle-lid-btn');
-const lidToggleText = document.getElementById('lid-toggle-text');
 
 toggleLidBtn.addEventListener('click', () => {
   if (!deskData.trenchLidGroup) return;
@@ -428,7 +422,7 @@ toggleLidBtn.addEventListener('click', () => {
   });
 
   toggleLidBtn.classList.toggle('active', isLidOpen);
-  lidToggleText.textContent = isLidOpen ? 'Close Cable Trench' : 'Open Cable Trench';
+  if (toggleLidBtn) toggleLidBtn.title = isLidOpen ? 'Close Cable Trench' : 'Open Cable Trench';
 });
 
 let isDimsVisible = false;
@@ -444,7 +438,6 @@ toggleDimsBtn.addEventListener('click', () => {
 
 let isKeyboardStored = false;
 const toggleKeyboardBtn = document.getElementById('toggle-keyboard-btn');
-const keyboardToggleText = document.getElementById('keyboard-toggle-text');
 
 if (toggleKeyboardBtn) {
   toggleKeyboardBtn.addEventListener('click', () => {
@@ -457,7 +450,7 @@ if (toggleKeyboardBtn) {
       onComplete: () => {
         toggleKeyboardBtn.disabled = false;
         toggleKeyboardBtn.classList.toggle('active', isKeyboardStored);
-        keyboardToggleText.textContent = isKeyboardStored ? 'Retrieve Keyboard' : 'Store Keyboard';
+        if (toggleKeyboardBtn) toggleKeyboardBtn.title = isKeyboardStored ? 'Retrieve Keyboard' : 'Store Keyboard';
       }
     });
 
