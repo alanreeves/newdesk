@@ -402,16 +402,7 @@ const toggleCablesBtn = document.getElementById('toggle-cables-btn');
 toggleCablesBtn.addEventListener('click', () => {
   isCablesHighlighted = !isCablesHighlighted;
   toggleCablesBtn.classList.toggle('active', isCablesHighlighted);
-
-  deskData.cablesGroup.children.forEach((cableMesh, idx) => {
-    if (isCablesHighlighted) {
-      cableMesh.material.emissive = new THREE.Color(idx < 4 ? 0xef4444 : 0x38bdf8);
-      cableMesh.material.emissiveIntensity = 0.8;
-    } else {
-      cableMesh.material.emissive = new THREE.Color(0x000000);
-      cableMesh.material.emissiveIntensity = 0;
-    }
-  });
+  deskData.cablesGroup.visible = isCablesHighlighted;
 });
 
 let isDimsVisible = false;

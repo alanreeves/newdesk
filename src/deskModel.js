@@ -649,15 +649,30 @@ export function buildDeskScene() {
     metalness: 0.2
   });
 
+  const mixerBackTex = textureLoader.load('/qu24_back.png');
+  mixerBackTex.colorSpace = THREE.SRGBColorSpace;
+  const mixerBackMat = new THREE.MeshStandardMaterial({
+    map: mixerBackTex, roughness: 0.5, metalness: 0.3
+  });
+
   const mixerMaterials = [
     mixerSideMat, mixerSideMat,
     mixerTopMat, mixerSideMat, 
-    mixerSideMat, mixerSideMat
+    mixerSideMat, mixerBackMat
   ];
 
-  const mixerMesh = new THREE.Mesh(new THREE.BoxGeometry(0.632, 0.11, 0.50), mixerMaterials);
+  const mixerGeo = new THREE.BoxGeometry(0.632, 0.11, 0.50, 1, 1, 1);
+  const posAttribute = mixerGeo.attributes.position;
+  // Lift the back top vertices to create a wedge slope
+  for (let i = 0; i < posAttribute.count; i++) {
+    if (posAttribute.getY(i) > 0 && posAttribute.getZ(i) < 0) {
+      posAttribute.setY(i, posAttribute.getY(i) + 0.08); // Raises back height
+    }
+  }
+  mixerGeo.computeVertexNormals();
+
+  const mixerMesh = new THREE.Mesh(mixerGeo, mixerMaterials);
   mixerMesh.position.set(0.82, H_DESK + 0.055, 0.02);
-  mixerMesh.rotation.x = 0.12;
   mixerMesh.castShadow = true;
 
   mixerMesh.userData = {
@@ -846,6 +861,7 @@ export function buildDeskScene() {
   interactiveEquipment.push(powerTray);
   equipmentPins.push({ userData: powerTray.userData, worldPos: new THREE.Vector3(0, H_DESK, -0.36) });
 
+  animatedGroups.cablesGroup.visible = false;
   rootGroup.add(powerTray);
   rootGroup.add(netTray);
   rootGroup.add(animatedGroups.cablesGroup);
