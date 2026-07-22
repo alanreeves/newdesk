@@ -723,24 +723,32 @@ export function buildDeskScene() {
   rootGroup.add(houseAmpMesh);
   rootGroup.add(houseAmpFace);
 
-  const pduMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.044, 0.08), blackPlasticMaterial);
-  pduMesh.position.set(0.15, 0.28, 0.20);
-  const pduSwitch = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.022, 0.006), new THREE.MeshBasicMaterial({ color: 0xf43f5e }));
-  pduSwitch.position.set(-0.06, 0.28, 0.244);
+  const pduLocs = [
+    { x: -0.775, y: 0.66, z: -0.39, name: 'Left Operator PDU' },
+    { x: 0.775, y: 0.66, z: -0.39, name: 'Right Operator PDU' }
+  ];
 
-  pduMesh.userData = {
-    id: 'power_strip',
-    name: 'Rack Power Distribution Unit (PDU)',
-    category: 'POWER MANAGEMENT',
-    dims: '1U Rack Strip • 8 AC Outlets with Surge Protection',
-    location: 'Mounted under central rack shelf',
-    specs: ['Illuminated master power rocker switch', 'Isolated surge protection feeding main power cables'],
-    note: 'Keeps high-voltage power distribution isolated from audio lines.'
-  };
-  interactiveEquipment.push(pduMesh);
-  equipmentPins.push({ userData: pduMesh.userData, worldPos: new THREE.Vector3(0.15, 0.28, 0.24) });
-  rootGroup.add(pduMesh);
-  rootGroup.add(pduSwitch);
+  pduLocs.forEach((loc, idx) => {
+    const pduMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.044, 0.08), blackPlasticMaterial);
+    pduMesh.position.set(loc.x, loc.y, loc.z);
+    
+    const pduSwitch = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.022, 0.006), new THREE.MeshBasicMaterial({ color: 0xf43f5e }));
+    pduSwitch.position.set(loc.x - 0.21, loc.y, loc.z + 0.043);
+    
+    pduMesh.userData = {
+      id: `power_strip_${idx}`,
+      name: `Rack Power Distribution Unit (${loc.name})`,
+      category: 'POWER MANAGEMENT',
+      dims: '1U Rack Strip • 6 AC Outlets with Surge Protection',
+      location: 'Mounted under desk, rear cable trench wall',
+      specs: ['Illuminated master power rocker switch', 'Isolated surge protection feeding main power cables'],
+      note: 'Keeps high-voltage power distribution isolated from audio lines.'
+    };
+    interactiveEquipment.push(pduMesh);
+    equipmentPins.push({ userData: pduMesh.userData, worldPos: new THREE.Vector3(loc.x, loc.y, loc.z + 0.04) });
+    rootGroup.add(pduMesh);
+    rootGroup.add(pduSwitch);
+  });
 
   // 5. TOP DESK EQUIPMENT
   const mixerTexture = textureLoader.load('/qu24_real.jpg');
