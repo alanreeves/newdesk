@@ -437,13 +437,21 @@ export function buildDeskScene() {
     rootGroup.add(vMesh);
   });
 
-  const backLeft = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backLeft.position.set(-1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
-  rootGroup.add(backLeft);
+  const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
+  backLeftPedestal.position.set(-1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  rootGroup.add(backLeftPedestal);
 
-  const backRight = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backRight.position.set(1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
-  rootGroup.add(backRight);
+  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
+  backLeftOperator.position.set(-0.775, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  rootGroup.add(backLeftOperator);
+
+  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
+  backRightOperator.position.set(0.775, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  rootGroup.add(backRightOperator);
+
+  const backRightPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
+  backRightPedestal.position.set(1.325, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
   const buildPedestalDrawers = (centerX, groupRef) => {
