@@ -377,7 +377,7 @@ export function buildDeskScene() {
 
   const slotWidth = 0.025;
   const slotRadius = slotWidth / 2;
-  const numSlots = 8;
+  const numSlots = 12;
   const slots = [];
   for (let i = 0; i < numSlots; i++) {
     // 3.10m total width, 40cm from each end means from 1.15 to -1.15
@@ -402,6 +402,35 @@ export function buildDeskScene() {
   const trenchFloorMesh = new THREE.Mesh(floorGeo, darkMetalMaterial);
   trenchFloorMesh.position.set(0, H_DESK - THICKNESS - 0.04, 0);
   rootGroup.add(trenchFloorMesh);
+
+  // Black rubber grommets for floor slots
+  const floorGrommetShape = new THREE.Shape();
+  const fgOuterR = slotRadius + 0.003;
+  const fgTopY = -0.33 - slotRadius;
+  const fgBotY = -0.39 + slotRadius;
+
+  floorGrommetShape.moveTo(fgOuterR, fgBotY);
+  floorGrommetShape.lineTo(fgOuterR, fgTopY);
+  floorGrommetShape.absarc(0, fgTopY, fgOuterR, 0, Math.PI, false);
+  floorGrommetShape.lineTo(-fgOuterR, fgBotY);
+  floorGrommetShape.absarc(0, fgBotY, fgOuterR, Math.PI, Math.PI * 2, false);
+
+  const fgHole = new THREE.Path();
+  fgHole.moveTo(slotRadius, fgBotY);
+  fgHole.lineTo(slotRadius, fgTopY);
+  fgHole.absarc(0, fgTopY, slotRadius, 0, Math.PI, false);
+  fgHole.lineTo(-slotRadius, fgBotY);
+  fgHole.absarc(0, fgBotY, slotRadius, Math.PI, Math.PI * 2, false);
+  floorGrommetShape.holes.push(fgHole);
+
+  const floorGrommetGeo = new THREE.ExtrudeGeometry(floorGrommetShape, { depth: 0.017, bevelEnabled: true, bevelThickness: 0.001, bevelSize: 0.001, bevelSegments: 1 });
+  floorGrommetGeo.rotateX(Math.PI / 2);
+
+  slots.forEach(sx => {
+    const mesh = new THREE.Mesh(floorGrommetGeo, blackPlasticMaterial);
+    mesh.position.set(sx, H_DESK - THICKNESS - 0.04 + 0.001, 0);
+    rootGroup.add(mesh);
+  });
 
   const trenchBackWall = new THREE.Mesh(new THREE.BoxGeometry(3.10, 0.05, 0.01), darkMetalMaterial);
   trenchBackWall.position.set(0, H_DESK - 0.02, -0.415);
@@ -443,6 +472,29 @@ export function buildDeskScene() {
   lidMesh.position.set(0, 0, 0);
   lidMesh.castShadow = true;
   animatedGroups.trenchLidGroup.add(lidMesh);
+
+  // Black rubber grommets for lid slots
+  const lidGrommetShape = new THREE.Shape();
+  const lgOuterR = slotRadius + 0.003;
+  const lgArcCenterY = 0.04 + slotRadius;
+  lidGrommetShape.moveTo(lgOuterR, 0.10);
+  lidGrommetShape.lineTo(lgOuterR, lgArcCenterY);
+  lidGrommetShape.absarc(0, lgArcCenterY, lgOuterR, 0, Math.PI, true);
+  lidGrommetShape.lineTo(-lgOuterR, 0.10);
+  lidGrommetShape.lineTo(-slotRadius, 0.10);
+  lidGrommetShape.lineTo(-slotRadius, lgArcCenterY);
+  lidGrommetShape.absarc(0, lgArcCenterY, slotRadius, Math.PI, 0, false);
+  lidGrommetShape.lineTo(slotRadius, 0.10);
+  lidGrommetShape.lineTo(lgOuterR, 0.10);
+
+  const lidGrommetGeo = new THREE.ExtrudeGeometry(lidGrommetShape, { depth: THICKNESS + 0.002, bevelEnabled: true, bevelThickness: 0.001, bevelSize: 0.001, bevelSegments: 1 });
+  lidGrommetGeo.rotateX(Math.PI / 2);
+
+  slots.forEach(sx => {
+    const mesh = new THREE.Mesh(lidGrommetGeo, blackPlasticMaterial);
+    mesh.position.set(sx, 0.001, 0);
+    animatedGroups.trenchLidGroup.add(mesh);
+  });
 
   // Piano Hinge
   const hingeGeo = new THREE.CylinderGeometry(0.004, 0.004, 3.10, 16);
