@@ -132,11 +132,11 @@ function createMixerSurfaceTexture() {
   ctx.fillStyle = '#12141a';
   ctx.fillRect(0, 0, 1024, 180);
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 38px sans-serif';
+  ctx.font = 'bold 42px sans-serif';
   ctx.fillText('ALLEN & HEATH', 40, 65);
   ctx.fillStyle = '#38bdf8';
-  ctx.font = 'bold 30px sans-serif';
-  ctx.fillText('Qu-7', 40, 110);
+  ctx.font = 'bold 54px sans-serif';
+  ctx.fillText('Qu-7', 40, 125);
 
   ctx.fillStyle = '#090b10';
   ctx.fillRect(520, 25, 450, 250);
