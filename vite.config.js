@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/newdesk/'
+  base: '/newdesk/',
+  build: {
+    outDir: 'docs'
+  }
 })
