@@ -751,11 +751,8 @@ export function buildDeskScene() {
   });
 
   // 5. TOP DESK EQUIPMENT
-  const mixerTexture = textureLoader.load('./qu24_real.jpg');
+  const mixerTexture = createMixerSurfaceTexture();
   mixerTexture.colorSpace = THREE.SRGBColorSpace;
-  // Zoom in to crop out the white border of the image
-  mixerTexture.repeat.set(0.82, 0.78); // Scale the image up (smaller repeat = larger image)
-  mixerTexture.offset.set(0.09, 0.11);  // Center the cropped area
   
   const mixerTopMat = new THREE.MeshStandardMaterial({
     map: mixerTexture,
