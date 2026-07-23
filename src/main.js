@@ -639,11 +639,16 @@ window.addEventListener('click', () => {
   }
 });
 
-window.addEventListener('resize', () => {
+function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-});
+}
+window.addEventListener('resize', onWindowResize);
+
+// Fix for iOS Safari initial layout bug
+setTimeout(onWindowResize, 100);
+setTimeout(onWindowResize, 500);
 
 const woodShadeSlider = document.getElementById('wood-shade-slider');
 const woodTypeLabel = document.getElementById('wood-type-label');
