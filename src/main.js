@@ -633,9 +633,23 @@ window.addEventListener('mousemove', (e) => {
   hoverTooltip.classList.add('hidden');
 });
 
-window.addEventListener('click', () => {
-  if (hoveredObject && hoveredObject.userData && hoveredObject.userData.name) {
-    openSpecCard(hoveredObject.userData);
+window.addEventListener('click', (e) => {
+  // Don't trigger 3D clicks if clicking on UI
+  if (e.target.closest('.control-panel') || e.target.closest('.app-header') || e.target.closest('#spec-card')) {
+    return;
+  }
+
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(deskData.interactiveEquipment, true);
+
+  if (intersects.length > 0) {
+    const obj = intersects[0].object;
+    if (obj.userData && obj.userData.name) {
+      openSpecCard(obj.userData);
+    }
   }
 });
 
