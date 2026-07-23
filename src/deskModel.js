@@ -136,7 +136,7 @@ function createMixerSurfaceTexture() {
   ctx.fillText('ALLEN & HEATH', 40, 65);
   ctx.fillStyle = '#38bdf8';
   ctx.font = 'bold 30px sans-serif';
-  ctx.fillText('Qu-24', 40, 110);
+  ctx.fillText('Qu-7', 40, 110);
 
   ctx.fillStyle = '#090b10';
   ctx.fillRect(520, 25, 450, 250);
@@ -155,8 +155,8 @@ function createMixerSurfaceTexture() {
     ctx.fillRect(x, y, 10, barHeight);
   }
 
-  for (let f = 0; f < 24; f++) {
-    const fx = 35 + f * 40;
+  for (let f = 0; f < 32; f++) {
+    const fx = 15 + f * 31;
     ctx.fillStyle = '#0a0c10';
     ctx.fillRect(fx + 15, 380, 6, 540);
 
@@ -165,7 +165,7 @@ function createMixerSurfaceTexture() {
     ctx.fillStyle = '#fbbf24';
     ctx.fillRect(fx + 6, 340, 24, 14);
 
-    ctx.fillStyle = f === 23 ? '#f43f5e' : (f > 20 ? '#fbbf24' : '#e2e8f0');
+    ctx.fillStyle = f === 31 ? '#f43f5e' : (f > 26 ? '#fbbf24' : '#e2e8f0');
     const faderY = 440 + Math.sin(f * 0.75) * 140;
     ctx.fillRect(fx + 2, faderY, 32, 26);
     ctx.fillStyle = '#000000';
@@ -781,7 +781,7 @@ export function buildDeskScene() {
     mixerSideMat, mixerBackMat
   ];
 
-  const mixerGeo = new THREE.BoxGeometry(0.632, 0.11, 0.50, 1, 1, 1);
+  const mixerGeo = new THREE.BoxGeometry(0.80, 0.11, 0.476, 1, 1, 1);
   const posAttribute = mixerGeo.attributes.position;
   // Lift the back top vertices to create a wedge slope
   for (let i = 0; i < posAttribute.count; i++) {
@@ -792,41 +792,41 @@ export function buildDeskScene() {
   mixerGeo.computeVertexNormals();
 
   const mixerMesh = new THREE.Mesh(mixerGeo, mixerMaterials);
-  mixerMesh.position.set(0.70, H_DESK + 0.055, 0.02);
+  mixerMesh.position.set(0.78, H_DESK + 0.055, 0.02);
   mixerMesh.castShadow = true;
 
   mixerMesh.userData = {
-    id: 'qu24_mixer',
-    name: 'Allen & Heath Qu-24 Digital Mixer',
+    id: 'qu7_mixer',
+    name: 'ALLEN & HEATH Qu-7 Digital Mixer',
     category: 'AUDIO CONSOLE',
-    dims: '632 mm (W) x 500 mm (D) x 186 mm (H)',
+    dims: '800 mm (W) x 476 mm (D) x 186 mm (H)',
     location: 'Flat Desktop Surface (Right Operator)',
     specs: [
-      '24 AnalogueIQ™ motorized faders across 3 layers',
+      '32 AnalogueIQ™ motorized faders across 3 layers',
       '800x480 High-contrast touchscreen display with real-time RTA',
       'USB multitrack recording & Dante network integration'
     ],
     note: 'Primary console for live sound, broadcast feed, and audio multitrack mixing.'
   };
   interactiveEquipment.push(mixerMesh);
-  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.70, H_DESK + 0.16, 0.02) });
+  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.78, H_DESK + 0.16, 0.02) });
   rootGroup.add(mixerMesh);
 
   const mainMonitor = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.41, 0.02), blackPlasticMaterial);
-  mainMonitor.position.set(-0.70, H_DESK + 0.24, -0.15);
+  mainMonitor.position.set(-0.75, H_DESK + 0.24, -0.15);
   mainMonitor.castShadow = true;
 
   const mainDisplay = new THREE.Mesh(
     new THREE.PlaneGeometry(0.70, 0.39),
     new THREE.MeshBasicMaterial({ map: createDAWScreenTexture() })
   );
-  mainDisplay.position.set(-0.70, H_DESK + 0.24, -0.139);
+  mainDisplay.position.set(-0.75, H_DESK + 0.24, -0.139);
 
   const mainStand = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 16), darkMetalMaterial);
-  mainStand.position.set(-0.70, H_DESK + 0.09, -0.15);
+  mainStand.position.set(-0.75, H_DESK + 0.09, -0.15);
 
   const mainStandBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.008, 32), darkMetalMaterial);
-  mainStandBase.position.set(-0.70, H_DESK + 0.004, -0.15);
+  mainStandBase.position.set(-0.75, H_DESK + 0.004, -0.15);
 
   mainMonitor.userData = {
     id: 'main_monitor',
@@ -838,21 +838,21 @@ export function buildDeskScene() {
     note: 'Positioned at ergonomic eye-level for primary video/DAW operator.'
   };
   interactiveEquipment.push(mainMonitor);
-  equipmentPins.push({ userData: mainMonitor.userData, worldPos: new THREE.Vector3(-0.85, H_DESK + 0.38, -0.15) });
+  equipmentPins.push({ userData: mainMonitor.userData, worldPos: new THREE.Vector3(-0.90, H_DESK + 0.38, -0.15) });
   rootGroup.add(mainMonitor);
   rootGroup.add(mainDisplay);
   rootGroup.add(mainStand);
   rootGroup.add(mainStandBase);
 
   const secMonitor = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.15, 0.015), blackPlasticMaterial);
-  secMonitor.position.set(-0.25, H_DESK + 0.14, -0.12);
+  secMonitor.position.set(-0.32, H_DESK + 0.14, -0.12);
   secMonitor.rotation.y = -0.22;
 
   const secDisplay = new THREE.Mesh(
     new THREE.PlaneGeometry(0.22, 0.14),
     new THREE.MeshBasicMaterial({ map: createSecondaryScreenTexture() })
   );
-  secDisplay.position.set(-0.25, H_DESK + 0.14, -0.111);
+  secDisplay.position.set(-0.32, H_DESK + 0.14, -0.111);
   secDisplay.rotation.y = -0.22;
 
   secMonitor.userData = {
@@ -865,15 +865,15 @@ export function buildDeskScene() {
     note: 'Provides real-time system monitoring without taking main screen space.'
   };
   interactiveEquipment.push(secMonitor);
-  equipmentPins.push({ userData: secMonitor.userData, worldPos: new THREE.Vector3(-0.25, H_DESK + 0.22, -0.12) });
+  equipmentPins.push({ userData: secMonitor.userData, worldPos: new THREE.Vector3(-0.32, H_DESK + 0.22, -0.12) });
   rootGroup.add(secMonitor);
   rootGroup.add(secDisplay);
 
   const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.012, 0.16), blackPlasticMaterial);
-  keyboard.position.set(-0.70, H_DESK + 0.008, 0.18);
+  keyboard.position.set(-0.75, H_DESK + 0.008, 0.18);
 
   const mouse = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.024, 0.10), blackPlasticMaterial);
-  mouse.position.set(-0.38, H_DESK + 0.014, 0.18);
+  mouse.position.set(-0.43, H_DESK + 0.014, 0.18);
 
   animatedGroups.keyboardGroup = new THREE.Group();
   animatedGroups.keyboardGroup.add(keyboard);
@@ -884,15 +884,15 @@ export function buildDeskScene() {
   animatedGroups.keyboardShelfGroup = new THREE.Group();
   
   const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.015, 0.25), oakMaterial);
-  shelfTray.position.set(-0.70, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
+  shelfTray.position.set(-0.75, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
   shelfTray.castShadow = true;
   shelfTray.receiveShadow = true;
   animatedGroups.keyboardShelfGroup.add(shelfTray);
 
   const shelfRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailL.position.set(-0.70 - 0.28, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailL.position.set(-0.75 - 0.28, H_DESK - THICKNESS - 0.01, 0.19);
   const shelfRailR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailR.position.set(-0.70 + 0.28, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailR.position.set(-0.75 + 0.28, H_DESK - THICKNESS - 0.01, 0.19);
   rootGroup.add(shelfRailL);
   rootGroup.add(shelfRailR);
   rootGroup.add(animatedGroups.keyboardShelfGroup);
@@ -907,11 +907,11 @@ export function buildDeskScene() {
     note: 'Positioned comfortably for operator 1 desk control.'
   };
   interactiveEquipment.push(keyboard);
-  equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.70, H_DESK + 0.05, 0.18) });
+  equipmentPins.push({ userData: keyboard.userData, worldPos: new THREE.Vector3(-0.75, H_DESK + 0.05, 0.18) });
 
   // 6. STREAM DECK XL
   const streamDeckGroup = new THREE.Group();
-  streamDeckGroup.position.set(-0.25, H_DESK, 0.15); // Place on desktop
+  streamDeckGroup.position.set(-0.32, H_DESK, 0.15); // Place on desktop
   
   // Base Wedge
   const sdBaseGeo = new THREE.BoxGeometry(0.182, 0.015, 0.112);
@@ -941,10 +941,10 @@ export function buildDeskScene() {
   }
 
   const sdCableCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-0.25, H_DESK + 0.01, 0.10),      // back of stream deck
-    new THREE.Vector3(-0.25, H_DESK + 0.005, 0.05),     // down to desk
-    new THREE.Vector3(-0.214, H_DESK + 0.005, -0.30),   // across desk to cutout
-    new THREE.Vector3(-0.214, H_DESK - 0.02, -0.34)     // down into cutout
+    new THREE.Vector3(-0.32, H_DESK + 0.01, 0.10),      // back of stream deck
+    new THREE.Vector3(-0.32, H_DESK + 0.005, 0.05),     // down to desk
+    new THREE.Vector3(-0.28, H_DESK + 0.005, -0.30),   // across desk to cutout
+    new THREE.Vector3(-0.28, H_DESK - 0.02, -0.34)     // down into cutout
   ]);
   const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.007, 8, false), new THREE.MeshBasicMaterial({ color: 0x2563eb }));
   animatedGroups.cablesGroup.add(sdCable);
@@ -959,16 +959,16 @@ export function buildDeskScene() {
     note: 'Used for triggering DAW macros and system shortcuts.'
   };
   interactiveEquipment.push(sdBase);
-  equipmentPins.push({ userData: sdBase.userData, worldPos: new THREE.Vector3(-0.35, H_DESK + 0.05, 0.15) });
+  equipmentPins.push({ userData: sdBase.userData, worldPos: new THREE.Vector3(-0.32, H_DESK + 0.05, 0.15) });
   rootGroup.add(streamDeckGroup);
 
   const micRx = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.044, 0.18), darkMetalMaterial);
-  micRx.position.set(-0.04, H_DESK + 0.022, -0.18);
+  micRx.position.set(-0.12, H_DESK + 0.022, -0.18);
 
   const rxLed = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.02, 0.004), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
-  rxLed.position.set(-0.07, H_DESK + 0.022, -0.088);
+  rxLed.position.set(-0.15, H_DESK + 0.022, -0.088);
 
-  [-0.11, 0.03].forEach(ax => {
+  [-0.19, -0.05].forEach(ax => {
     const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.16, 12), blackPlasticMaterial);
     ant.position.set(ax, H_DESK + 0.10, -0.24);
     ant.rotation.x = -0.2;
@@ -985,19 +985,19 @@ export function buildDeskScene() {
     note: 'Receives clean wireless mic audio from presenters.'
   };
   interactiveEquipment.push(micRx);
-  equipmentPins.push({ userData: micRx.userData, worldPos: new THREE.Vector3(-0.04, H_DESK + 0.10, -0.18) });
+  equipmentPins.push({ userData: micRx.userData, worldPos: new THREE.Vector3(-0.12, H_DESK + 0.10, -0.18) });
   rootGroup.add(micRx);
   rootGroup.add(rxLed);
 
   const router = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.038, 0.16), blackPlasticMaterial);
-  router.position.set(0.22, H_DESK + 0.019, -0.18);
+  router.position.set(0.15, H_DESK + 0.019, -0.18);
 
   const routerLeds = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.008, 0.004), new THREE.MeshBasicMaterial({ color: 0x10b981 }));
-  routerLeds.position.set(0.22, H_DESK + 0.02, -0.098);
+  routerLeds.position.set(0.15, H_DESK + 0.02, -0.098);
 
   [-0.08, -0.02, 0.02, 0.08].forEach((rx, idx) => {
     const rAnt = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.14, 12), blackPlasticMaterial);
-    rAnt.position.set(0.22 + rx, H_DESK + 0.08, -0.25);
+    rAnt.position.set(0.15 + rx, H_DESK + 0.08, -0.25);
     rAnt.rotation.x = -0.15;
     rAnt.rotation.z = (idx - 1.5) * 0.1;
     rootGroup.add(rAnt);
@@ -1013,7 +1013,7 @@ export function buildDeskScene() {
     note: 'Hub connecting PC, Mixer, Dante matrix, and remote controllers.'
   };
   interactiveEquipment.push(router);
-  equipmentPins.push({ userData: router.userData, worldPos: new THREE.Vector3(0.22, H_DESK + 0.10, -0.18) });
+  equipmentPins.push({ userData: router.userData, worldPos: new THREE.Vector3(0.15, H_DESK + 0.10, -0.18) });
   rootGroup.add(router);
   rootGroup.add(routerLeds);
 
@@ -1042,22 +1042,22 @@ export function buildDeskScene() {
     animatedGroups.cablesGroup.add(cableMesh);
   };
 
-  // 1. QU24: 6 XLR cables (Blue)
+  // 1. ALLEN & HEATH QU-7: 6 XLR cables (Blue)
   for (let i = 0; i < 6; i++) {
-    drawCable(0.45 + i * 0.04, H_DESK + 0.08, -0.21, false);
+    drawCable(0.55 + i * 0.06, H_DESK + 0.08, -0.218, false);
   }
 
   // 2. Monitor: 1 Power, 1 Display
-  drawCable(-0.72, H_DESK + 0.05, -0.22, true);  
-  drawCable(-0.78, H_DESK + 0.05, -0.22, false); 
+  drawCable(-0.77, H_DESK + 0.05, -0.22, true);  
+  drawCable(-0.83, H_DESK + 0.05, -0.22, false); 
 
   // 3. Router: 1 Power, 1 Ethernet
-  drawCable(0.20, H_DESK + 0.019, -0.26, true);
-  drawCable(0.24, H_DESK + 0.019, -0.26, false);
+  drawCable(0.13, H_DESK + 0.019, -0.26, true);
+  drawCable(0.17, H_DESK + 0.019, -0.26, false);
 
   // 4. Mic Receiver: 1 Power, 1 Audio
-  drawCable(-0.02, H_DESK + 0.022, -0.27, true);
-  drawCable(-0.06, H_DESK + 0.022, -0.27, false);
+  drawCable(-0.10, H_DESK + 0.022, -0.27, true);
+  drawCable(-0.14, H_DESK + 0.022, -0.27, false);
 
   // Vertical Cable Container on the outside left hand side
   const cableTrunking = new THREE.Mesh(
