@@ -8,9 +8,10 @@ import * as THREE from 'three';
  */
 function createLightOakTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 1024;
+  canvas.width = 512;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d');
+  ctx.scale(0.5, 0.5);
 
   // Base warm pale blonde wood tone
   ctx.fillStyle = '#dfc3a1';
@@ -122,9 +123,10 @@ function createLightOakTexture() {
 
 function createMixerSurfaceTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 1024;
+  canvas.width = 512;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d');
+  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#1c1f26';
   ctx.fillRect(0, 0, 1024, 1024);
@@ -177,9 +179,10 @@ function createMixerSurfaceTexture() {
 
 function createDAWScreenTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 576;
+  canvas.width = 512;
+  canvas.height = 288;
   const ctx = canvas.getContext('2d');
+  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#0f141d';
   ctx.fillRect(0, 0, 1024, 576);
@@ -228,9 +231,10 @@ function createDAWScreenTexture() {
 
 function createSecondaryScreenTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 256;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
+  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#0a0e17';
   ctx.fillRect(0, 0, 512, 512);

@@ -4,6 +4,49 @@ import gsap from 'gsap';
 import { buildDeskScene } from './deskModel.js';
 
 // ==========================================
+// DEBUG OVERLAY FOR IPAD MINI
+// ==========================================
+const debugOverlay = document.createElement('div');
+debugOverlay.style.position = 'absolute';
+debugOverlay.style.top = '10px';
+debugOverlay.style.left = '10px';
+debugOverlay.style.zIndex = '999999';
+debugOverlay.style.backgroundColor = 'rgba(0,0,0,0.8)';
+debugOverlay.style.color = '#00ff00';
+debugOverlay.style.padding = '10px';
+debugOverlay.style.fontFamily = 'monospace';
+debugOverlay.style.fontSize = '10px';
+debugOverlay.style.maxWidth = '90vw';
+debugOverlay.style.maxHeight = '30vh';
+debugOverlay.style.overflowY = 'auto';
+debugOverlay.style.pointerEvents = 'none';
+debugOverlay.style.whiteSpace = 'pre-wrap';
+document.body.appendChild(debugOverlay);
+
+function addLog(type, args) {
+  try {
+    const msg = Array.from(args).map(a => {
+      if (a && a.message) return a.message;
+      return typeof a === 'object' ? JSON.stringify(a) : String(a);
+    }).join(' ');
+    const line = document.createElement('div');
+    line.textContent = `[${type}] ${msg}`;
+    if (type === 'ERROR') line.style.color = '#ff4444';
+    if (type === 'WARN') line.style.color = '#ffaa00';
+    debugOverlay.appendChild(line);
+    debugOverlay.scrollTop = debugOverlay.scrollHeight;
+  } catch (e) {}
+}
+
+const origLog = console.log;
+const origWarn = console.warn;
+const origError = console.error;
+console.log = function() { origLog.apply(console, arguments); addLog('LOG', arguments); };
+console.warn = function() { origWarn.apply(console, arguments); addLog('WARN', arguments); };
+console.error = function() { origError.apply(console, arguments); addLog('ERROR', arguments); };
+window.addEventListener('error', (e) => console.error(e.message));
+
+// ==========================================
 // 1. SCENE, CAMERA & RENDERER SETUP
 // ==========================================
 
@@ -22,7 +65,13 @@ camera.position.set(2.8, 2.2, 2.8);
 
 const isMobileOrTablet = /iPad|iPhone|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 1024;
 
-const renderer = new THREE.WebGLRenderer({ antialias: !isMobileOrTablet, alpha: false, powerPreference: 'high-performance' });
+console.log("Initializing WebGLRenderer...");
+const renderer = new THREE.WebGLRenderer({ 
+  antialias: !isMobileOrTablet, 
+  alpha: false,
+  precision: 'mediump' 
+});
+console.log("Renderer created.");
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileOrTablet ? 1.25 : 2.0));
 if (THREE.SRGBColorSpace) {
@@ -33,6 +82,16 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.LinearToneMapping;
 renderer.toneMappingExposure = 1.0;
 container.appendChild(renderer.domElement);
+
+const gl = renderer.getContext();
+const glError = gl.getError();
+if (glError !== gl.NO_ERROR) {
+  console.error("WebGL error directly after initialization:", glError);
+} else {
+  console.log("WebGL initialized. Version:", gl.getParameter(gl.VERSION));
+  console.log("Max texture size:", gl.getParameter(gl.MAX_TEXTURE_SIZE));
+  console.log("Vendor:", gl.getParameter(gl.VENDOR));
+}
 
 // WebGL Context Lost & Restored handlers for older iOS Safari
 renderer.domElement.addEventListener('webglcontextlost', (e) => {
