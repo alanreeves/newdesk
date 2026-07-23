@@ -946,7 +946,7 @@ export function buildDeskScene() {
     new THREE.Vector3(-0.214, H_DESK + 0.005, -0.30),   // across desk to cutout
     new THREE.Vector3(-0.214, H_DESK - 0.02, -0.34)     // down into cutout
   ]);
-  const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.003, 8, false), new THREE.MeshBasicMaterial({ color: 0x2563eb }));
+  const sdCable = new THREE.Mesh(new THREE.TubeGeometry(sdCableCurve, 16, 0.007, 8, false), new THREE.MeshBasicMaterial({ color: 0x2563eb }));
   animatedGroups.cablesGroup.add(sdCable);
   
   sdBase.userData = {
@@ -1038,7 +1038,7 @@ export function buildDeskScene() {
       new THREE.Vector3(slotX, H_DESK + 0.005, -0.30),          // across desk to slot
       new THREE.Vector3(slotX, H_DESK - 0.02, -0.34)            // down into slot
     ]);
-    const cableMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 16, 0.003, 8, false), isPower ? pwrMat : dataMat);
+    const cableMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 16, 0.007, 8, false), isPower ? pwrMat : dataMat);
     animatedGroups.cablesGroup.add(cableMesh);
   };
 
