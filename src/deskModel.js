@@ -260,7 +260,7 @@ export function buildDeskScene() {
   const rootGroup = new THREE.Group();
   
   const textureLoader = new THREE.TextureLoader();
-  const lightOakTexture = textureLoader.load('/wood_texture.png');
+  const lightOakTexture = textureLoader.load('./wood_texture.png');
   lightOakTexture.wrapS = THREE.RepeatWrapping;
   lightOakTexture.wrapT = THREE.RepeatWrapping;
   lightOakTexture.repeat.set(1.0, 1.0);
@@ -679,7 +679,7 @@ export function buildDeskScene() {
   indAmpMesh.position.set(0.15, 0.54, 0.08);
   indAmpMesh.castShadow = true;
 
-  const indAmpTex = textureLoader.load('/induction_amp.png');
+  const indAmpTex = textureLoader.load('./induction_amp.png');
   indAmpTex.colorSpace = THREE.SRGBColorSpace;
   const indAmpMat = new THREE.MeshStandardMaterial({ map: indAmpTex, roughness: 0.3, metalness: 0.6 });
   const indAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.008), indAmpMat);
@@ -703,7 +703,7 @@ export function buildDeskScene() {
   houseAmpMesh.position.set(0.15, 0.42, 0.08);
   houseAmpMesh.castShadow = true;
 
-  const houseAmpTex = textureLoader.load('/house_amp.png');
+  const houseAmpTex = textureLoader.load('./house_amp.png');
   houseAmpTex.colorSpace = THREE.SRGBColorSpace;
   const houseAmpMat = new THREE.MeshStandardMaterial({ map: houseAmpTex, roughness: 0.2, metalness: 0.8 });
   const houseAmpFace = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.008), houseAmpMat);
@@ -751,7 +751,7 @@ export function buildDeskScene() {
   });
 
   // 5. TOP DESK EQUIPMENT
-  const mixerTexture = textureLoader.load('/qu24_real.jpg');
+  const mixerTexture = textureLoader.load('./qu24_real.jpg');
   mixerTexture.colorSpace = THREE.SRGBColorSpace;
   // Zoom in to crop out the white border of the image
   mixerTexture.repeat.set(0.82, 0.78); // Scale the image up (smaller repeat = larger image)
@@ -769,7 +769,7 @@ export function buildDeskScene() {
     metalness: 0.2
   });
 
-  const mixerBackTex = textureLoader.load('/qu24_back.png');
+  const mixerBackTex = textureLoader.load('./qu24_back.png');
   mixerBackTex.colorSpace = THREE.SRGBColorSpace;
   const mixerBackMat = new THREE.MeshStandardMaterial({
     map: mixerBackTex, roughness: 0.5, metalness: 0.3
