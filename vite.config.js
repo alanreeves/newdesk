@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import pkg from './package.json' with { type: 'json' }
 
-const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-const defaultVersion = `v${pkg.version}-${dateStr}`;
+const now = new Date();
+const dateStr = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}`;
+const defaultVersion = `v${pkg.version} (${dateStr})`;
 
 export default defineConfig({
   base: '/newdesk/',
