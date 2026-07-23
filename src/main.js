@@ -479,6 +479,12 @@ if (toggleKeyboardBtn) {
   });
 }
 
+// Version Tag Initialization
+const versionBadge = document.getElementById('app-version-badge');
+if (versionBadge && typeof __APP_VERSION__ !== 'undefined') {
+  versionBadge.textContent = __APP_VERSION__;
+}
+
 // Lighting Presets
 let lightingMode = 0;
 const lightingModeLabel = document.getElementById('lighting-mode-label');
@@ -490,18 +496,18 @@ const themeIconSun = document.getElementById('theme-icon-sun');
 const themeIconMoon = document.getElementById('theme-icon-moon');
 
 if (themeToggleBtn) {
-  themeToggleBtn.addEventListener('click', () => {
+  themeToggleBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     isLightMode = !isLightMode;
+    document.body.classList.toggle('light-mode', isLightMode);
     if (isLightMode) {
-      themeIconSun.style.display = 'block';
-      themeIconMoon.style.display = 'none';
-      themeToggleBtn.style.background = 'rgba(255, 255, 255, 0.8)';
-      themeToggleBtn.style.color = '#000';
+      if (themeIconSun) themeIconSun.style.display = 'block';
+      if (themeIconMoon) themeIconMoon.style.display = 'none';
+      themeToggleBtn.classList.add('active');
     } else {
-      themeIconSun.style.display = 'none';
-      themeIconMoon.style.display = 'block';
-      themeToggleBtn.style.background = 'rgba(15, 23, 42, 0.6)';
-      themeToggleBtn.style.color = '#fff';
+      if (themeIconSun) themeIconSun.style.display = 'none';
+      if (themeIconMoon) themeIconMoon.style.display = 'block';
+      themeToggleBtn.classList.remove('active');
     }
     updateLightingAndBackground();
   });
@@ -661,13 +667,26 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 });
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = aspect;
+  if (aspect < 1.0) {
+    // Dynamically increase FOV on narrow/portrait screens (e.g. 6-inch iPad Mini)
+    // so the wide 2.9m sound desk stays completely inside the visible viewport
+    camera.fov = 45 / (aspect * 0.75 + 0.25);
+  } else {
+    camera.fov = 45;
+  }
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-window.addEventListener('resize', onWindowResize);
 
-// Fix for iOS Safari initial layout bug
+window.addEventListener('resize', onWindowResize);
+window.addEventListener('orientationchange', () => {
+  setTimeout(onWindowResize, 100);
+});
+
+// Trigger aspect adjustment on initial load
+onWindowResize();
 setTimeout(onWindowResize, 100);
 setTimeout(onWindowResize, 500);
 
