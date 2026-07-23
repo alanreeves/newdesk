@@ -432,7 +432,7 @@ export function buildDeskScene() {
     rootGroup.add(mesh);
   });
 
-  const trenchBackWall = new THREE.Mesh(new THREE.BoxGeometry(3.10, 0.05, 0.01), darkMetalMaterial);
+  const trenchBackWall = new THREE.Mesh(new THREE.BoxGeometry(W_TOTAL, 0.05, 0.01), darkMetalMaterial);
   trenchBackWall.position.set(0, H_DESK - 0.02, -0.415);
   rootGroup.add(trenchBackWall);
 
@@ -464,7 +464,7 @@ export function buildDeskScene() {
   const lPos = lidGeo.attributes.position;
   const lUv = lidGeo.attributes.uv;
   for (let i = 0; i < lPos.count; i++) {
-    lUv.setXY(i, (lPos.getX(i) + 1.55) * 0.7, (lPos.getZ(i) + 0.04) * 0.7);
+    lUv.setXY(i, (lPos.getX(i) + halfW) * 0.7, (lPos.getZ(i) + 0.04) * 0.7);
   }
   lUv.needsUpdate = true;
 
@@ -497,7 +497,7 @@ export function buildDeskScene() {
   });
 
   // Piano Hinge
-  const hingeGeo = new THREE.CylinderGeometry(0.004, 0.004, 3.10, 16);
+  const hingeGeo = new THREE.CylinderGeometry(0.004, 0.004, W_TOTAL, 16);
   hingeGeo.rotateZ(Math.PI / 2);
   const silverMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.2 });
   const hingeMesh = new THREE.Mesh(hingeGeo, silverMaterial);
