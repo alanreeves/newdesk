@@ -8,23 +8,22 @@ import * as THREE from 'three';
  */
 function createLightOakTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 2048;
+  canvas.height = 2048;
   const ctx = canvas.getContext('2d');
-  ctx.scale(0.5, 0.5);
 
   // Base warm pale blonde wood tone
   ctx.fillStyle = '#dfc3a1';
-  ctx.fillRect(0, 0, 1024, 1024);
+  ctx.fillRect(0, 0, 2048, 2048);
 
   // Gradient shifts across boards
-  const grad = ctx.createLinearGradient(0, 0, 0, 1024);
+  const grad = ctx.createLinearGradient(0, 0, 0, 2048);
   grad.addColorStop(0.0, '#dec09d');
   grad.addColorStop(0.35, '#ebd1b2');
   grad.addColorStop(0.7, '#dcb892');
   grad.addColorStop(1.0, '#e3c6a6');
   ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 1024, 1024);
+  ctx.fillRect(0, 0, 2048, 2048);
 
   // Pseudo-noise function for natural wave distortion
   function noise(x, y) {
@@ -34,15 +33,15 @@ function createLightOakTexture() {
   }
 
   // 1. Primary horizontal grain lines
-  for (let y = 0; y < 1024; y += 4 + Math.random() * 5) {
-    ctx.lineWidth = 1.0 + Math.random() * 1.5;
+  for (let y = 0; y < 2048; y += 5 + Math.random() * 6) {
+    ctx.lineWidth = 1.0 + Math.random() * 2.0;
     ctx.strokeStyle = y % 15 < 5 ? '#7a4e28' : '#6b421f';
     ctx.globalAlpha = 0.4 + Math.random() * 0.4;
     ctx.beginPath();
     
-    for (let x = 0; x <= 1024; x += 15) {
+    for (let x = 0; x <= 2048; x += 20) {
       const n = noise(x, y);
-      const waveY = y + n * 20 + Math.sin(x * 0.003) * 20;
+      const waveY = y + n * 30 + Math.sin(x * 0.002) * 40;
       if (x === 0) ctx.moveTo(x, waveY);
       else ctx.lineTo(x, waveY);
     }
@@ -51,28 +50,28 @@ function createLightOakTexture() {
 
   // 2. Parabolic Cathedral Arches
   const cathedralCenters = [];
-  for(let i=0; i<6; i++) {
+  for(let i=0; i<8; i++) {
     cathedralCenters.push({
-      cx: Math.random() * 1024,
-      cy: Math.random() * 1024,
-      rx: 150 + Math.random() * 300,
-      ry: 50 + Math.random() * 120
+      cx: Math.random() * 2048,
+      cy: Math.random() * 2048,
+      rx: 300 + Math.random() * 500,
+      ry: 100 + Math.random() * 200
     });
   }
 
   cathedralCenters.forEach(c => {
-    for (let ring = 0; ring < 25; ring++) {
-      ctx.lineWidth = 1.2 + Math.random();
+    for (let ring = 0; ring < 35; ring++) {
+      ctx.lineWidth = 1.5 + Math.random() * 1.5;
       ctx.strokeStyle = ring % 3 === 0 ? '#6e4420' : '#8f623a';
       ctx.globalAlpha = 0.4 + Math.random() * 0.3;
       ctx.beginPath();
-      const rX = c.rx - ring * 8;
-      const rY = c.ry - ring * 3;
-      if (rX > 5 && rY > 2) {
-        for (let angle = Math.PI * 0.05; angle < Math.PI * 0.95; angle += 0.08) {
+      const rX = c.rx - ring * 12;
+      const rY = c.ry - ring * 4;
+      if (rX > 10 && rY > 3) {
+        for (let angle = Math.PI * 0.05; angle < Math.PI * 0.95; angle += 0.05) {
           const nx = c.cx + Math.cos(angle) * rX;
           const ny = c.cy + Math.sin(angle) * rY;
-          const distY = ny + noise(nx, ny) * 8;
+          const distY = ny + noise(nx, ny) * 12;
           if (angle === Math.PI * 0.05) ctx.moveTo(nx, distY);
           else ctx.lineTo(nx, distY);
         }
@@ -83,20 +82,20 @@ function createLightOakTexture() {
 
   // 3. Oval wood grain eyes (knots)
   ctx.globalAlpha = 0.6;
-  for (let k = 0; k < 4; k++) {
-    const kx = Math.random() * 1024;
-    const ky = Math.random() * 1024;
-    for (let eye = 0; eye < 8; eye++) {
-      ctx.lineWidth = 1.2 + Math.random();
+  for (let k = 0; k < 6; k++) {
+    const kx = Math.random() * 2048;
+    const ky = Math.random() * 2048;
+    for (let eye = 0; eye < 10; eye++) {
+      ctx.lineWidth = 1.5 + Math.random();
       ctx.strokeStyle = '#5c391b';
       ctx.beginPath();
-      for (let angle = 0; angle < Math.PI * 2; angle += 0.15) {
-        const rX = 40 - eye * 4;
-        const rY = 10 - eye * 1.2;
+      for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+        const rX = 60 - eye * 6;
+        const rY = 15 - eye * 1.5;
         if (rX <= 0 || rY <= 0) continue;
         const nx = kx + Math.cos(angle) * rX;
         const ny = ky + Math.sin(angle) * rY;
-        const distY = ny + noise(nx, ny) * 3;
+        const distY = ny + noise(nx, ny) * 4;
         if (angle === 0) ctx.moveTo(nx, distY);
         else ctx.lineTo(nx, distY);
       }
@@ -108,10 +107,10 @@ function createLightOakTexture() {
   // 4. Dark Wood Pores
   ctx.fillStyle = '#4a2c13';
   ctx.globalAlpha = 0.25;
-  for (let p = 0; p < 5000; p++) {
-    const px = Math.random() * 1024;
-    const py = Math.random() * 1024;
-    ctx.fillRect(px, py, 4 + Math.random() * 8, 1.0);
+  for (let p = 0; p < 25000; p++) {
+    const px = Math.random() * 2048;
+    const py = Math.random() * 2048;
+    ctx.fillRect(px, py, 6 + Math.random() * 12, 1.0);
   }
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -123,10 +122,9 @@ function createLightOakTexture() {
 
 function createMixerSurfaceTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 1024;
+  canvas.height = 1024;
   const ctx = canvas.getContext('2d');
-  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#1c1f26';
   ctx.fillRect(0, 0, 1024, 1024);
@@ -179,10 +177,9 @@ function createMixerSurfaceTexture() {
 
 function createDAWScreenTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 288;
+  canvas.width = 1024;
+  canvas.height = 576;
   const ctx = canvas.getContext('2d');
-  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#0f141d';
   ctx.fillRect(0, 0, 1024, 576);
@@ -231,10 +228,9 @@ function createDAWScreenTexture() {
 
 function createSecondaryScreenTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = 512;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d');
-  ctx.scale(0.5, 0.5);
 
   ctx.fillStyle = '#0a0e17';
   ctx.fillRect(0, 0, 512, 512);

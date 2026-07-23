@@ -1,7 +1,7 @@
 {
   "name": "sound-video-engineer-desk-3d",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "gsap": "^3.15.0",
-    "three": "0.162.0",
+    "three": "^0.185.1",
     "vite": "^8.1.5"
   },
   "devDependencies": {
