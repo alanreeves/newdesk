@@ -633,11 +633,18 @@ window.addEventListener('mousemove', (e) => {
   hoverTooltip.classList.add('hidden');
 });
 
-window.addEventListener('click', (e) => {
-  // Don't trigger 3D clicks if clicking on UI
-  if (e.target.closest('.control-panel') || e.target.closest('.app-header') || e.target.closest('#spec-card')) {
-    return;
-  }
+let pointerDownPos = { x: 0, y: 0 };
+
+renderer.domElement.addEventListener('pointerdown', (e) => {
+  pointerDownPos.x = e.clientX;
+  pointerDownPos.y = e.clientY;
+});
+
+renderer.domElement.addEventListener('pointerup', (e) => {
+  // If the user dragged more than a few pixels, it's a pan/rotate, not a tap
+  const dx = e.clientX - pointerDownPos.x;
+  const dy = e.clientY - pointerDownPos.y;
+  if (Math.abs(dx) > 5 || Math.abs(dy) > 5) return;
 
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
