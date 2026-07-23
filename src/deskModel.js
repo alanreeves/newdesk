@@ -1014,6 +1014,101 @@ export function buildDeskScene() {
   rootGroup.add(router);
   rootGroup.add(routerLeds);
 
+  // 7. STUDIO HEADPHONES (TWO SETS)
+  const createHeadphonesMesh = (userData, mainMaterialColor = 0x38bdf8) => {
+    const hpGroup = new THREE.Group();
+
+    const earPadMat = new THREE.MeshStandardMaterial({ color: 0x181a20, roughness: 0.8, metalness: 0.1 });
+    const capMat = new THREE.MeshStandardMaterial({ color: 0x111318, roughness: 0.3, metalness: 0.6 });
+    const accentMat = new THREE.MeshStandardMaterial({ color: mainMaterialColor, roughness: 0.3, metalness: 0.7 });
+    const bandMat = new THREE.MeshStandardMaterial({ color: 0x0c0e12, roughness: 0.6, metalness: 0.2 });
+
+    // Headband (Arc resting flat on desk)
+    const bandGeo = new THREE.TorusGeometry(0.075, 0.007, 12, 24, Math.PI);
+    const headband = new THREE.Mesh(bandGeo, bandMat);
+    headband.rotation.x = Math.PI / 2;
+    headband.position.set(0, 0.007, -0.01);
+    headband.castShadow = true;
+    hpGroup.add(headband);
+
+    // Padding on headband inner arc
+    const padGeo = new THREE.TorusGeometry(0.073, 0.005, 8, 20, Math.PI * 0.7);
+    const pad = new THREE.Mesh(padGeo, earPadMat);
+    pad.rotation.x = Math.PI / 2;
+    pad.rotation.z = Math.PI * 0.15;
+    pad.position.set(0, 0.005, -0.01);
+    hpGroup.add(pad);
+
+    // Left & Right Earcups & Cushions
+    [-0.075, 0.075].forEach(xOffset => {
+      const cupGeo = new THREE.CylinderGeometry(0.040, 0.040, 0.024, 24);
+      const cup = new THREE.Mesh(cupGeo, capMat);
+      cup.rotation.z = Math.PI / 2;
+      cup.position.set(xOffset, 0.022, 0);
+      cup.castShadow = true;
+      hpGroup.add(cup);
+
+      const ringGeo = new THREE.TorusGeometry(0.036, 0.002, 8, 24);
+      const ring = new THREE.Mesh(ringGeo, accentMat);
+      ring.rotation.y = Math.PI / 2;
+      ring.position.set(xOffset + (xOffset > 0 ? 0.012 : -0.012), 0.022, 0);
+      hpGroup.add(ring);
+
+      const cushionGeo = new THREE.TorusGeometry(0.034, 0.008, 12, 24);
+      const cushion = new THREE.Mesh(cushionGeo, earPadMat);
+      cushion.rotation.y = Math.PI / 2;
+      cushion.position.set(xOffset + (xOffset > 0 ? -0.008 : 0.008), 0.022, 0);
+      hpGroup.add(cushion);
+    });
+
+    headband.userData = userData;
+    interactiveEquipment.push(headband);
+
+    return hpGroup;
+  };
+
+  // Headphones 1: Right of Qu-7 Mixer
+  const rightHpUserData = {
+    id: 'headphones_right',
+    name: 'Studio Monitoring Headphones (Right Operator)',
+    category: 'AUDIO MONITORING',
+    dims: 'Professional Closed-Back Headphones • 50mm Dynamic Drivers',
+    location: 'Desktop Surface (Right of Qu-7 Mixer)',
+    specs: [
+      'High passive noise isolation (26dB attenuation) for live mix monitoring',
+      'Coiled audio cable connected directly to Qu-7 headphone jack',
+      'Frequency response: 10Hz – 25,000Hz (32 Ohm impedance)'
+    ],
+    note: 'Primary monitoring headset for right operator mixing & PFL soloing.'
+  };
+
+  const rightHp = createHeadphonesMesh(rightHpUserData, 0x38bdf8);
+  rightHp.position.set(1.26, H_DESK, 0.05);
+  rightHp.rotation.y = -0.3;
+  rootGroup.add(rightHp);
+  equipmentPins.push({ userData: rightHpUserData, worldPos: new THREE.Vector3(1.26, H_DESK + 0.10, 0.05) });
+
+  // Headphones 2: Left of Main Monitor
+  const leftHpUserData = {
+    id: 'headphones_left',
+    name: 'Studio Reference Headphones (Left Operator)',
+    category: 'AUDIO MONITORING',
+    dims: 'Open-Back Reference Headphones • 6.35mm Gold-Plated Jack',
+    location: 'Desktop Surface (Left of Main Display)',
+    specs: [
+      'Open-back acoustic design for transparent reference listening',
+      'Velour ear cushions for long editing sessions',
+      'Fed from DAW audio interface headphone output'
+    ],
+    note: 'Reference headphones for left operator DAW timeline editing & audio QC.'
+  };
+
+  const leftHp = createHeadphonesMesh(leftHpUserData, 0xfbbf24);
+  leftHp.position.set(-1.24, H_DESK, -0.05);
+  leftHp.rotation.y = 0.25;
+  rootGroup.add(leftHp);
+  equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.24, H_DESK + 0.10, -0.05) });
+
   const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
   powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.36);
 
