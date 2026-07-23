@@ -39,6 +39,7 @@ html, body {
   color: var(--text-main);
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease;
 }
 
 #canvas-container {
@@ -48,6 +49,8 @@ html, body {
   top: 0;
   left: 0;
   z-index: 1;
+  background-color: var(--bg-dark);
+  transition: background-color 0.3s ease;
 }
 
 /* Header */

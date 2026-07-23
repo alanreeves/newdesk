@@ -10,7 +10,7 @@ import { buildDeskScene } from './deskModel.js';
 const container = document.getElementById('canvas-container');
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x07090e);
-scene.fog = new THREE.FogExp2(0x07090e, 0.08);
+scene.fog = new THREE.Fog(0x07090e, 2.5, 12.0);
 
 const camera = new THREE.PerspectiveCamera(
   45,
@@ -20,15 +20,30 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(2.8, 2.2, 2.8);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+const isMobileOrTablet = /iPad|iPhone|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 1024;
+
+const renderer = new THREE.WebGLRenderer({ antialias: !isMobileOrTablet, alpha: false, powerPreference: 'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileOrTablet ? 1.25 : 2.0));
+if (THREE.SRGBColorSpace) {
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+}
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.toneMapping = THREE.LinearToneMapping;
+renderer.toneMappingExposure = 1.0;
 container.appendChild(renderer.domElement);
+
+// WebGL Context Lost & Restored handlers for older iOS Safari
+renderer.domElement.addEventListener('webglcontextlost', (e) => {
+  e.preventDefault();
+  console.warn('WebGL context lost, awaiting restoration...');
+}, false);
+
+renderer.domElement.addEventListener('webglcontextrestored', () => {
+  console.log('WebGL context restored');
+  updateLightingAndBackground();
+}, false);
 
 // Orbit Controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -43,16 +58,16 @@ controls.maxDistance = 8.0;
 // 2. LIGHTING SYSTEM (OPTIMIZED FOR LIGHT OAK DESK SURFACE)
 // ==========================================
 
-const ambientLight = new THREE.AmbientLight(0xfffbeb, 0.95);
+const ambientLight = new THREE.AmbientLight(0xfffbeb, 1.1);
 scene.add(ambientLight);
 
 // Key Directional Light
 const keyLight = new THREE.DirectionalLight(0xfff7ed, 2.2);
 keyLight.position.set(3.5, 5, 4);
 keyLight.castShadow = true;
-keyLight.shadow.mapSize.width = 2048;
-keyLight.shadow.mapSize.height = 2048;
-keyLight.shadow.bias = -0.0001;
+keyLight.shadow.mapSize.width = 1024;
+keyLight.shadow.mapSize.height = 1024;
+keyLight.shadow.bias = -0.0002;
 scene.add(keyLight);
 
 // Underdesk Front Fill Light (Illuminating open rack amps & PC)
