@@ -566,9 +566,9 @@ export function buildDeskScene() {
   rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
-  const buildPedestalDrawers = (centerX, groupRef) => {
-    const drawerH = (H_DESK - 0.05 - THICKNESS) / 3;
-    for (let i = 0; i < 3; i++) {
+  const buildPedestalDrawers = (centerX, groupRef, numDrawers = 3) => {
+    const drawerH = (H_DESK - 0.05 - THICKNESS) / numDrawers;
+    for (let i = 0; i < numDrawers; i++) {
       const drawerY = 0.035 + drawerH * i + drawerH / 2;
       const frontMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.44 - THICKNESS * 2, drawerH - 0.008, THICKNESS),
@@ -578,27 +578,28 @@ export function buildDeskScene() {
       frontMesh.castShadow = true;
       groupRef.add(frontMesh);
 
+      const handleOffsetY = numDrawers === 1 ? drawerH * 0.35 : 0;
       const handle = new THREE.Mesh(
         new THREE.BoxGeometry(0.12, 0.014, 0.02),
         darkHandleMaterial
       );
-      handle.position.set(centerX, drawerY, D_TOTAL / 2 + 0.012);
+      handle.position.set(centerX, drawerY + handleOffsetY, D_TOTAL / 2 + 0.012);
       groupRef.add(handle);
 
-      if (i === 2) {
+      if (i === numDrawers - 1) {
         const lock = new THREE.Mesh(
           new THREE.CylinderGeometry(0.008, 0.008, 0.005, 16),
           darkMetalMaterial
         );
         lock.rotation.x = Math.PI / 2;
-        lock.position.set(centerX + 0.14, drawerY + 0.05, D_TOTAL / 2 + 0.002);
+        lock.position.set(centerX + 0.14, drawerY + drawerH / 2 - 0.06, D_TOTAL / 2 + 0.002);
         groupRef.add(lock);
       }
     }
   };
 
-  buildPedestalDrawers(-1.225, animatedGroups.leftDrawersGroup);
-  buildPedestalDrawers(1.225, animatedGroups.rightDrawersGroup);
+  buildPedestalDrawers(-1.225, animatedGroups.leftDrawersGroup, 3);
+  buildPedestalDrawers(1.225, animatedGroups.rightDrawersGroup, 1);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
 
