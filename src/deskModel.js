@@ -566,26 +566,43 @@ export function buildDeskScene() {
   rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
+  const drawerBoxMaterial = new THREE.MeshStandardMaterial({
+    color: 0xdfc5a6, // Birch / light wood interior for drawer box
+    roughness: 0.5,
+    metalness: 0.01
+  });
+
   const buildPedestalDrawers = (centerX, groupRef, numDrawers = 3) => {
     const drawerH = (H_DESK - 0.05 - THICKNESS) / numDrawers;
+    const boxW = 0.36; // Outer width of drawer box
+    const boxDepth = 0.60; // 60cm deep drawer box inside pedestal
+    const wallT = 0.012; // 12mm wall thickness for drawer box
+    const boxCenterZ = (D_TOTAL / 2 - THICKNESS) - boxDepth / 2;
+
     for (let i = 0; i < numDrawers; i++) {
       const drawerY = 0.035 + drawerH * i + drawerH / 2;
+
+      // Drawer Front Panel
       const frontMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.44 - THICKNESS * 2, drawerH - 0.008, THICKNESS),
         oakMaterial
       );
       frontMesh.position.set(centerX, drawerY, D_TOTAL / 2 - THICKNESS / 2);
       frontMesh.castShadow = true;
+      frontMesh.receiveShadow = true;
       groupRef.add(frontMesh);
 
+      // Handle
       const handleOffsetY = numDrawers === 1 ? drawerH * 0.35 : 0;
       const handle = new THREE.Mesh(
         new THREE.BoxGeometry(0.12, 0.014, 0.02),
         darkHandleMaterial
       );
       handle.position.set(centerX, drawerY + handleOffsetY, D_TOTAL / 2 + 0.012);
+      handle.castShadow = true;
       groupRef.add(handle);
 
+      // Lock (top drawer)
       if (i === numDrawers - 1) {
         const lock = new THREE.Mesh(
           new THREE.CylinderGeometry(0.008, 0.008, 0.005, 16),
@@ -594,6 +611,133 @@ export function buildDeskScene() {
         lock.rotation.x = Math.PI / 2;
         lock.position.set(centerX + 0.14, drawerY + drawerH / 2 - 0.06, D_TOTAL / 2 + 0.002);
         groupRef.add(lock);
+      }
+
+      // --- DRAWER BOX BODY (Sliding out with front) ---
+      const boxH = numDrawers === 1 ? drawerH - 0.08 : drawerH - 0.035;
+      const boxCenterY = drawerY - (numDrawers === 1 ? 0.02 : 0.008);
+
+      // Left Wall
+      const leftWall = new THREE.Mesh(
+        new THREE.BoxGeometry(wallT, boxH, boxDepth),
+        drawerBoxMaterial
+      );
+      leftWall.position.set(centerX - boxW / 2 + wallT / 2, boxCenterY, boxCenterZ);
+      leftWall.castShadow = true;
+      leftWall.receiveShadow = true;
+      groupRef.add(leftWall);
+
+      // Right Wall
+      const rightWall = new THREE.Mesh(
+        new THREE.BoxGeometry(wallT, boxH, boxDepth),
+        drawerBoxMaterial
+      );
+      rightWall.position.set(centerX + boxW / 2 - wallT / 2, boxCenterY, boxCenterZ);
+      rightWall.castShadow = true;
+      rightWall.receiveShadow = true;
+      groupRef.add(rightWall);
+
+      // Back Wall
+      const backWall = new THREE.Mesh(
+        new THREE.BoxGeometry(boxW - 2 * wallT, boxH, wallT),
+        drawerBoxMaterial
+      );
+      backWall.position.set(centerX, boxCenterY, boxCenterZ - boxDepth / 2 + wallT / 2);
+      backWall.castShadow = true;
+      backWall.receiveShadow = true;
+      groupRef.add(backWall);
+
+      // Bottom Panel
+      const bottomPanel = new THREE.Mesh(
+        new THREE.BoxGeometry(boxW - 2 * wallT, wallT, boxDepth - wallT),
+        drawerBoxMaterial
+      );
+      bottomPanel.position.set(centerX, boxCenterY - boxH / 2 + wallT / 2, boxCenterZ + wallT / 2);
+      bottomPanel.castShadow = true;
+      bottomPanel.receiveShadow = true;
+      groupRef.add(bottomPanel);
+
+      // Metallic Side Slide Rails (attached to drawer box, moving with group)
+      const railGeometry = new THREE.BoxGeometry(0.006, 0.016, boxDepth * 0.9);
+      const leftRail = new THREE.Mesh(railGeometry, silverMaterial);
+      leftRail.position.set(centerX - boxW / 2 - 0.003, boxCenterY - boxH / 4, boxCenterZ);
+      groupRef.add(leftRail);
+
+      const rightRail = new THREE.Mesh(railGeometry, silverMaterial);
+      rightRail.position.set(centerX + boxW / 2 + 0.003, boxCenterY - boxH / 4, boxCenterZ);
+      groupRef.add(rightRail);
+
+      // Stationary Cabinet Rails inside pedestal (added to rootGroup)
+      const staticRailGeometry = new THREE.BoxGeometry(0.006, 0.018, boxDepth);
+      const staticLeftRail = new THREE.Mesh(staticRailGeometry, darkMetalMaterial);
+      staticLeftRail.position.set(centerX - boxW / 2 - 0.009, boxCenterY - boxH / 4, boxCenterZ);
+      rootGroup.add(staticLeftRail);
+
+      const staticRightRail = new THREE.Mesh(staticRailGeometry, darkMetalMaterial);
+      staticRightRail.position.set(centerX + boxW / 2 + 0.009, boxCenterY - boxH / 4, boxCenterZ);
+      rootGroup.add(staticRightRail);
+
+      // --- DRAWER INTERIOR ITEMS ---
+      if (numDrawers === 3) {
+        if (i === 2) { // Top drawer: Studio notebook & stylus
+          const notebook = new THREE.Mesh(
+            new THREE.BoxGeometry(0.18, 0.01, 0.24),
+            new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 })
+          );
+          notebook.position.set(centerX - 0.04, boxCenterY - boxH / 2 + wallT + 0.005, boxCenterZ + 0.15);
+          notebook.rotation.y = 0.08;
+          notebook.castShadow = true;
+          groupRef.add(notebook);
+
+          const stylus = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.004, 0.004, 0.14, 12),
+            silverMaterial
+          );
+          stylus.rotation.z = Math.PI / 2;
+          stylus.position.set(centerX + 0.09, boxCenterY - boxH / 2 + wallT + 0.004, boxCenterZ + 0.16);
+          groupRef.add(stylus);
+        } else if (i === 1) { // Middle drawer: Cable coil & SSD drive
+          const cableCoil = new THREE.Mesh(
+            new THREE.TorusGeometry(0.05, 0.008, 12, 24),
+            blackPlasticMaterial
+          );
+          cableCoil.rotation.x = Math.PI / 2;
+          cableCoil.position.set(centerX - 0.06, boxCenterY - boxH / 2 + wallT + 0.008, boxCenterZ + 0.14);
+          cableCoil.castShadow = true;
+          groupRef.add(cableCoil);
+
+          const ssdDrive = new THREE.Mesh(
+            new THREE.BoxGeometry(0.07, 0.012, 0.11),
+            new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.2 })
+          );
+          ssdDrive.position.set(centerX + 0.07, boxCenterY - boxH / 2 + wallT + 0.006, boxCenterZ + 0.15);
+          ssdDrive.castShadow = true;
+          groupRef.add(ssdDrive);
+        } else if (i === 0) { // Bottom drawer: Manual binder
+          const binder = new THREE.Mesh(
+            new THREE.BoxGeometry(0.22, 0.03, 0.28),
+            new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.4 })
+          );
+          binder.position.set(centerX, boxCenterY - boxH / 2 + wallT + 0.015, boxCenterZ + 0.12);
+          binder.castShadow = true;
+          groupRef.add(binder);
+        }
+      } else if (numDrawers === 1) { // Deep right drawer: File organizers & spare cables
+        const divider = new THREE.Mesh(
+          new THREE.BoxGeometry(wallT, boxH * 0.6, boxDepth * 0.7),
+          drawerBoxMaterial
+        );
+        divider.position.set(centerX, boxCenterY - 0.02, boxCenterZ);
+        divider.castShadow = true;
+        groupRef.add(divider);
+
+        const headphonesBox = new THREE.Mesh(
+          new THREE.BoxGeometry(0.14, 0.08, 0.18),
+          new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.4 })
+        );
+        headphonesBox.position.set(centerX - 0.09, boxCenterY - boxH / 2 + wallT + 0.04, boxCenterZ + 0.10);
+        headphonesBox.castShadow = true;
+        groupRef.add(headphonesBox);
       }
     }
   };
