@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sound Desk — Technical Schematic</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#0a1628 0%,#162040 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#e2e8f0;padding:40px 20px}
+.wrap{max-width:680px;width:100%;text-align:center}
+.badge{display:inline-block;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:18px}
+h1{font-size:2.6rem;font-weight:800;color:#f1f5f9;margin-bottom:10px;letter-spacing:-1px;line-height:1.15}
+h1 span{color:#38bdf8}
+.sub{color:#94a3b8;font-size:1rem;margin-bottom:32px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:30px}
+.stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 6px}
+.stat .v{font-size:1.5rem;font-weight:800;color:#38bdf8}
+.stat .l{font-size:.68rem;color:#64748b;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.chips{display:flex;gap:10px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:9px 14px;font-size:.78rem;color:#94a3b8}
+.chip strong{color:#e2e8f0;display:block;margin-bottom:1px}
+.btn{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#0a1628;font-weight:800;font-size:1.05rem;padding:15px 48px;border:none;border-radius:50px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 24px rgba(56,189,248,.35)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(56,189,248,.5)}
+.note{margin-top:12px;font-size:.78rem;color:#475569}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="badge">Workshop Schematic</div>
+  <h1>Sound Desk<br><span>Technical Drawing</span></h1>
+  <p class="sub">Professional orthographic schematic with dimensions &amp; full cutting list.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">3000</div><div class="l">Width mm</div></div>
+    <div class="stat"><div class="v">900</div><div class="l">Depth mm</div></div>
+    <div class="stat"><div class="v">760</div><div class="l">Height mm</div></div>
+    <div class="stat"><div class="v">22</div><div class="l">Panels</div></div>
+  </div>
+  <div class="chips">
+    <div class="chip"><strong>Page 1</strong>Front &amp; Side Elevations</div>
+    <div class="chip"><strong>Page 2</strong>Plan View &amp; Rear Elevation</div>
+    <div class="chip"><strong>Page 3</strong>Cutting List</div>
+  </div>
+  <button class="btn" onclick="generatePDF()">&#128208; Download PDF Schematic</button>
+  <p class="note">Scale 1:20 &middot; A4 Format &middot; 3 Pages</p>
+</div>
+<script>
+function generatePDF(){
+  var jsPDF=window.jspdf.jsPDF;
+  var SCALE=20;
+  var s=function(v){return v/SCALE;};
+  var W=3000,D=900,H=760,T=30,TP=35,DD=860,DH=730;
+  var W_LP=450,W_LR=650,W_CTR=800;
+  var DIVX=[0,450,1100,1400,1900,2550,3000];
+  var DR_TOP=19,DR_H=332,DR_W=380,RECESS_TOP=355,RECESS_H=340,PLINTH_TOP=695;
+  var C={
+    navy:[14,30,65],white:[255,255,255],black:[15,15,20],
+    dimLine:[35,95,210],grid:[208,211,220],
+    oak:[210,182,140],oakDk:[185,152,108],oakLt:[232,210,175],
+    interior:[222,198,162],face:[198,165,122],
+    metal:[88,92,102],chrome:[165,168,172],
+    open:[238,235,228],recess:[208,200,186],plinth:[182,150,108],
+    trench:[148,145,140],back:[172,145,108],
+    footBg:[232,235,242],footTxt:[22,42,98]
+  };
+  var doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  var PW=297,PH=210;
+  var _sd=function(c){doc.setDrawColor(c[0],c[1],c[2]);};
+  var _sf=function(c){doc.setFillColor(c[0],c[1],c[2]);};
+  var _st=function(c){doc.setTextColor(c[0],c[1],c[2]);};
+  var _lw=function(w){doc.setLineWidth(w);};
+  var _ln=function(x1,y1,x2,y2){doc.line(x1,y1,x2,y2);};
+  var _tx=function(str,x,y,o){doc.text(str,x,y,o||{});};
+  var _rx=function(x,y,w,h,m){doc.rect(x,y,w,h,m||'S');};
+  function fr(x,y,w,h,fill,stroke,lw2){
+    _sf(fill);_sd(stroke||C.black);_lw(lw2||0.25);_rx(x,y,w,h,'FD');
+  }
+  function grid(ox,oy,gw,gh,step){
+    _sd(C.grid);_lw(0.07);
+    for(var x=ox;x<=ox+gw;x+=step)_ln(x,oy,x,oy+gh);
+    for(var y=oy;y<=oy+gh;y+=step)_ln(ox,y,ox+gw,y);
+    _sd(C.black);_lw(0.25);
+  }
+  function dimH(x1,x2,y,lbl,above,off){
+    var o=off||5,TICK=1.5,dir=above?-1:1,ly=y+dir*o;
+    _sd(C.dimLine);_lw(0.18);_st(C.dimLine);
+    _ln(x1,y,x1,ly+dir*TICK*0.8);_ln(x2,y,x2,ly+dir*TICK*0.8);
+    _ln(x1,ly,x2,ly);
+    _ln(x1,ly-TICK,x1,ly+TICK);_ln(x2,ly-TICK,x2,ly+TICK);
+    doc.setFontSize(5);doc.setFont('helvetica','normal');
+    _tx(lbl,(x1+x2)/2,above?ly-1.2:ly+2.8,{align:'center'});
+    _sd(C.black);_st(C.black);_lw(0.25);
+  }
+  function dimV(x,y1,y2,lbl,left,off){
+    var o=off||5,TICK=1.5,dir=left?-1:1,lx=x+dir*o;
+    _sd(C.dimLine);_lw(0.18);_st(C.dimLine);
+    _ln(x,y1,lx+dir*TICK*0.8,y1);_ln(x,y2,lx+dir*TICK*0.8,y2);
+    _ln(lx,y1,lx,y2);
+    _ln(lx-TICK,y1,lx+TICK,y1);_ln(lx-TICK,y2,lx+TICK,y2);
+    doc.setFontSize(5);doc.setFont('helvetica','normal');
+    _tx(lbl,left?lx-2:lx+2,(y1+y2)/2+1.5,{align:left?'right':'left'});
+    _sd(C.black);_st(C.black);_lw(0.25);
+  }
+  function titleBlock(title,sheet){
+    _sf(C.navy);_rx(0,0,PW,15,'F');
+    doc.setFontSize(9.5);doc.setFont('helvetica','bold');_st(C.white);
+    _tx('SOUND DESK - WORKSHOP SCHEMATIC',PW/2,6.5,{align:'center'});
+    doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
+    _tx('All dimensions in millimetres  |  Material: Solid Oak / Oak-Veneered MDF  |  Structural panels 30mm',PW/2,11.5,{align:'center'});
+    _sf(C.footBg);_rx(0,PH-12,PW,12,'F');
+    _sd([155,160,185]);_lw(0.3);_ln(0,PH-12,PW,PH-12);
+    _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
+    _tx(title,15,PH-4.5);
+    doc.setFont('helvetica','normal');_st([55,68,105]);
+    _tx('Scale 1:20  |  '+new Date().toLocaleDateString('en-GB')+'  |  Sheet '+sheet+' of 3',PW/2,PH-4.5,{align:'center'});
+    _tx('Rev A',PW-15,PH-4.5,{align:'right'});
+    _st(C.black);_sd(C.black);_lw(0.25);
+  }
+  function secHead(lbl,cx,y){
+    doc.setFontSize(7.5);doc.setFont('helvetica','bold');_st([15,38,108]);
+    _tx(lbl,cx,y,{align:'center'});
+    var tw=doc.getTextWidth(lbl);
+    _sd([15,38,108]);_lw(0.3);_ln(cx-tw/2-2,y+1,cx+tw/2+2,y+1);
+    doc.setFont('helvetica','normal');_st(C.black);_sd(C.black);_lw(0.25);
+  }
+
+  // PAGE 1 - FRONT + SIDE ELEVATIONS
+  titleBlock('FRONT & SIDE ELEVATIONS','1');
+  var FX=26,FY=33;
+  var fw=s(W),ft=s(T),fdh=s(DH),fh=s(H);
+  var lpW=s(W_LP),lrW=s(W_LR),ctrW=s(W_CTR);
+  var bodyY=FY+ft,floorY=FY+fh;
+  var lrX=FX+lpW,ctrX=FX+s(1100),cdX=FX+s(1400),rrX=FX+s(1900),rpX=FX+fw-lpW;
+  var drTopY=bodyY+s(DR_TOP),drH=s(DR_H),drW=s(DR_W);
+  var rcY=bodyY+s(RECESS_TOP),rcH=s(RECESS_H),plY=bodyY+s(PLINTH_TOP);
+
+  secHead('FRONT ELEVATION - SCALE 1:20',FX+fw/2,FY-6);
+  grid(FX,FY,fw,fh+1,s(200));
+
+  fr(FX,FY,fw,ft,C.oakLt,C.black,0.35);
+  fr(FX,bodyY,lpW,fdh,C.oak,C.black,0.25);
+  fr(FX,plY,lpW,s(TP),C.plinth,C.oakDk,0.15);
+  fr(rpX,bodyY,lpW,fdh,C.oak,C.black,0.25);
+  fr(rpX,plY,lpW,s(TP),C.plinth,C.oakDk,0.15);
+  fr(lrX,bodyY,lrW,fdh,C.open,[188,182,168],0.15);
+  fr(rrX,bodyY,lrW,fdh,C.open,[188,182,168],0.15);
+  fr(ctrX,bodyY,ctrW,fdh,C.interior,C.black,0.2);
+  fr(ctrX,plY,ctrW,s(TP),C.plinth,C.oakDk,0.15);
+  _sd([108,78,48]);_lw(0.2);_ln(cdX,bodyY,cdX,floorY);
+
+  _sd(C.black);_lw(0.3);
+  DIVX.slice(1,-1).forEach(function(x){var dx=FX+s(x);_ln(dx,FY,dx,floorY);});
+  _ln(FX,bodyY,FX+fw,bodyY);
+  _sd(C.black);_lw(0.5);_rx(FX,FY,fw,fh,'S');
+
+  // Left drawer
+  fr(FX+(lpW-drW)/2,drTopY,drW,drH,C.face,[68,42,18],0.2);
+  fr(FX+lpW/2-s(60),drTopY+drH/2-s(7),s(120),s(14),C.metal,[38,38,42],0.15);
+  _sf(C.chrome);_sd([90,92,96]);_lw(0.15);
+  doc.circle(FX+lpW/2+s(128),drTopY+s(18),s(8)/2,'FD');
+  fr(FX+s(22),rcY,lpW-s(44),rcH,C.recess,[162,150,128],0.15);
+  doc.setFontSize(3.8);_st([108,88,66]);
+  _tx('OPEN',FX+lpW/2,rcY+rcH/2+0.5,{align:'center'});
+  _tx('RECESS',FX+lpW/2,rcY+rcH/2+3.2,{align:'center'});
+
+  // Right drawer (mirror)
+  fr(rpX+(lpW-drW)/2,drTopY,drW,drH,C.face,[68,42,18],0.2);
+  fr(rpX+lpW/2-s(60),drTopY+drH/2-s(7),s(120),s(14),C.metal,[38,38,42],0.15);
+  _sf(C.chrome);_sd([90,92,96]);_lw(0.15);
+  doc.circle(rpX+lpW/2+s(128),drTopY+s(18),s(8)/2,'FD');
+  fr(rpX+s(22),rcY,lpW-s(44),rcH,C.recess,[162,150,128],0.15);
+  doc.setFontSize(3.8);_st([108,88,66]);
+  _tx('OPEN',rpX+lpW/2,rcY+rcH/2+0.5,{align:'center'});
+  _tx('RECESS',rpX+lpW/2,rcY+rcH/2+3.2,{align:'center'});
+  _st(C.black);
+
+  // Section labels
+  doc.setFontSize(3.5);_st([80,62,40]);
+  _tx('L.PED',FX+lpW/2,bodyY+4,{align:'center'});
+  _tx('LEG RECESS',lrX+lrW/2,bodyY+4,{align:'center'});
+  _tx('CENTRE BAY',ctrX+ctrW/2,bodyY+4,{align:'center'});
+  _tx('LEG RECESS',rrX+lrW/2,bodyY+4,{align:'center'});
+  _tx('R.PED',rpX+lpW/2,bodyY+4,{align:'center'});
+  _st(C.black);
+
+  // Dims front
+  dimH(FX,FX+fw,FY,'3000',true,5);
+  dimH(FX,FX+lpW,floorY,'450',false,8);
+  dimH(lrX,lrX+lrW,floorY,'650',false,8);
+  dimH(ctrX,ctrX+ctrW,floorY,'800',false,8);
+  dimH(rrX,rrX+lrW,floorY,'650',false,8);
+  dimH(rpX,rpX+lpW,floorY,'450',false,8);
+  dimV(FX+fw,FY,floorY,'760',false,5);
+  dimV(FX+fw+12,FY,bodyY,'30',false,4);
+  dimV(FX-3,drTopY,drTopY+drH,'332',true,4);
+  dimV(FX-11,rcY,rcY+rcH,'340',true,4);
+  dimV(FX-19,plY,floorY,'35',true,4);
+
+  // SIDE ELEVATION
+  var SX=FX+fw+28,SY=FY;
+  var sd2=s(D),spD=s(DD),sOH=s(20);
+  var sBodyY=SY+ft;
+  secHead('SIDE ELEVATION (from right) - 1:20',SX+sd2/2,SY-6);
+  grid(SX,SY,sd2,fh+1,s(100));
+  fr(SX,SY,sd2,ft,C.oakLt,C.black,0.35);
+  fr(SX+sOH,sBodyY,spD,fdh,C.oak,C.black,0.25);
+  fr(SX+sOH,sBodyY+s(PLINTH_TOP),spD,s(TP),C.plinth,C.oakDk,0.15);
+  fr(SX+sOH,sBodyY+s(PLINTH_TOP),s(300),s(TP),[195,172,138],[148,122,90],0.15);
+  fr(SX,SY,s(100),ft*0.55,C.trench,[118,115,110],0.15);
+  doc.setFontSize(3.5);_st([78,75,70]);
+  _tx('CABLE TRENCH',SX+s(50),SY+ft*0.55+2,{align:'center'});
+  _st(C.black);
+  _sd(C.black);_lw(0.5);_rx(SX,SY,sd2,ft,'S');_rx(SX+sOH,sBodyY,spD,fdh,'S');
+  _sd([108,78,48]);_lw(0.18);
+  _ln(SX+sOH,sBodyY+s(DR_TOP),SX+sOH+spD,sBodyY+s(DR_TOP));
+  _ln(SX+sOH,sBodyY+s(DR_TOP)+drH,SX+sOH+spD,sBodyY+s(DR_TOP)+drH);
+  _sd(C.black);_lw(0.25);
+  dimH(SX,SX+sd2,SY,'900',true,5);
+  dimH(SX+sOH,SX+sOH+spD,SY+fh,'860',false,8);
+  dimH(SX+sOH,SX+sOH+s(300),SY+fh,'300 LR plinth',false,14);
+  dimV(SX+sd2,SY,SY+fh,'760',false,5);
+  dimV(SX-3,SY,SY+ft,'30',true,4);
+
+  // Scale bar
+  var sbX=SX,sbY=PH-28;
+  _sf(C.black);_rx(sbX,sbY,s(500)/2,2.5,'F');
+  _sf(C.white);_sd(C.black);_lw(0.3);_rx(sbX+s(500)/2,sbY,s(500)/2,2.5,'FD');
+  _rx(sbX,sbY,s(500),2.5,'S');
+  doc.setFontSize(4);_st(C.black);
+  _tx('0',sbX,sbY+4.5);_tx('250',sbX+s(500)/2-2,sbY+4.5);_tx('500mm',sbX+s(500)-3,sbY+4.5);
+  doc.setFont('helvetica','italic');_tx('Scale 1:20',sbX,sbY-1.5);
+  doc.setFont('helvetica','normal');
+
+  // PAGE 2 - PLAN + REAR ELEVATION
+  doc.addPage('a4','landscape');
+  titleBlock('PLAN VIEW & REAR ELEVATION','2');
+  var PLX=26,PLY=26,pd=s(D);
+  var tD=s(100),bkOH=s(20),divT=s(T);
+  secHead('PLAN VIEW (LOOKING DOWN FROM ABOVE) - SCALE 1:20',PLX+fw/2,PLY-6);
+  grid(PLX,PLY,fw,pd,s(200));
+  _sf([230,212,188]);_sd(C.black);_lw(0.2);_rx(PLX,PLY,fw,pd,'FD');
+  fr(PLX,PLY,fw,tD,C.trench,[110,108,104],0.2);
+  doc.setFontSize(4.5);_st([60,58,55]);
+  _tx('CABLE TIDY TRENCH - 100mm deep x 3000mm (with lid & slots)',PLX+fw/2,PLY+tD/2+1.5,{align:'center'});
+  _st(C.black);
+  fr(PLX+lpW,PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
+  fr(PLX+s(1900),PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
+  _sf([198,178,150]);_rx(PLX+lpW,PLY+bkOH,lrW,s(300),'F');
+  _sf([198,178,150]);_rx(PLX+s(1900),PLY+bkOH,lrW,s(300),'F');
+  _sf(C.oak);_sd(C.black);_lw(0.1);
+  DIVX.forEach(function(x){_rx(PLX+s(x)-divT/2,PLY+bkOH,divT,s(DD),'FD');});
+  _sf(C.back);_sd(C.black);_lw(0.2);
+  _rx(PLX,PLY,lpW,s(T),'FD');
+  _rx(PLX+lpW,PLY,lrW,s(T),'FD');
+  _rx(PLX+s(1900),PLY,lrW,s(T),'FD');
+  _rx(PLX+s(2550),PLY,lpW,s(T),'FD');
+  _sd(C.black);_lw(0.5);_rx(PLX,PLY,fw,pd,'S');
+  doc.setFontSize(3.8);_st([60,40,20]);
+  [{x:1100,l:'1100'},{x:1400,l:'1400'},{x:1900,l:'1900'},{x:2550,l:'2550'}].forEach(function(d){
+    _tx(d.l+'\u2193',PLX+s(d.x),PLY-1,{align:'center'});
+  });
+  _st(C.black);
+  dimH(PLX,PLX+fw,PLY,'3000',true,5);
+  dimH(PLX,PLX+lpW,PLY+pd,'450',false,8);
+  dimH(PLX+lpW,PLX+lpW+lrW,PLY+pd,'650',false,8);
+  dimH(PLX+s(1100),PLX+s(1900),PLY+pd,'800',false,8);
+  dimH(PLX+s(1900),PLX+s(2550),PLY+pd,'650',false,8);
+  dimH(PLX+s(2550),PLX+fw,PLY+pd,'450',false,8);
+  dimV(PLX+fw,PLY,PLY+pd,'900',false,5);
+  dimV(PLX-3,PLY,PLY+tD,'100',true,4);
+  dimV(PLX-10,PLY+bkOH,PLY+bkOH+s(300),'300',true,4);
+  dimV(PLX+fw+10,PLY+bkOH,PLY+bkOH+s(DD),'860',false,5);
+
+  // REAR ELEVATION
+  var REX=26,REY=PLY+pd+26,rBodyY=REY+ft,rFloorY=REY+fh;
+  secHead('REAR ELEVATION - SCALE 1:20',REX+fw/2,REY-6);
+  grid(REX,REY,fw,fh+1,s(200));
+  fr(REX,REY,fw,ft,C.oakLt,C.black,0.35);
+  fr(REX,rBodyY,lpW,fdh,C.oak,C.black,0.25);
+  fr(REX,rBodyY+s(PLINTH_TOP),lpW,s(TP),C.plinth,C.oakDk,0.15);
+  fr(REX+fw-lpW,rBodyY,lpW,fdh,C.oak,C.black,0.25);
+  fr(REX+fw-lpW,rBodyY+s(PLINTH_TOP),lpW,s(TP),C.plinth,C.oakDk,0.15);
+  fr(REX+lpW,rBodyY,lrW,ft,C.back,C.black,0.2);
+  _sf(C.open);_lw(0.15);_sd([178,172,158]);_rx(REX+lpW,rBodyY+ft,lrW,fdh-ft,'FD');
+  fr(REX+s(1900),rBodyY,lrW,ft,C.back,C.black,0.2);
+  _sf(C.open);_rx(REX+s(1900),rBodyY+ft,lrW,fdh-ft,'FD');
+  fr(REX+s(1100),rBodyY,ctrW,fdh,C.interior,C.black,0.2);
+  fr(REX+s(1100),rBodyY+s(PLINTH_TOP),ctrW,s(TP),C.plinth,C.oakDk,0.15);
+  _sd([108,78,48]);_lw(0.2);_ln(REX+s(1400),rBodyY,REX+s(1400),rFloorY);
+  _sd(C.black);_lw(0.3);
+  DIVX.slice(1,-1).forEach(function(x){var dx=REX+s(x);_ln(dx,REY,dx,rFloorY);});
+  _ln(REX,rBodyY,REX+fw,rBodyY);
+  fr(REX,REY,fw,ft*0.55,C.trench,[110,108,104],0.15);
+  doc.setFontSize(3.8);_st([60,40,20]);
+  _tx('450x760x30',REX+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('650x760x30',REX+lpW+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('650x760x30',REX+s(1900)+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('450x760x30',REX+s(2550)+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _st(C.black);
+  _sd(C.black);_lw(0.5);_rx(REX,REY,fw,fh,'S');
+  dimH(REX,REX+fw,REY,'3000',true,5);
+  dimH(REX,REX+lpW,rFloorY,'450',false,8);
+  dimH(REX+lpW,REX+lpW+lrW,rFloorY,'650',false,8);
+  dimH(REX+s(1100),REX+s(1900),rFloorY,'800',false,8);
+  dimH(REX+s(1900),REX+s(2550),rFloorY,'650',false,8);
+  dimH(REX+s(2550),REX+fw,rFloorY,'450',false,8);
+  dimV(REX+fw,REY,rFloorY,'760',false,5);
+
+  // PAGE 3 - CUTTING LIST (A4 Portrait)
+  doc.addPage('a4','portrait');
+  var CPW=210,CPH=297;
+  _sf(C.navy);doc.rect(0,0,CPW,16,'F');
+  doc.setFontSize(10);doc.setFont('helvetica','bold');_st(C.white);
+  _tx('SOUND DESK - CUTTING LIST',CPW/2,7,{align:'center'});
+  doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
+  _tx('All dimensions in mm  |  Solid Oak / Oak-Veneered MDF unless noted',CPW/2,12.5,{align:'center'});
+  _sf(C.footBg);doc.rect(0,CPH-12,CPW,12,'F');
+  _sd([155,160,185]);_lw(0.3);_ln(0,CPH-12,CPW,CPH-12);
+  _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
+  _tx('CUTTING LIST',15,CPH-4.5);
+  doc.setFont('helvetica','normal');_st([55,68,105]);
+  _tx('Date: '+new Date().toLocaleDateString('en-GB')+'  |  Sheet 3 of 3',CPW/2,CPH-4.5,{align:'center'});
+  _tx('Rev A',CPW-15,CPH-4.5,{align:'right'});
+  _st(C.black);_sd(C.black);_lw(0.25);
+
+  var TM=14,TR=196,TW=TR-TM;
+  var cols=[
+    {lbl:'No.',x:TM,w:8,al:'center'},
+    {lbl:'Component',x:22,w:54,al:'left'},
+    {lbl:'L (mm)',x:76,w:19,al:'center'},
+    {lbl:'W (mm)',x:95,w:19,al:'center'},
+    {lbl:'T (mm)',x:114,w:16,al:'center'},
+    {lbl:'Qty',x:130,w:11,al:'center'},
+    {lbl:'Notes',x:141,w:55,al:'left'}
+  ];
+  var items=[
+    {cat:'A - MAIN CARCASS  (30mm Solid Oak or Oak-Veneered MDF)'},
+    {no:1,item:'Desktop Panel',l:3000,w:900,t:30,qty:1,note:'Curved front profile; rear cable trench cutout'},
+    {no:2,item:'Cable Trench Lid',l:3000,w:100,t:30,qty:1,note:'12 cable slots Ø25mm; piano hinge at rear'},
+    {no:3,item:'Outer Left Side Panel',l:860,w:730,t:30,qty:1,note:'Left outer carcass wall - full depth'},
+    {no:4,item:'Left Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 450mm from left'},
+    {no:5,item:'Left Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1100mm from left'},
+    {no:6,item:'Centre Sub-Divider',l:860,w:730,t:30,qty:1,note:'PC/rack bay partition at 1400mm from left'},
+    {no:7,item:'Right Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1900mm from left'},
+    {no:8,item:'Right Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 2550mm from left'},
+    {no:9,item:'Outer Right Side Panel',l:860,w:730,t:30,qty:1,note:'Right outer carcass wall - full depth'},
+    {cat:'B - BACK PANELS  (30mm Solid Oak or Oak-Veneered MDF)'},
+    {no:10,item:'Back Panel - Left Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of left pedestal'},
+    {no:11,item:'Back Panel - Left Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of left leg recess'},
+    {no:12,item:'Back Panel - Right Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of right leg recess'},
+    {no:13,item:'Back Panel - Right Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of right pedestal'},
+    {cat:'C - PLINTHS  (35mm Solid Oak)'},
+    {no:14,item:'Plinth - Left Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
+    {no:15,item:'Plinth - Left Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:16,item:'Plinth - Centre Bay',l:800,w:860,t:35,qty:1,note:'Full depth under centre section'},
+    {no:17,item:'Plinth - Right Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:18,item:'Plinth - Right Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
+    {cat:'D - DRAWER BOXES  (12mm Birch Plywood - top drawer only x 2 pedestals)'},
+    {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:4,note:'2 walls per box x 2 pedestals (L & R)'},
+    {no:20,item:'Drawer Back Panel',l:336,w:305,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
+    {no:21,item:'Drawer Base Panel',l:588,w:336,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
+    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:2,note:'Solid oak face; top drawer only - handle + lock'}
+  ];
+  var ty=22,RH=6.2,CH=6.8;
+  _sf([22,45,112]);doc.rect(TM,ty,TW,7.5,'F');
+  doc.setFontSize(6.5);doc.setFont('helvetica','bold');_st(C.white);
+  cols.forEach(function(c){
+    var cx=c.al==='center'?c.x+c.w/2:c.x+1;
+    _tx(c.lbl,cx,ty+5.2,{align:c.al==='center'?'center':'left'});
+  });
+  ty+=7.5;
+  var ri=0;
+  items.forEach(function(it){
+    if(it.cat){
+      _sf([204,210,228]);doc.rect(TM,ty,TW,CH-1,'F');
+      doc.setFontSize(6.5);doc.setFont('helvetica','bold');_st([18,38,100]);
+      _tx(it.cat,TM+2,ty+4.5);
+      _sd([18,38,100]);_lw(0.3);_ln(TM,ty+CH-1,TR,ty+CH-1);
+      ty+=CH;
+    }else{
+      _sf(ri%2===0?[252,250,246]:[242,244,249]);doc.rect(TM,ty,TW,RH,'F');
+      doc.setFontSize(6);doc.setFont('helvetica','normal');_st([25,25,30]);
+      _tx(String(it.no),cols[0].x+cols[0].w/2,ty+4.2,{align:'center'});
+      _tx(it.item,cols[1].x+1,ty+4.2);
+      _tx(String(it.l),cols[2].x+cols[2].w/2,ty+4.2,{align:'center'});
+      _tx(String(it.w),cols[3].x+cols[3].w/2,ty+4.2,{align:'center'});
+      doc.setFont('helvetica','bold');
+      _tx(String(it.t),cols[4].x+cols[4].w/2,ty+4.2,{align:'center'});
+      _st([20,60,20]);
+      _tx(String(it.qty),cols[5].x+cols[5].w/2,ty+4.2,{align:'center'});
+      doc.setFont('helvetica','normal');_st([70,70,76]);doc.setFontSize(5.6);
+      _tx(it.note,cols[6].x+1,ty+4.2);
+      _sd([195,198,212]);_lw(0.15);_ln(TM,ty+RH,TR,ty+RH);
+      ri++;ty+=RH;
+    }
+  });
+  _sd([20,40,100]);_lw(0.4);doc.rect(TM,22,TW,ty-22,'S');
+  _sd([148,152,172]);_lw(0.2);
+  cols.slice(1).forEach(function(c){_ln(c.x,22,c.x,ty);});
+  _ln(TR,22,TR,ty);
+  ty+=8;
+  _sf([255,250,228]);_sd([195,175,85]);_lw(0.3);doc.rect(TM,ty,TW,44,'FD');
+  doc.setFontSize(7);doc.setFont('helvetica','bold');_st([80,60,20]);
+  _tx('GENERAL NOTES:',TM+3,ty+6);
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);_st([50,40,15]);
+  var notes=[
+    '1.  All dimensions in millimetres. Verify all dimensions on site before cutting.',
+    '2.  Structural panels: 30mm Solid Oak or Oak-Veneered MDF/Plywood. Plinth panels: 35mm Solid Oak.',
+    '3.  Drawer box construction: 12mm birch ply, through-dovetail or Domino mortise & tenon joints.',
+    '4.  Hardware: Piano hinge (cable trench lid); full-extension 35kg ball-bearing slides 600mm (drawers).',
+    '5.  Desktop shape requires CNC routing or full-scale MDF template for the ergonomic front curve.',
+    '6.  Divider positions measured from the outer left edge. Confirm section widths sum to 3000mm.'
+  ];
+  notes.forEach(function(n,i){_tx(n,TM+3,ty+13+i*4.8);});
+  _st(C.black);
+
+  doc.save('SoundDesk_Technical_Schematic.pdf');
+}
+</script>
+</body>
+</html>
