@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -105,7 +105,7 @@ function generatePDF(){
     doc.setFontSize(9.5);doc.setFont('helvetica','bold');_st(C.white);
     _tx('SOUND DESK - WORKSHOP SCHEMATIC',PW/2,6.5,{align:'center'});
     doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
-    _tx('All dimensions in millimetres  |  Material: Solid Oak / Oak-Veneered MDF  |  Structural panels 30mm',PW/2,11.5,{align:'center'});
+    _tx('All dimensions in millimetres  |  Material: To be decided  |  Structural panels 30mm',PW/2,11.5,{align:'center'});
     _sf(C.footBg);_rx(0,PH-12,PW,12,'F');
     _sd([155,160,185]);_lw(0.3);_ln(0,PH-12,PW,PH-12);
     _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
@@ -312,7 +312,7 @@ function generatePDF(){
   doc.setFontSize(10);doc.setFont('helvetica','bold');_st(C.white);
   _tx('SOUND DESK - CUTTING LIST',CPW/2,7,{align:'center'});
   doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
-  _tx('All dimensions in mm  |  Solid Oak / Oak-Veneered MDF unless noted',CPW/2,12.5,{align:'center'});
+  _tx('All dimensions in mm  |  Material: To be decided',CPW/2,12.5,{align:'center'});
   _sf(C.footBg);doc.rect(0,CPH-12,CPW,12,'F');
   _sd([155,160,185]);_lw(0.3);_ln(0,CPH-12,CPW,CPH-12);
   _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
@@ -333,7 +333,7 @@ function generatePDF(){
     {lbl:'Notes',x:141,w:55,al:'left'}
   ];
   var items=[
-    {cat:'A - MAIN CARCASS  (30mm Solid Oak or Oak-Veneered MDF)'},
+    {cat:'A - MAIN CARCASS  (30mm — material to be decided)'},
     {no:1,item:'Desktop Panel',l:3000,w:900,t:30,qty:1,note:'Curved front profile; rear cable trench cutout'},
     {no:2,item:'Cable Trench Lid',l:3000,w:100,t:30,qty:1,note:'12 cable slots Ø25mm; piano hinge at rear'},
     {no:3,item:'Outer Left Side Panel',l:860,w:730,t:30,qty:1,note:'Left outer carcass wall - full depth'},
@@ -343,22 +343,22 @@ function generatePDF(){
     {no:7,item:'Right Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1900mm from left'},
     {no:8,item:'Right Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 2550mm from left'},
     {no:9,item:'Outer Right Side Panel',l:860,w:730,t:30,qty:1,note:'Right outer carcass wall - full depth'},
-    {cat:'B - BACK PANELS  (30mm Solid Oak or Oak-Veneered MDF)'},
+    {cat:'B - BACK PANELS  (30mm — material to be decided)'},
     {no:10,item:'Back Panel - Left Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of left pedestal'},
     {no:11,item:'Back Panel - Left Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of left leg recess'},
     {no:12,item:'Back Panel - Right Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of right leg recess'},
     {no:13,item:'Back Panel - Right Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of right pedestal'},
-    {cat:'C - PLINTHS  (35mm Solid Oak)'},
+    {cat:'C - PLINTHS  (35mm — material to be decided)'},
     {no:14,item:'Plinth - Left Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
     {no:15,item:'Plinth - Left Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
     {no:16,item:'Plinth - Centre Bay',l:800,w:860,t:35,qty:1,note:'Full depth under centre section'},
     {no:17,item:'Plinth - Right Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
     {no:18,item:'Plinth - Right Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
-    {cat:'D - DRAWER BOXES  (12mm Birch Plywood - top drawer only x 2 pedestals)'},
+    {cat:'D - DRAWER BOXES  (12mm — material to be decided, top drawer only x 2 pedestals)'},
     {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:4,note:'2 walls per box x 2 pedestals (L & R)'},
     {no:20,item:'Drawer Back Panel',l:336,w:305,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
     {no:21,item:'Drawer Base Panel',l:588,w:336,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
-    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:2,note:'Solid oak face; top drawer only - handle + lock'}
+    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:2,note:'Material to be decided; top drawer only - handle + lock'}
   ];
   var ty=22,RH=6.2,CH=6.8;
   _sf([22,45,112]);doc.rect(TM,ty,TW,7.5,'F');
@@ -404,8 +404,8 @@ function generatePDF(){
   doc.setFont('helvetica','normal');doc.setFontSize(6.5);_st([50,40,15]);
   var notes=[
     '1.  All dimensions in millimetres. Verify all dimensions on site before cutting.',
-    '2.  Structural panels: 30mm Solid Oak or Oak-Veneered MDF/Plywood. Plinth panels: 35mm Solid Oak.',
-    '3.  Drawer box construction: 12mm birch ply, through-dovetail or Domino mortise & tenon joints.',
+    '2.  All timber materials are TO BE DECIDED — thicknesses shown (30mm carcass, 35mm plinths, 12mm drawer boxes).',
+    '3.  Drawer box construction: through-dovetail or Domino mortise & tenon joints recommended.',
     '4.  Hardware: Piano hinge (cable trench lid); full-extension 35kg ball-bearing slides 600mm (drawers).',
     '5.  Desktop shape requires CNC routing or full-scale MDF template for the ergonomic front curve.',
     '6.  Divider positions measured from the outer left edge. Confirm section widths sum to 3000mm.'
