@@ -572,7 +572,7 @@ export function buildDeskScene() {
     metalness: 0.01
   });
 
-  const buildPedestalDrawers = (centerX, groupRef, numDrawers = 3) => {
+  const buildPedestalDrawers = (centerX, groupRef, numDrawers = 3, openBottomRecess = false) => {
     const drawerH = (H_DESK - 0.05 - THICKNESS) / numDrawers;
     const boxW = 0.36; // Outer width of drawer box
     const boxDepth = 0.60; // 60cm deep drawer box inside pedestal
@@ -580,6 +580,8 @@ export function buildDeskScene() {
     const boxCenterZ = (D_TOTAL / 2 - THICKNESS) - boxDepth / 2;
 
     for (let i = 0; i < numDrawers; i++) {
+      // Skip the bottom drawer when an open recess is requested
+      if (openBottomRecess && i === 0) continue;
       const drawerY = 0.035 + drawerH * i + drawerH / 2;
 
       // Drawer Front Panel
@@ -786,8 +788,8 @@ export function buildDeskScene() {
     }
   };
 
-  buildPedestalDrawers(-1.275, animatedGroups.leftDrawersGroup, 2);
-  buildPedestalDrawers(1.275, animatedGroups.rightDrawersGroup, 2);
+  buildPedestalDrawers(-1.275, animatedGroups.leftDrawersGroup, 2, true);
+  buildPedestalDrawers(1.275, animatedGroups.rightDrawersGroup, 2, true);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
 
