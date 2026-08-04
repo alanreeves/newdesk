@@ -146,17 +146,17 @@ function addDim(x1, y1, z1, x2, y2, z2, label) {
 
 function create3DDimensions() {
   // Overall Dimensions
-  addDim(-1.45, 0.02, 0.6, 1.45, 0.02, 0.6, "Total Width: 290 cm");
-  addDim(-1.6, 0.76, -0.45, -1.6, 0.76, 0.45, "Depth: 90 cm");
-  addDim(1.6, 0, 0, 1.6, 0.76, 0, "Height: 76 cm");
+  addDim(-1.50, 0.02, 0.6, 1.50, 0.02, 0.6, "Total Width: 300 cm");
+  addDim(-1.65, 0.76, -0.45, -1.65, 0.76, 0.45, "Depth: 90 cm");
+  addDim(1.65, 0, 0, 1.65, 0.76, 0, "Height: 76 cm");
 
   // Compartment Widths along the front
-  addDim(-1.45, 0.02, 0.48, -1.00, 0.02, 0.48, "45cm"); // Left Pedestal
-  addDim(-1.00, 0.02, 0.48, -0.40, 0.02, 0.48, "60cm"); // Op 1
+  addDim(-1.50, 0.02, 0.48, -1.05, 0.02, 0.48, "45cm"); // Left Pedestal
+  addDim(-1.05, 0.02, 0.48, -0.40, 0.02, 0.48, "65cm"); // Op 1 Leg Recess
   addDim(-0.40, 0.02, 0.48, -0.10, 0.02, 0.48, "30cm"); // PC
   addDim(-0.10, 0.02, 0.48, 0.40, 0.02, 0.48, "50cm");  // Amps
-  addDim(0.40, 0.02, 0.48, 1.00, 0.02, 0.48, "60cm");   // Op 2
-  addDim(1.00, 0.02, 0.48, 1.45, 0.02, 0.48, "45cm");   // Right Pedestal
+  addDim(0.40, 0.02, 0.48, 1.05, 0.02, 0.48, "65cm");   // Op 2 Leg Recess
+  addDim(1.05, 0.02, 0.48, 1.50, 0.02, 0.48, "45cm");   // Right Pedestal
 }
 create3DDimensions();
 

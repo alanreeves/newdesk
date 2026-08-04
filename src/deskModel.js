@@ -300,7 +300,7 @@ export function buildDeskScene() {
   const interactiveEquipment = [];
   const equipmentPins = [];
 
-  const W_TOTAL = 2.90;
+  const W_TOTAL = 3.00;
   const D_TOTAL = 0.90;
   const H_DESK = 0.76;
   const THICKNESS = 0.03;
@@ -356,7 +356,7 @@ export function buildDeskScene() {
     const x = posAttr.getX(i);
     const z = posAttr.getZ(i);
     // Map world X, Z to UV (scale down to stretch texture and reduce tiling)
-    uvAttr.setXY(i, (x + 1.45) * 0.7, (z + 0.45) * 0.7);
+    uvAttr.setXY(i, (x + 1.50) * 0.7, (z + 0.45) * 0.7);
   }
   uvAttr.needsUpdate = true;
 
@@ -368,7 +368,7 @@ export function buildDeskScene() {
 
   // Cable Tidy Trench Floor (with cutouts)
   const floorShape = new THREE.Shape();
-  const fw = 1.45;
+  const fw = W_TOTAL / 2;
   floorShape.moveTo(-fw, -0.41);
   floorShape.lineTo(fw, -0.41);
   floorShape.lineTo(fw, -0.31);
@@ -380,8 +380,8 @@ export function buildDeskScene() {
   const numSlots = 12;
   const slots = [];
   for (let i = 0; i < numSlots; i++) {
-    // 2.90m total width, 40cm from each end means from 1.05 to -1.05
-    slots.push(1.05 - i * (2.10 / (numSlots - 1)));
+    // 3.00m total width, 40cm from each end means from 1.10 to -1.10
+    slots.push(1.10 - i * (2.20 / (numSlots - 1)));
   }
 
   slots.forEach(sx => {
@@ -507,11 +507,11 @@ export function buildDeskScene() {
   rootGroup.add(animatedGroups.trenchLidGroup);
 
   const plinths = [
-    { start: -1.45, end: -1.00, fullDepth: true },  // Left pedestal
-    { start: -1.00, end: -0.40, fullDepth: false }, // Left operator
-    { start: -0.40, end: 0.40, fullDepth: true },   // PC & Rack bays
-    { start: 0.40, end: 1.00, fullDepth: false },   // Right operator
-    { start: 1.00, end: 1.45, fullDepth: true }     // Right pedestal
+    { start: -1.50, end: -1.05, fullDepth: true },  // Left pedestal (45cm)
+    { start: -1.05, end: -0.40, fullDepth: false }, // Left operator leg recess (65cm)
+    { start: -0.40, end: 0.40, fullDepth: true },   // PC & Rack bays (80cm)
+    { start: 0.40, end: 1.05, fullDepth: false },   // Right operator leg recess (65cm)
+    { start: 1.05, end: 1.50, fullDepth: true }     // Right pedestal (45cm)
   ];
 
   plinths.forEach(p => {
@@ -537,7 +537,7 @@ export function buildDeskScene() {
     rootGroup.add(pMesh);
   });
 
-  const verticalDivs = [-1.45, -1.00, -0.40, -0.10, 0.40, 1.00, 1.45];
+  const verticalDivs = [-1.50, -1.05, -0.40, -0.10, 0.40, 1.05, 1.50];
   verticalDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -550,19 +550,19 @@ export function buildDeskScene() {
   });
 
   const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backLeftPedestal.position.set(-1.225, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backLeftPedestal.position.set(-1.275, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backLeftPedestal);
 
-  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.60, H_DESK, THICKNESS), oakMaterial);
-  backLeftOperator.position.set(-0.70, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
+  backLeftOperator.position.set(-0.725, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backLeftOperator);
 
-  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.60, H_DESK, THICKNESS), oakMaterial);
-  backRightOperator.position.set(0.70, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
+  backRightOperator.position.set(0.725, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backRightOperator);
 
   const backRightPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backRightPedestal.position.set(1.225, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backRightPedestal.position.set(1.275, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
@@ -678,7 +678,51 @@ export function buildDeskScene() {
       rootGroup.add(staticRightRail);
 
       // --- DRAWER INTERIOR ITEMS ---
-      if (numDrawers === 3) {
+      if (numDrawers === 2) {
+        if (i === 1) { // Top drawer: Studio notebook, stylus, and SSD drive
+          const notebook = new THREE.Mesh(
+            new THREE.BoxGeometry(0.18, 0.01, 0.24),
+            new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 })
+          );
+          notebook.position.set(centerX - 0.04, boxCenterY - boxH / 2 + wallT + 0.005, boxCenterZ + 0.15);
+          notebook.rotation.y = 0.08;
+          notebook.castShadow = true;
+          groupRef.add(notebook);
+
+          const stylus = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.004, 0.004, 0.14, 12),
+            silverMaterial
+          );
+          stylus.rotation.z = Math.PI / 2;
+          stylus.position.set(centerX + 0.09, boxCenterY - boxH / 2 + wallT + 0.004, boxCenterZ + 0.16);
+          groupRef.add(stylus);
+
+          const ssdDrive = new THREE.Mesh(
+            new THREE.BoxGeometry(0.07, 0.012, 0.11),
+            new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.2 })
+          );
+          ssdDrive.position.set(centerX + 0.07, boxCenterY - boxH / 2 + wallT + 0.006, boxCenterZ + 0.02);
+          ssdDrive.castShadow = true;
+          groupRef.add(ssdDrive);
+        } else if (i === 0) { // Bottom drawer: Manual binder & cable coil
+          const binder = new THREE.Mesh(
+            new THREE.BoxGeometry(0.22, 0.03, 0.28),
+            new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.4 })
+          );
+          binder.position.set(centerX - 0.03, boxCenterY - boxH / 2 + wallT + 0.015, boxCenterZ + 0.12);
+          binder.castShadow = true;
+          groupRef.add(binder);
+
+          const cableCoil = new THREE.Mesh(
+            new THREE.TorusGeometry(0.05, 0.008, 12, 24),
+            blackPlasticMaterial
+          );
+          cableCoil.rotation.x = Math.PI / 2;
+          cableCoil.position.set(centerX + 0.09, boxCenterY - boxH / 2 + wallT + 0.008, boxCenterZ + 0.14);
+          cableCoil.castShadow = true;
+          groupRef.add(cableCoil);
+        }
+      } else if (numDrawers === 3) {
         if (i === 2) { // Top drawer: Studio notebook & stylus
           const notebook = new THREE.Mesh(
             new THREE.BoxGeometry(0.18, 0.01, 0.24),
@@ -742,8 +786,8 @@ export function buildDeskScene() {
     }
   };
 
-  buildPedestalDrawers(-1.225, animatedGroups.leftDrawersGroup, 3);
-  buildPedestalDrawers(1.225, animatedGroups.rightDrawersGroup, 1);
+  buildPedestalDrawers(-1.275, animatedGroups.leftDrawersGroup, 2);
+  buildPedestalDrawers(1.275, animatedGroups.rightDrawersGroup, 2);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
 
@@ -1249,10 +1293,10 @@ export function buildDeskScene() {
   };
 
   const leftHp = createHeadphonesMesh(leftHpUserData, 0xfbbf24);
-  leftHp.position.set(-1.24, H_DESK, -0.05);
+  leftHp.position.set(-1.29, H_DESK, -0.05);
   leftHp.rotation.y = 0.25;
   rootGroup.add(leftHp);
-  equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.24, H_DESK + 0.10, -0.05) });
+  equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.29, H_DESK + 0.10, -0.05) });
 
   const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
   powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.36);
@@ -1301,7 +1345,7 @@ export function buildDeskScene() {
     new THREE.BoxGeometry(0.06, H_DESK - 0.05, 0.06), 
     new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 })
   );
-  cableTrunking.position.set(-1.48, (H_DESK - 0.05) / 2, -0.36);
+  cableTrunking.position.set(-1.53, (H_DESK - 0.05) / 2, -0.36);
   
   cableTrunking.userData = {
     id: 'cable_trunking',
@@ -1313,7 +1357,7 @@ export function buildDeskScene() {
     note: 'Routes the main cable bundle from the trench cleanly to the floor power sockets.'
   };
   interactiveEquipment.push(cableTrunking);
-  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.48, H_DESK - 0.1, -0.36) });
+  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.53, H_DESK - 0.1, -0.36) });
   
   rootGroup.add(cableTrunking);
 
