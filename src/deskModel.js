@@ -305,7 +305,7 @@ export function buildDeskScene() {
   const H_DESK = 0.76;
   const THICKNESS = 0.03;
 
-  // 1. SCULPTED LIGHT OAK DESKTOP WITH REAR CABLE TRENCH
+  // 1. STRAIGHT LIGHT OAK DESKTOP WITH REAR CABLE TRENCH
   const desktopShape = new THREE.Shape();
   const halfW = W_TOTAL / 2;
   const halfD = D_TOTAL / 2;
@@ -317,11 +317,8 @@ export function buildDeskScene() {
   desktopShape.lineTo(halfW, halfD - 0.04);
   desktopShape.quadraticCurveTo(halfW, halfD, halfW - 0.04, halfD);
 
-  // Sculpted Ergonomic Front Edge Profile
-  desktopShape.bezierCurveTo(1.10, halfD, 0.80, halfD - 0.09, 0.45, halfD - 0.08);
-  desktopShape.bezierCurveTo(0.20, halfD - 0.07, 0.10, halfD - 0.01, 0.0, halfD - 0.01);
-  desktopShape.bezierCurveTo(-0.10, halfD - 0.01, -0.20, halfD - 0.07, -0.45, halfD - 0.08);
-  desktopShape.bezierCurveTo(-0.80, halfD - 0.09, -1.10, halfD, -halfW + 0.04, halfD);
+  // Straight Front Edge
+  desktopShape.lineTo(-halfW + 0.04, halfD);
 
   desktopShape.quadraticCurveTo(-halfW, halfD, -halfW, halfD - 0.04);
   desktopShape.lineTo(-halfW, -halfD + 0.04);

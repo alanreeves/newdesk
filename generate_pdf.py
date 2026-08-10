@@ -167,7 +167,7 @@ def build_pdf():
     story.append(Paragraph("1. Desktop & Cable Trench (30mm Light Oak Faced MDF)", section_style))
     d_headers = ["Ref", "Description", "Qty", "Length", "Width", "Thick", "Edge Banding"]
     d_rows = [
-        ["D1", "Main Sculpted Desktop", "1", "3000 mm", "900 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
+        ["D1", "Main Desktop (Straight Edge)", "1", "3000 mm", "900 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
         ["D2", "Cable Trench Hinged Lid", "1", "3000 mm", "100 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
         ["D3", "Trench Cable Slots (12 Off)", "12", "60 mm (R12.5)", "25 mm", "30 mm", "Rubber Grommets Fitted"]
     ]
@@ -225,7 +225,7 @@ def build_pdf():
                   "• <b>Drawer Runners:</b> 4 Pairs × 600 mm Heavy-Duty Soft-Close Side-Mount Ball Bearing Slides.<br/>"
                   "• <b>PC Extension Slides:</b> 1 Pair × 750 mm Undermount/Side Heavy Extension Slides (Rated 45kg+).<br/>"
                   "• <b>Grain Direction:</b> Desktop (D1), Lid (D2), Gables (V1-V7), and Drawer Fronts (DF1) must have wood grain running horizontally along 3000mm length.<br/>"
-                  "• <b>Desktop Profile:</b> Sculpted front curve to be CNC-routed or shaped with master template prior to 2mm ABS edge banding.<br/>"
+                  "• <b>Desktop Profile:</b> Straight front edge with 2mm Light Oak ABS edge banding applied to all four outer edges.<br/>"
                   "• <b>Ventilation:</b> 80mm circular cutouts routed in rear of PC & amp bay for active air cooling.", cell_style)
     ]
     story.append(KeepTogether(notes_elements))
