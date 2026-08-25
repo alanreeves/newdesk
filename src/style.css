@@ -72,7 +72,41 @@ html, body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+}
+
+.sidebar-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--panel-border);
+  color: var(--accent-gold);
+}
+
+.sidebar-toggle-btn.active {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: var(--accent-gold);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+}
+
+/* Mobile Sidebar Backdrop */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 18;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .brand-icon {
@@ -164,7 +198,7 @@ html, body {
   position: absolute;
   top: 90px;
   left: 16px;
-  z-index: 10;
+  z-index: 20;
   width: fit-content;
   display: flex;
   flex-direction: column;
@@ -172,6 +206,17 @@ html, body {
   max-height: calc(100vh - 170px);
   overflow-y: auto;
   padding-right: 4px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s;
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.control-panel.collapsed {
+  transform: translateX(calc(-100% - 30px));
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .control-panel::-webkit-scrollbar {
@@ -180,6 +225,50 @@ html, body {
 .control-panel::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
+}
+
+.panel-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glow);
+}
+
+.panel-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-gold);
+  font-family: var(--font-mono);
+}
+
+.panel-close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.panel-close-btn:hover {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
 }
 
 .panel-section {
@@ -604,27 +693,93 @@ html, body {
 @media (max-width: 768px) {
   .app-header {
     padding: 8px 12px;
+    gap: 8px;
   }
-  .brand h1 { font-size: 0.85rem; }
-  .brand .subtitle { display: none; }
+  .brand {
+    gap: 8px;
+  }
+  .brand h1 { 
+    font-size: 0.78rem; 
+    line-height: 1.1;
+  }
+  .brand .subtitle { 
+    display: none; 
+  }
+  .brand-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .brand-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+  #lighting-mode-label {
+    display: none;
+  }
   
   .control-panel {
-    top: 70px;
-    left: 8px;
-    width: 200px;
+    top: 68px;
+    left: 12px;
+    width: min(290px, calc(100vw - 24px));
+    max-height: calc(100vh - 145px);
+    z-index: 25;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(56, 189, 248, 0.2);
+  }
+
+  .section-title {
+    justify-content: flex-start;
+  }
+  .section-title span {
+    display: inline;
+  }
+  
+  .button-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  
+  .preset-btn {
+    width: 100%;
+    height: 38px;
+  }
+
+  .toggle-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .action-btn {
+    width: 100%;
+    height: 38px;
   }
   
   .spec-card {
     top: auto;
-    bottom: 80px;
-    right: 8px;
-    left: 8px;
+    bottom: 75px;
+    right: 12px;
+    left: 12px;
     width: auto;
+    max-height: 55vh;
+    overflow-y: auto;
+    z-index: 30;
   }
   
   .zoom-bar {
     bottom: 12px;
     padding: 6px 12px;
+    gap: 8px;
   }
-  #zoom-slider { width: 90px; }
+  #zoom-slider { 
+    width: 80px; 
+  }
+  .reset-btn {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
 }

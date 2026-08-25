@@ -299,6 +299,65 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
   });
 });
 
+// ==========================================
+// 5. SIDEBAR RETRACT / EXPAND CONTROLS
+// ==========================================
+
+const controlPanel = document.getElementById('control-panel');
+const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+const sidebarIconMenu = document.getElementById('sidebar-icon-menu');
+const sidebarIconClose = document.getElementById('sidebar-icon-close');
+
+let isSidebarOpen = window.innerWidth > 768; // Collapsed by default on mobile screen
+
+function updateSidebarState(open) {
+  isSidebarOpen = open;
+  if (!controlPanel) return;
+
+  if (isSidebarOpen) {
+    controlPanel.classList.remove('collapsed');
+    if (sidebarToggleBtn) sidebarToggleBtn.classList.add('active');
+    if (sidebarIconMenu) sidebarIconMenu.style.display = 'none';
+    if (sidebarIconClose) sidebarIconClose.style.display = 'block';
+    if (window.innerWidth <= 768 && sidebarBackdrop) {
+      sidebarBackdrop.classList.add('active');
+    }
+  } else {
+    controlPanel.classList.add('collapsed');
+    if (sidebarToggleBtn) sidebarToggleBtn.classList.remove('active');
+    if (sidebarIconMenu) sidebarIconMenu.style.display = 'block';
+    if (sidebarIconClose) sidebarIconClose.style.display = 'none';
+    if (sidebarBackdrop) {
+      sidebarBackdrop.classList.remove('active');
+    }
+  }
+}
+
+// Initial state setup
+updateSidebarState(isSidebarOpen);
+
+if (sidebarToggleBtn) {
+  sidebarToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateSidebarState(!isSidebarOpen);
+  });
+}
+
+if (sidebarCloseBtn) {
+  sidebarCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateSidebarState(false);
+  });
+}
+
+if (sidebarBackdrop) {
+  sidebarBackdrop.addEventListener('click', () => {
+    updateSidebarState(false);
+  });
+}
+
 // Zoom Slider Logic
 const zoomSlider = document.getElementById('zoom-slider');
 const zoomValueDisplay = document.getElementById('zoom-value');
@@ -638,6 +697,11 @@ let pointerDownPos = { x: 0, y: 0 };
 renderer.domElement.addEventListener('pointerdown', (e) => {
   pointerDownPos.x = e.clientX;
   pointerDownPos.y = e.clientY;
+
+  // Auto-retract sidebar on mobile when touching or interacting with the 3D scene
+  if (window.innerWidth <= 768 && isSidebarOpen) {
+    updateSidebarState(false);
+  }
 });
 
 renderer.domElement.addEventListener('pointerup', (e) => {
@@ -664,6 +728,10 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  if (window.innerWidth > 768 && sidebarBackdrop) {
+    sidebarBackdrop.classList.remove('active');
+  }
 }
 window.addEventListener('resize', onWindowResize);
 
