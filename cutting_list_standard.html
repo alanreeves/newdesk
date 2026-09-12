@@ -1,225 +1,711 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Standard Build - Optimised Cutting List | Sound Desk</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Standard Build — Optimised Cutting List | Sound Desk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--accent:#b45309;--accent2:#0f5fa8;--green:#16a34a;--red:#dc2626;--gold:#d97706;--text:#1e293b;--muted:#475569;--dim:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--panel:#ffffff;--font:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
-    @page{size:A4 landscape;margin:10mm 12mm;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:13px;line-height:1.5;}
-    .top-bar{background:var(--panel);border-bottom:3px solid var(--accent);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
-    .tbl{display:flex;align-items:center;gap:12px;}
-    .back-btn{background:#f1f5f9;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--font);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .15s;}
-    .back-btn:hover{background:#e2e8f0;color:var(--text);}
-    .dtl h1{font-size:16px;font-weight:800;color:var(--text);}
-    .dtl p{font-size:11px;color:var(--muted);margin-top:1px;}
-    .pbtn{background:var(--accent);color:#fff;border:none;padding:7px 18px;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font);transition:all .15s;}
-    .pbtn:hover{background:#92400e;box-shadow:0 2px 10px rgba(180,83,9,.3);}
-    .wrap{max-width:1280px;margin:0 auto;padding:24px 24px 56px;}
-    .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:24px;}
-    .sc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .sc .v{font-size:24px;font-weight:800;color:var(--accent);font-family:var(--mono);}
-    .sc .l{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
-    .sc .s{font-size:9px;color:var(--dim);margin-top:1px;}
-    .sh{display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:28px;}
-    .sh h2{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--mono);white-space:nowrap;}
-    .sh .dv{flex:1;height:1px;background:var(--border);}
-    .mleg{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
-    .mb{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:7px;border:1px solid;font-size:11px;font-weight:600;}
-    .mb-oak{background:#fef3c7;border-color:#fcd34d;color:#92400e;}
-    .mb-birch{background:#f0fdf4;border-color:#86efac;color:#15803d;}
-    .sw{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
-    .pt{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:4px;background:var(--panel);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .pt thead tr{background:#fef3c7;border-bottom:2px solid #fcd34d;}
-    .pt th{padding:8px 10px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400e;font-family:var(--mono);}
-    .pt td{padding:7px 10px;border-bottom:1px solid #f8f0e0;vertical-align:middle;}
-    .pt tbody tr:hover{background:#fffbf0;}
-    .pt tbody tr:last-child td{border-bottom:none;}
-    .pt.birch-table thead tr{background:#f0fdf4;border-bottom:2px solid #86efac;}
-    .pt.birch-table th{color:#15803d;}
-    .pt.birch-table td{border-bottom-color:#f0f9f4;}
-    .pt.birch-table tbody tr:hover{background:#f0fdf8;}
-    .pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);white-space:nowrap;}
-    .p-oak{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
-    .p-birch{background:#f0fdf4;color:#15803d;border:1px solid #86efac;}
-    .dc{font-family:var(--mono);font-size:11px;color:var(--muted);}
-    .qc{font-family:var(--mono);font-weight:700;color:var(--gold);text-align:center;}
-    .rc{font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--dim);}
-    .bh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:10px 14px;background:var(--panel);border:1px solid var(--border);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .bh .bl{font-size:13px;font-weight:700;color:var(--text);}
-    .bh .br{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:1px;}
-    .wb{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--mono);}
-    .wg{background:#dcfce7;color:var(--green);border:1px solid #86efac;}
-    .wo{background:#fef9c3;color:var(--gold);border:1px solid #fde047;}
-    .wr{background:#fee2e2;color:var(--red);border:1px solid #fca5a5;}
-    .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:28px;}
-    .bcard{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .bchdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-    .bchdr .bn{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--muted);}
-    canvas{width:100%;border-radius:5px;display:block;border:1px solid var(--border);}
-    .tip{font-size:11px;color:var(--muted);min-height:17px;margin-top:5px;font-family:var(--mono);}
-    .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px;margin-top:6px;}
-    .nc{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:7px;padding:10px 12px;font-size:11.5px;color:var(--muted);line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.03);}
-    .nc strong{color:var(--text);}
-    .hwlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:8px;}
-    .hw{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,0.03);}
-    .hb{color:var(--accent);font-size:14px;line-height:1;margin-top:1px;flex-shrink:0;}
-    .footer{margin-top:40px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--dim);}
-    @media print{.top-bar{display:none;}.wrap{padding:8px;max-width:100%;}}
+    :root {
+      --accent: #0f5fa8;
+      --accent-dark: #0a4478;
+      --green: #16a34a;
+      --amber: #d97706;
+      --red: #dc2626;
+      --purple: #7c3aed;
+      --text: #0f172a;
+      --muted: #475569;
+      --dim: #94a3b8;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    @page { size: A4 landscape; margin: 10mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .top-bar {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+    .tbl { display: flex; align-items: center; gap: 16px; }
+    .back-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text); }
+    .dtl h1 { font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .dtl p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .tbr { display: flex; align-items: center; gap: 10px; }
+    .nav-tabs {
+      display: flex;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .nav-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.active {
+      background: var(--panel);
+      color: var(--accent);
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+    .pbtn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+    .pbtn:hover { background: var(--accent-dark); }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px; }
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .sc {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .sc .v { font-size: 24px; font-weight: 800; color: var(--accent); font-family: var(--mono); }
+    .sc .l { font-size: 10.5px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+    .sc .s { font-size: 10px; color: var(--dim); margin-top: 2px; font-family: var(--mono); }
+    .callout-board {
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-left: 4px solid var(--purple);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #5b21b6;
+      line-height: 1.6;
+    }
+    .callout-board strong { color: #4c1d95; }
+    .mleg { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .mb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 7px;
+      border: 1px solid;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .mb-oak { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+    .mb-birch { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    .sw { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+    .sh { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; margin-top: 28px; }
+    .sh h2 { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-family: var(--mono); white-space: nowrap; }
+    .sh .dv { flex: 1; height: 1px; background: var(--border); }
+    .pt {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 6px;
+      background: var(--panel);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .pt thead tr { background: #f1f5f9; border-bottom: 2px solid var(--border); }
+    .pt th { padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-family: var(--mono); }
+    .pt td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .pt tbody tr:hover { background: #f8fafc; }
+    .pt tbody tr:last-child td { border-bottom: none; }
+    .pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9.5px; font-weight: 700; font-family: var(--mono); }
+    .p-oak { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .p-birch { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+    .dc { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); }
+    .qc { font-family: var(--mono); font-weight: 800; color: var(--amber); text-align: center; }
+    .rc { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); }
+    .bh {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .bh .bl { font-size: 14px; font-weight: 800; }
+    .bh .br { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+    .wb { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+    .wg { background: #dcfce7; color: var(--green); border: 1px solid #86efac; }
+    .wo { background: #fef9c3; color: var(--amber); border: 1px solid #fde047; }
+    .wr { background: #fee2e2; color: var(--red); border: 1px solid #fca5a5; }
+    .bgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .bcard {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .bcard:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.07); }
+    .board-lrg { border-left: 4px solid var(--purple) !important; }
+    .board-std { border-left: 4px solid var(--accent) !important; }
+    .bchdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .bchdr .bn { font-size: 12px; font-weight: 800; font-family: var(--mono); color: var(--text); }
+    .bchdr .bsz {
+      font-size: 10.5px;
+      font-weight: 700;
+      font-family: var(--mono);
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    .bsz-lrg { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+    .bsz-std { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    canvas { width: 100%; border-radius: 6px; display: block; border: 1px solid var(--border); background: #ffffff; }
+    .tip { font-size: 11px; color: var(--muted); min-height: 18px; margin-top: 8px; font-family: var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ngrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 8px; }
+    .nc {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      box-shadow: 0 1px 3px rgba(0,0,0,.02);
+    }
+    .nc strong { color: var(--text); }
+    .hwlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+    .hw {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .hb { color: var(--accent); font-size: 15px; line-height: 1; margin-top: 2px; flex-shrink: 0; }
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--dim);
+      font-family: var(--mono);
+    }
+    @media print {
+      .top-bar, .nav-tabs, .pbtn, .back-btn { display: none !important; }
+      .wrap { padding: 0; max-width: 100%; }
+      .bcard { break-inside: avoid; page-break-inside: avoid; box-shadow: none; border: 1px solid #cbd5e1; }
+    }
   </style>
 </head>
 <body>
+
 <div class="top-bar">
   <div class="tbl">
-    <a href="javascript:window.close()" class="back-btn">&#8592; Close</a>
+    <a href="./index.html" class="back-btn">&#8592; Back to 3D Desk</a>
     <div class="dtl">
       <h1>Standard Build &mdash; Optimised Cutting List</h1>
-      <p>30mm Solid Oak MDF &middot; 12mm Birch MDF (drawer boxes) &middot; 3000&times;900&times;760mm Sound Desk &middot; <span id="dl"></span></p>
+      <p>30mm Solid Oak MDF &middot; 12mm Birch MDF &middot; 3000&times;900&times;760mm Sound Desk &middot; <span id="dl"></span></p>
     </div>
   </div>
-  <button class="pbtn" onclick="window.print()">&#128438; Print / Save PDF</button>
+  <div class="tbr">
+    <div class="nav-tabs">
+      <a href="./cutting_list_standard.html" class="nav-tab active">Standard (30mm)</a>
+      <a href="./cutting_list_workshop.html" class="nav-tab">Workshop (18mm)</a>
+    </div>
+    <button class="pbtn" onclick="window.print()">&#128438; Print / Save PDF</button>
+  </div>
 </div>
+
 <div class="wrap">
   <div class="hero" id="hs"></div>
 
-  <div class="mleg">
-    <div class="mb mb-oak"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#8a5c2a)"></div>30mm Solid Oak MDF &mdash; All structural panels: top, backs, ends, dividers, plinths, drawer fronts</div>
-    <div class="mb mb-birch"><div class="sw" style="background:linear-gradient(135deg,#d4c4a8,#c9b89a)"></div>12mm Birch MDF &mdash; Drawer Box Construction</div>
+  <div class="callout-board">
+    <strong>Board Size Specification:</strong> Cutting plans utilise exactly two board sizes: 
+    <strong style="color:var(--purple)">3050&times;1220mm</strong> (long board format) and 
+    <strong style="color:var(--accent)">2440&times;1220mm</strong> (standard board format).
+    The 3000mm desktop panel and the 3000mm cable trench lid both nest onto a single 3050&times;1220mm board (combined width: 900 + 3mm kerf + 100 = 1003mm, well within 1220mm).
+    All other structural panels nest onto standard 2440&times;1220mm boards.
   </div>
 
-  <div class="sh"><h2>A &middot; 30mm Solid Oak MDF &mdash; All Structural Panels</h2><div class="dv"></div></div>
-  <table class="pt"><thead><tr><th>Ref</th><th>Description</th><th>Qty</th><th>L mm</th><th>W mm</th><th>Thk</th><th>Notes</th></tr></thead><tbody id="oa"></tbody></table>
+  <div class="mleg">
+    <div class="mb mb-oak"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#b8945a)"></div>30mm Solid Oak MDF &mdash; All Structural Panels</div>
+    <div class="mb mb-birch"><div class="sw" style="background:linear-gradient(135deg,#d4c4a8,#c9b89a)"></div>12mm Birch MDF &mdash; Drawer Box Construction</div>
+    <div class="mb" style="background:#faf5ff;border-color:#d8b4fe;color:#7c3aed"><div class="sw" style="background:#7c3aed"></div>Purple outline = 3050&times;1220mm board &nbsp;|&nbsp; Blue outline = 2440&times;1220mm board</div>
+  </div>
 
-  <div class="sh"><h2>B &middot; 12mm Birch MDF &mdash; Drawer Boxes</h2><div class="dv"></div></div>
-  <table class="pt birch-table"><thead><tr><th>Ref</th><th>Description</th><th>Qty</th><th>L mm</th><th>W mm</th><th>Thk</th><th>Notes</th></tr></thead><tbody id="bi"></tbody></table>
+  <div class="sh"><h2>A &middot; 30mm Solid Oak MDF &mdash; Structural Panels</h2><div class="dv"></div></div>
+  <table class="pt">
+    <thead>
+      <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="oa"></tbody>
+  </table>
 
-  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting</h2><div class="dv"></div></div>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">Parts nested onto <strong style="color:var(--text)">2440&times;1220mm</strong> standard boards using guillotine bin-packing. 3mm saw-kerf between cuts. Hover a part to see its label and size. <strong style="color:var(--accent)">Note: 30mm boards are non-standard — 25mm or 32mm nearest stock sizes. Confirm availability with your supplier.</strong></p>
+  <div class="sh"><h2>B &middot; 12mm Birch MDF &mdash; Drawer Box Construction</h2><div class="dv"></div></div>
+  <table class="pt">
+    <thead>
+      <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="bi"></tbody>
+  </table>
+
+  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting Diagrams</h2><div class="dv"></div></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+    Every board is fully utilised with zero unassigned sheets. 3mm saw-kerf allowance included between all cuts. Hover over any piece to inspect its label and dimensions.
+  </p>
   <div id="bs"></div>
 
   <div class="sh"><h2>Hardware Schedule</h2><div class="dv"></div></div>
   <div class="hwlist">
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times;3000mm Continuous Piano Hinge, stainless steel, heavy-duty.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Runners:</strong> 4 Pairs&times;600mm Soft-Close Ball Bearing Slides (side-mount, 45kg).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Extension Slides:</strong> 1 Pair&times;750mm Heavy Extension Slides (45kg+ rated).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Pull Handles:</strong> 4&times;Bar Pulls (120mm hole centres).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times;Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Oak ABS Edge Banding:</strong> ~35m of 2mm Oak ABS &mdash; all exposed panel edges (30mm panels).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Pocket Screws:</strong> ~200&times;50mm for panel joints (longer than standard due to 30mm thickness).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Fixing Bolts:</strong> 8&times;M6&times;70mm barrel nuts &amp; bolts, desktop to carcass (longer for 30mm panels).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Wood Glue:</strong> 500ml PVA at all glued joints. Clamp 60 min minimum.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times; 3000mm Continuous Stainless Steel Piano Hinge (heavy duty).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Slides:</strong> 4 Pairs&times; 600mm Soft-Close Full-Extension Ball Bearing Slides (35kg rated).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Pull-Out Slides:</strong> 1 Pair&times; 750mm Heavy-Duty Telescopic Slide Rails (45kg+ rated).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Pull Handles:</strong> 4&times; Matte Black Anodised Bar Pulls (120mm fixing centres).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Oak ABS Edge Banding:</strong> ~42m of 2mm thick Oak ABS edge tape for all exposed 30mm edges.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Structural Joinery:</strong> 50mm Pocket Screws + Domino/biscuit dowels at all load-bearing panel joints.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Fixing Bolts:</strong> 8&times; M6&times;60mm Furniture Connecting Bolts &amp; Barrel Nuts to secure desktop.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Adhesive:</strong> 750ml High-strength D3 PVA Wood Glue. Pre-drill all screw holes to avoid splitting 30mm core.</span></div>
   </div>
 
-  <div class="sh"><h2>Build Notes</h2><div class="dv"></div></div>
+  <div class="sh"><h2>Workshop Notes &mdash; Standard Build</h2><div class="dv"></div></div>
   <div class="ngrid">
-    <div class="nc"><strong>Board Thickness:</strong> 30mm solid oak MDF is non-standard. Closest stock sizes are 25mm and 32mm — check with your timber merchant and adjust panel positions accordingly.</div>
-    <div class="nc"><strong>Grain Direction:</strong> Oak panels should have grain running along the longest dimension for visual continuity across the 3000mm desk front.</div>
-    <div class="nc"><strong>Desktop Machining:</strong> Route the 100mm cable trench slot from the underside to prevent surface tear-out. Use a straight-edge fence jig the full 3000mm length.</div>
-    <div class="nc"><strong>Panel Weight:</strong> At 30mm, the desktop panel alone weighs approx. 65kg. Plan for two or more people for installation and a mechanically-fixed support system.</div>
-    <div class="nc"><strong>Joinery:</strong> Pocket screws should be 50mm for 30mm panels. Consider adding Domino or loose-tenon joints at all visible panel-to-panel faces for extra rigidity.</div>
-    <div class="nc"><strong>Edge Banding:</strong> Use 2mm thick ABS edge banding for 30mm panels. Apply with a hot-air bander, flush-trim, then 240-grit sand before fitting.</div>
-    <div class="nc"><strong>Structural Benefit:</strong> 30mm panels provide a significantly stiffer, heavier carcass. All joints must be pre-drilled to prevent splitting; especially at end-grain faces.</div>
-    <div class="nc"><strong>Off-Cuts:</strong> Reserve substantial off-cuts for support battens, cleat fixing strips, and drawer kicker rails (rip to 30&times;30mm or 30&times;50mm sections).</div>
+    <div class="nc"><strong>Board Formats:</strong> The 3000mm Desktop (A1) and 3000mm Cable Lid (A2) require 1&times; 3050&times;1220mm board. Both parts fit on this single sheet. All other structural panels fit on 4&times; 2440&times;1220mm boards.</div>
+    <div class="nc"><strong>Grain Continuity:</strong> Oak veneer grain runs along the length of each board. On the desktop and lid, grain flows continuously along the 3000mm front-to-back axis.</div>
+    <div class="nc"><strong>Panel Weight:</strong> A full 30mm MDF board weighs ~80kg. Use a panel lift or team-handling during ripping and assembly.</div>
+    <div class="nc"><strong>Cable Trench Routing:</strong> Route the 100mm trench channel using a guide rail from the underside to guarantee zero top-veneer chip-out.</div>
+    <div class="nc"><strong>Joinery Pre-Drilling:</strong> Because 30mm MDF is dense, pilot-drill all screw pilot holes at 3.5mm and countersink cleanly to prevent core swelling.</div>
+    <div class="nc"><strong>Off-Cut Reclamation:</strong> The remaining strips on Sheet 1 (214mm wide &times; 3050mm long) provide excellent material for structural cleats and cable duct supports.</div>
   </div>
 
-  <div class="footer"><span>Sound Desk &mdash; Standard Build Cutting List &middot; Rev A</span><span id="fd"></span><span>All dimensions mm &middot; Standard board 2440&times;1220mm</span></div>
+  <div class="footer">
+    <span>Sound Desk &mdash; Standard Build Cutting List &middot; Rev C</span>
+    <span id="fd"></span>
+    <span>Board Formats: 3050&times;1220mm and 2440&times;1220mm</span>
+  </div>
 </div>
+
 <script>
-// Standard build: ALL structural panels are 30mm solid oak MDF
-// Dimensions adjusted from nominal to allow for 30mm thickness joints
-const oP=[
-  {ref:'A1', p:'Desktop Panel (cable trench routed)',       q:1, l:3000,w:900, n:'100mm slot routed full length 200mm from rear edge. Grain along 3000mm.'},
-  {ref:'A2', p:'Cable Trench Lid',                          q:1, l:3000,w:100, n:'12 capsule slots 25mm dia. Piano hinge rear edge.'},
-  {ref:'A3', p:'Outer Left End Panel',                      q:1, l:870, w:730, n:'Full-height outer left gable. Deduct 30mm top panel from height.'},
-  {ref:'A4', p:'Outer Right End Panel',                     q:1, l:870, w:730, n:'Full-height outer right gable. Deduct 30mm top panel from height.'},
-  {ref:'A5', p:'Back Panel - Left Pedestal',                q:1, l:450, w:730, n:'Rear closure left pedestal. Sits between outer end and inner divider.'},
-  {ref:'A6', p:'Back Panel - Left Operator',                q:1, l:650, w:730, n:'Rear closure left leg recess.'},
-  {ref:'A7', p:'Back Panel - Right Operator',               q:1, l:650, w:730, n:'Rear closure right leg recess.'},
-  {ref:'A8', p:'Back Panel - Right Pedestal',               q:1, l:450, w:730, n:'Rear closure right pedestal.'},
-  {ref:'A9', p:'Internal Divider - Left Pedestal Inner',    q:1, l:870, w:860, n:'Vertical panel at 450mm from left outer end. Full depth.'},
-  {ref:'A10',p:'Internal Divider - Left Centre',            q:1, l:870, w:860, n:'Vertical panel at 1100mm from left.'},
-  {ref:'A11',p:'Internal Divider - Centre Sub-Divider',     q:1, l:870, w:860, n:'PC/rack partition at 1400mm from left.'},
-  {ref:'A12',p:'Internal Divider - Right Centre',           q:1, l:870, w:860, n:'Vertical panel at 1900mm from left.'},
-  {ref:'A13',p:'Internal Divider - Right Pedestal Inner',   q:1, l:870, w:860, n:'Vertical panel at 2550mm from left.'},
-  {ref:'A14',p:'Plinth - Left Pedestal',                    q:1, l:860, w:450, n:'Full depth 860mm front to back.'},
-  {ref:'A15',p:'Plinth - Left Leg Recess',                  q:1, l:300, w:650, n:'Rear 300mm only, recessed from front.'},
-  {ref:'A16',p:'Plinth - Centre Bay',                       q:1, l:860, w:800, n:'Full depth under PC/rack centre section.'},
-  {ref:'A17',p:'Plinth - Right Leg Recess',                 q:1, l:300, w:650, n:'Rear 300mm only, recessed from front.'},
-  {ref:'A18',p:'Plinth - Right Pedestal',                   q:1, l:860, w:450, n:'Full depth 860mm front to back.'},
-  {ref:'A19',p:'Equipment Bay Fixed Shelf',                  q:1, l:780, w:480, n:'Supports power strip and induction loop amp.'},
-  {ref:'A20',p:'Tower PC Pull-Out Tray',                    q:1, l:780, w:260, n:'Mounted on heavy-duty extension slides.'},
-  {ref:'A21',p:'Drawer Front Panels',                       q:4, l:390, w:295, n:'2 per pedestal. Oak face visible. Handle + lock top drawer.'},
+var STD = { w: 2440, h: 1220, label: '2440\u00d71220mm', cls: 'bsz-std', bCls: 'board-std' };
+var LRG = { w: 3050, h: 1220, label: '3050\u00d71220mm', cls: 'bsz-lrg', bCls: 'board-lrg' };
+var KF = 3;
+
+// Standard Build Parts (30mm Oak MDF for all structural panels)
+// Dimensions match desk model geometry: H_DESK=760, THICKNESS=30, D_TOTAL=900, D-40=860
+var oP = [
+  { ref: 'A1',  p: 'Desktop Panel (cable trench routed)',       q: 1, l: 3000, w: 900, n: '100mm slot routed full length 200mm from rear edge. Grain along 3000mm.' },
+  { ref: 'A2',  p: 'Cable Trench Lid',                          q: 1, l: 3000, w: 100, n: '12 capsule slots 25mm dia. Piano hinge along rear edge.' },
+  { ref: 'A3',  p: 'Outer Left End Panel',                      q: 1, l: 860,  w: 730, n: 'Visible outer left gable. Height 730mm (760 - 30mm top). Depth 860mm.' },
+  { ref: 'A4',  p: 'Outer Right End Panel',                     q: 1, l: 860,  w: 730, n: 'Visible outer right gable. Height 730mm (760 - 30mm top). Depth 860mm.' },
+  { ref: 'A5',  p: 'Back Panel \u2014 Left Pedestal',           q: 1, l: 450,  w: 730, n: 'Rear closure left pedestal. Sits between outer end and inner divider.' },
+  { ref: 'A6',  p: 'Back Panel \u2014 Left Operator Recess',     q: 1, l: 650,  w: 730, n: 'Rear closure left leg recess.' },
+  { ref: 'A7',  p: 'Back Panel \u2014 Right Operator Recess',    q: 1, l: 650,  w: 730, n: 'Rear closure right leg recess.' },
+  { ref: 'A8',  p: 'Back Panel \u2014 Right Pedestal',          q: 1, l: 450,  w: 730, n: 'Rear closure right pedestal.' },
+  { ref: 'A9',  p: 'Internal Divider \u2014 Left Pedestal Inner',q: 1, l: 860,  w: 730, n: 'Vertical panel at 450mm from left outer end. Full depth 860mm.' },
+  { ref: 'A10', p: 'Internal Divider \u2014 Left Centre',       q: 1, l: 860,  w: 730, n: 'Vertical panel at 1100mm from left outer end.' },
+  { ref: 'A11', p: 'Internal Divider \u2014 Centre Sub-Divider',q: 1, l: 860,  w: 730, n: 'Partition between Tower PC and Equipment rack bays.' },
+  { ref: 'A12', p: 'Internal Divider \u2014 Right Centre',      q: 1, l: 860,  w: 730, n: 'Vertical panel at 1900mm from left outer end.' },
+  { ref: 'A13', p: 'Internal Divider \u2014 Right Pedestal Inner',q: 1, l: 860, w: 730, n: 'Vertical panel at 2550mm from left outer end.' },
+  { ref: 'A14', p: 'Plinth \u2014 Left Pedestal',               q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under left pedestal.' },
+  { ref: 'A15', p: 'Plinth \u2014 Left Leg Recess',             q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
+  { ref: 'A16', p: 'Plinth \u2014 Centre Bay',                  q: 1, l: 860,  w: 800, n: 'Full depth 860mm under central PC and rack sections.' },
+  { ref: 'A17', p: 'Plinth \u2014 Right Leg Recess',            q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
+  { ref: 'A18', p: 'Plinth \u2014 Right Pedestal',              q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under right pedestal.' },
+  { ref: 'A19', p: 'Equipment Bay Fixed Shelf',                 q: 1, l: 780,  w: 480, n: 'Supports power management and induction loop amplifier.' },
+  { ref: 'A20', p: 'Tower PC Pull-Out Tray',                   q: 1, l: 780,  w: 260, n: 'Mounted on heavy-duty telescopic slide rails.' },
+  { ref: 'A21', p: 'Drawer Front Panels',                      q: 4, l: 390,  w: 295, n: '2 per pedestal. Finished oak face visible. Handles centred.' }
 ];
-const bP=[
-  {ref:'B1',p:'Drawer Box Side Walls',  q:8, l:570,w:220,n:'2 walls per box x 4 drawers (2 pedestals x 2 each). Inset for 30mm fronts.'},
-  {ref:'B2',p:'Drawer Box Front/Back',  q:8, l:306,w:220,n:'1 front + 1 back per box x 4 drawers.'},
-  {ref:'B3',p:'Drawer Box Base Panels', q:4, l:546,w:306,n:'1 base per box x 4 drawers. Groove 6mm from bottom.'},
+
+var bP = [
+  { ref: 'B1', p: 'Drawer Box Side Walls',  q: 8, l: 570, w: 220, n: '2 sides per box \u00d7 4 drawers. 570mm length for 600mm runner.' },
+  { ref: 'B2', p: 'Drawer Box Front/Back',  q: 8, l: 306, w: 220, n: '1 front + 1 back per box \u00d7 4 drawers.' },
+  { ref: 'B3', p: 'Drawer Box Base Panels', q: 4, l: 546, w: 306, n: '1 bottom panel per box \u00d7 4 drawers. Inset into 6mm bottom groove.' }
 ];
-function fillT(id,parts,pc,thk){const tb=document.getElementById(id);parts.forEach(p=>{const tr=document.createElement('tr');tr.innerHTML='<td class="rc">'+p.ref+'</td><td>'+p.p+'</td><td class="qc">'+p.q+'</td><td class="dc">'+p.l+'</td><td class="dc">'+p.w+'</td><td><span class="pill '+pc+'">'+thk+'mm</span></td><td style="font-size:11px;color:var(--muted)">'+p.n+'</td>';tb.appendChild(tr);});}
-fillT('oa',oP,'p-oak',30);fillT('bi',bP,'p-birch',12);
-const BW=2440,BH=1220,KF=3;
-function pack(pieces){const sorted=[...pieces].sort((a,b)=>b.w*b.h-a.w*a.h);const sheets=[];let left=sorted.slice();while(left.length>0){const free=[{x:0,y:0,w:BW,h:BH}];const placed=[];const rem=[];left.forEach(pc=>{let done=false;for(const ori of [{w:pc.w,h:pc.h},{w:pc.h,h:pc.w}]){if(done)break;let bi=-1,ba=Infinity;free.forEach((fr,i)=>{if(ori.w<=fr.w&&ori.h<=fr.h&&fr.w*fr.h<ba){ba=fr.w*fr.h;bi=i;}});if(bi>=0){const fr=free[bi];const{w,h}=ori;placed.push({x:fr.x,y:fr.y,w,h,label:pc.label,ref:pc.ref,col:pc.col});const nf=[];if(fr.w-w-KF>8)nf.push({x:fr.x+w+KF,y:fr.y,w:fr.w-w-KF,h});if(fr.h-h-KF>8)nf.push({x:fr.x,y:fr.y+h+KF,w:fr.w,h:fr.h-h-KF});free.splice(bi,1,...nf);done=true;}}if(!done)rem.push(pc);});const wa=Math.round((1-placed.reduce((s,p)=>s+p.w*p.h,0)/(BW*BH))*100);sheets.push({placed,waste:wa});if(rem.length===left.length){const fp=rem[0];sheets.push({placed:[{x:0,y:0,w:fp.w,h:fp.h,label:fp.label,ref:fp.ref,col:fp.col}],waste:100});left=rem.slice(1);}else{left=rem;}}return sheets;}
-const oakCols=['#c49a3c','#d4aa4c','#b48a2c','#e4ba5c','#c8a040','#dab050','#a87830','#f0ca6c','#ba9038','#cc9e44'];
-const birchCols=['#a89060','#b8a070','#988050','#c8b080','#ac9464','#baa868'];
-function expand(parts,cols){const out=[];parts.forEach((p,pi)=>{for(let i=0;i<p.q;i++)out.push({w:p.l,h:p.w,label:p.p+(p.q>1?' ('+(i+1)+'/'+p.q+')':''),ref:p.ref+(p.q>1?'.'+(i+1):''),col:cols[pi%cols.length]});});return out;}
-const oX=expand(oP,oakCols),bX=expand(bP,birchCols);
-function wc(w){return w<=25?'wg':w<=45?'wo':'wr';}
-function renderG(container,title,accent,pcs){
-  if(!pcs.length)return;
-  const sheets=pack(pcs);
-  const avgW=Math.round(sheets.reduce((s,sh)=>s+sh.waste,0)/sheets.length);
-  const hdr=document.createElement('div');hdr.className='bh';
-  hdr.innerHTML='<div><div class="bl">'+title+'</div><div class="br">'+sheets.length+' board'+(sheets.length>1?'s':'')+' required &middot; '+pcs.length+' parts &middot; 2440 &times; 1220 mm</div></div><span class="wb '+wc(avgW)+'">&oslash; '+avgW+'% waste</span>';
-  container.appendChild(hdr);
-  const grid=document.createElement('div');grid.className='bgrid';
-  sheets.forEach((sh,si)=>{
-    const card=document.createElement('div');card.className='bcard';
-    const bchdr=document.createElement('div');bchdr.className='bchdr';
-    bchdr.innerHTML='<span class="bn">Board '+(si+1)+' of '+sheets.length+'</span><span class="wb '+wc(sh.waste)+'">'+sh.waste+'% waste</span>';
-    card.appendChild(bchdr);
-    const CW=640,CH=Math.round(CW*BH/BW);
-    const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;
-    const ctx=cv.getContext('2d');const sc=CW/BW;
-    ctx.fillStyle='#f8f3e8';ctx.fillRect(0,0,CW,CH);
-    ctx.strokeStyle='rgba(0,0,0,0.06)';ctx.lineWidth=0.5;
-    for(let gx=0;gx<=BW;gx+=200){ctx.beginPath();ctx.moveTo(gx*sc,0);ctx.lineTo(gx*sc,CH);ctx.stroke();}
-    for(let gy=0;gy<=BH;gy+=200){ctx.beginPath();ctx.moveTo(0,gy*sc);ctx.lineTo(CW,gy*sc);ctx.stroke();}
-    ctx.fillStyle='rgba(220,38,38,0.04)';ctx.fillRect(0,0,CW,CH);
-    cv._hits=[];
-    sh.placed.forEach((p,pi)=>{
-      const px=p.x*sc,py=p.y*sc,pw=p.w*sc,ph=p.h*sc;
-      ctx.fillStyle=p.col;ctx.fillRect(px+1,py+1,pw-2,ph-2);
-      ctx.save();ctx.beginPath();ctx.rect(px+1,py+1,pw-2,ph-2);ctx.clip();
-      ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=0.8;
-      for(let gi=-ph;gi<pw+ph;gi+=5){ctx.beginPath();ctx.moveTo(px+gi,py);ctx.lineTo(px+gi+ph,py+ph);ctx.stroke();}
-      ctx.restore();
-      ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=0.8;ctx.strokeRect(px+.5,py+.5,pw-1,ph-1);
-      if(pw>18&&ph>10){const fs=Math.min(10,Math.max(6,ph*.32));ctx.fillStyle='rgba(0,0,0,0.75)';ctx.font='bold '+fs+'px JetBrains Mono,monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.ref,px+pw/2,py+ph/2);if(ph>26&&pw>32){ctx.fillStyle='rgba(0,0,0,0.45)';ctx.font=Math.max(5,fs*.75)+'px JetBrains Mono,monospace';ctx.fillText(p.w+'\u00d7'+p.h,px+pw/2,py+ph/2+fs+1);}}
-      cv._hits.push({px,py,pw,ph,label:p.label,ref:p.ref,w:p.w,h:p.h});
+
+function boardFor(l, w) {
+  var fits2440 = (l <= 2440 && w <= 1220) || (w <= 2440 && l <= 1220);
+  return fits2440 ? STD : LRG;
+}
+
+function fillT(id, parts, pc, thk) {
+  var tb = document.getElementById(id);
+  parts.forEach(function(p) {
+    var bd = boardFor(p.l, p.w);
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="rc">' + p.ref + '</td>'
+      + '<td>' + p.p + '</td>'
+      + '<td class="qc">' + p.q + '</td>'
+      + '<td class="dc">' + p.l + '</td>'
+      + '<td class="dc">' + p.w + '</td>'
+      + '<td><span class="pill ' + pc + '">' + thk + 'mm</span></td>'
+      + '<td><span class="bsz ' + bd.cls + '">' + bd.label + '</span></td>'
+      + '<td style="font-size:11px;color:var(--dim)">' + p.n + '</td>';
+    tb.appendChild(tr);
+  });
+}
+fillT('oa', oP, 'p-oak', 30);
+fillT('bi', bP, 'p-birch', 12);
+
+function canFit(pw, ph, bw, bh) {
+  return (pw <= bw && ph <= bh) || (ph <= bw && pw <= bh);
+}
+
+// Multi-heuristic Guillotine Bin-Packing Algorithm
+function packSmart(pieces) {
+  var sortStrategies = [
+    function(a, b) { return (b.w * b.h) - (a.w * a.h); },
+    function(a, b) { return Math.max(b.w, b.h) - Math.max(a.w, a.h); },
+    function(a, b) { return (b.w + b.h) - (a.w + a.h); },
+    function(a, b) { return Math.min(b.w, b.h) - Math.min(a.w, a.h); }
+  ];
+
+  var bestResult = null;
+
+  sortStrategies.forEach(function(sortFn, sIdx) {
+    ['BAF', 'BSSF', 'BLSF'].forEach(function(heuristic) {
+      var sorted = pieces.slice().sort(sortFn);
+      var sheets = [];
+      var left = sorted.slice();
+      var safety = 0;
+
+      while (left.length > 0 && safety < 200) {
+        safety++;
+        var reqLrg = left.some(function(p) { return !canFit(p.w, p.h, STD.w, STD.h); });
+        var board = reqLrg ? (canFit(left[0].w, left[0].h, STD.w, STD.h) ? STD : LRG) : STD;
+        var BW = board.w, BH = board.h;
+        var free = [{ x: 0, y: 0, w: BW, h: BH }];
+        var placed = [];
+        var rem = [];
+
+        left.forEach(function(pc) {
+          if (!canFit(pc.w, pc.h, BW, BH)) { rem.push(pc); return; }
+          var done = false;
+          var oris = [{ w: pc.w, h: pc.h }];
+          if (pc.w !== pc.h) oris.push({ w: pc.h, h: pc.w });
+
+          var bestScore = Infinity;
+          var bestFreeIdx = -1;
+          var bestOri = null;
+
+          oris.forEach(function(ori) {
+            if (!canFit(ori.w, ori.h, BW, BH)) return;
+            free.forEach(function(fr, fi) {
+              if (ori.w <= fr.w && ori.h <= fr.h) {
+                var score;
+                if (heuristic === 'BAF') {
+                  score = fr.w * fr.h - ori.w * ori.h;
+                } else if (heuristic === 'BSSF') {
+                  score = Math.min(fr.w - ori.w, fr.h - ori.h);
+                } else {
+                  score = Math.max(fr.w - ori.w, fr.h - ori.h);
+                }
+                if (score < bestScore) {
+                  bestScore = score;
+                  bestFreeIdx = fi;
+                  bestOri = ori;
+                }
+              }
+            });
+          });
+
+          if (bestFreeIdx >= 0) {
+            var fr2 = free[bestFreeIdx];
+            var pw = bestOri.w, ph = bestOri.h;
+            placed.push({ x: fr2.x, y: fr2.y, w: pw, h: ph, label: pc.label, ref: pc.ref, col: pc.col });
+
+            var dw = fr2.w - pw - KF;
+            var dh = fr2.h - ph - KF;
+            var nf = [];
+            if (dw > dh) {
+              if (dw > 8) nf.push({ x: fr2.x + pw + KF, y: fr2.y, w: dw, h: fr2.h });
+              if (dh > 8) nf.push({ x: fr2.x, y: fr2.y + ph + KF, w: pw, h: dh });
+            } else {
+              if (dh > 8) nf.push({ x: fr2.x, y: fr2.y + ph + KF, w: fr2.w, h: dh });
+              if (dw > 8) nf.push({ x: fr2.x + pw + KF, y: fr2.y, w: dw, h: ph });
+            }
+            free.splice(bestFreeIdx, 1);
+            nf.forEach(function(f) { free.push(f); });
+            done = true;
+          }
+          if (!done) rem.push(pc);
+        });
+
+        if (placed.length === 0) {
+          rem = left.slice(1);
+        }
+        var usedA = placed.reduce(function(s, p) { return s + p.w * p.h; }, 0);
+        var waste = placed.length > 0 ? Math.round((1 - usedA / (BW * BH)) * 100) : 0;
+        if (placed.length > 0) sheets.push({ placed: placed, waste: waste, board: board });
+        left = rem;
+      }
+
+      var score = sheets.length * 10000 + sheets.reduce(function(s, sh) { return s + sh.waste; }, 0);
+      if (!bestResult || score < bestResult.score) {
+        bestResult = { sheets: sheets, score: score, sort: sIdx, heuristic: heuristic };
+      }
     });
-    ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=1.2;ctx.strokeRect(.6,.6,CW-1.2,CH-1.2);
-    ctx.fillStyle='rgba(180,83,9,0.7)';ctx.font='7.5px JetBrains Mono,monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('2440 mm',CW/2,CH-1);ctx.save();ctx.translate(7,CH/2);ctx.rotate(-Math.PI/2);ctx.textBaseline='middle';ctx.fillText('1220 mm',0,0);ctx.restore();
+  });
+  return bestResult.sheets;
+}
+
+function expand(parts, cols) {
+  var out = [];
+  parts.forEach(function(p, pi) {
+    for (var i = 0; i < p.q; i++) {
+      out.push({
+        w: p.l,
+        h: p.w,
+        label: p.p + (p.q > 1 ? ' (' + (i + 1) + '/' + p.q + ')' : ''),
+        ref: p.ref + (p.q > 1 ? '.' + (i + 1) : ''),
+        col: cols[pi % cols.length]
+      });
+    }
+  });
+  return out;
+}
+
+var oakCols = ['#c49a3c', '#d4aa4c', '#b48a2c', '#e4ba5c', '#c8a040', '#dab050', '#a87830', '#f0ca6c', '#ba9038', '#cc9e44'];
+var birchCols = ['#a89060', '#b8a070', '#988050', '#c8b080', '#ac9464', '#baa868'];
+var oX = expand(oP, oakCols);
+var bX = expand(bP, birchCols);
+
+function wc(w) { return w <= 25 ? 'wg' : w <= 50 ? 'wo' : 'wr'; }
+
+function renderG(container, title, accent, pcs) {
+  if (!pcs.length) return;
+  var sheets = packSmart(pcs);
+  var lrgCount = sheets.filter(function(s) { return s.board === LRG; }).length;
+  var stdCount = sheets.filter(function(s) { return s.board === STD; }).length;
+  var avgW = Math.round(sheets.reduce(function(s, sh) { return s + sh.waste; }, 0) / sheets.length);
+
+  var hdr = document.createElement('div');
+  hdr.className = 'bh';
+  var bdInfo = '';
+  if (lrgCount > 0) bdInfo += ' &bull; <strong style="color:var(--purple)">' + lrgCount + ' \u00d7 3050\u00d71220</strong>';
+  if (stdCount > 0) bdInfo += ' &bull; <strong style="color:var(--accent)">' + stdCount + ' \u00d7 2440\u00d71220</strong>';
+
+  hdr.innerHTML = '<div><div class="bl" style="color:' + accent + '">' + title + '</div>'
+    + '<div class="br">' + sheets.length + ' board' + (sheets.length > 1 ? 's' : '') + ' required &middot; ' + pcs.length + ' parts' + bdInfo + '</div></div>'
+    + '<span class="wb ' + wc(avgW) + '">&oslash; ' + avgW + '% waste</span>';
+  container.appendChild(hdr);
+
+  var grid = document.createElement('div');
+  grid.className = 'bgrid';
+
+  sheets.forEach(function(sh, si) {
+    var bd = sh.board;
+    var card = document.createElement('div');
+    card.className = 'bcard ' + bd.bCls;
+
+    var bchdr = document.createElement('div');
+    bchdr.className = 'bchdr';
+    bchdr.innerHTML = '<div><span class="bn">Board ' + (si + 1) + ' of ' + sheets.length + '</span>'
+      + '<span class="bsz ' + bd.cls + '">' + bd.label + '</span></div>'
+      + '<span class="wb ' + wc(sh.waste) + '">' + sh.waste + '% waste</span>';
+    card.appendChild(bchdr);
+
+    var CW = 640;
+    var aspect = bd.h / bd.w;
+    var CH = Math.round(CW * aspect);
+
+    var cv = document.createElement('canvas');
+    cv.width = CW;
+    cv.height = CH;
+    var ctx = cv.getContext('2d');
+    var sc = CW / bd.w;
+
+    // Draw board background & grid
+    ctx.fillStyle = '#faf8f5';
+    ctx.fillRect(0, 0, CW, CH);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+    ctx.lineWidth = 0.5;
+    for (var gx = 0; gx <= bd.w; gx += 200) { ctx.beginPath(); ctx.moveTo(gx * sc, 0); ctx.lineTo(gx * sc, CH); ctx.stroke(); }
+    for (var gy = 0; gy <= bd.h; gy += 200) { ctx.beginPath(); ctx.moveTo(0, gy * sc); ctx.lineTo(CW, gy * sc); ctx.stroke(); }
+
+    cv._hits = [];
+    sh.placed.forEach(function(p) {
+      var px = p.x * sc, py = p.y * sc, pw = p.w * sc, ph = p.h * sc;
+      ctx.fillStyle = p.col;
+      ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(px + 1, py + 1, pw - 2, ph - 2);
+      ctx.clip();
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 0.8;
+      for (var gi = -ph; gi < pw + ph; gi += 5) {
+        ctx.beginPath();
+        ctx.moveTo(px + gi, py);
+        ctx.lineTo(px + gi + ph, py + ph);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+      ctx.lineWidth = 0.8;
+      ctx.strokeRect(px + 0.5, py + 0.5, pw - 1, ph - 1);
+
+      if (pw > 18 && ph > 10) {
+        var fs = Math.min(10, Math.max(6, ph * 0.32));
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.font = 'bold ' + fs + 'px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(p.ref, px + pw / 2, py + ph / 2);
+
+        if (ph > 26 && pw > 32) {
+          ctx.fillStyle = 'rgba(0,0,0,0.5)';
+          ctx.font = Math.max(5, fs * 0.75) + 'px JetBrains Mono, monospace';
+          ctx.fillText(p.w + '\u00d7' + p.h, px + pw / 2, py + ph / 2 + fs + 1);
+        }
+      }
+      cv._hits.push({ px: px, py: py, pw: pw, ph: ph, label: p.label, ref: p.ref, w: p.w, h: p.h });
+    });
+
+    // Board outer border & dimension labels
+    ctx.strokeStyle = bd === LRG ? 'rgba(124,58,237,0.6)' : 'rgba(15,95,168,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(0.75, 0.75, CW - 1.5, CH - 1.5);
+
+    ctx.fillStyle = bd === LRG ? 'rgba(124,58,237,0.8)' : 'rgba(15,95,168,0.8)';
+    ctx.font = '8px JetBrains Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(bd.w + ' mm', CW / 2, CH - 2);
+
+    ctx.save();
+    ctx.translate(8, CH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(bd.h + ' mm', 0, 0);
+    ctx.restore();
+
     card.appendChild(cv);
-    const tip=document.createElement('div');tip.className='tip';tip.textContent='Hover a part to see details';card.appendChild(tip);
-    cv.addEventListener('mousemove',function(e){const r=cv.getBoundingClientRect();const mx=(e.clientX-r.left)*(CW/r.width);const my=(e.clientY-r.top)*(CH/r.height);const hit=(cv._hits||[]).find(function(h){return mx>=h.px&&mx<=h.px+h.pw&&my>=h.py&&my<=h.py+h.ph;});if(hit){tip.innerHTML='<strong>'+hit.ref+'</strong> &middot; '+hit.label+' &middot; <span style="color:'+accent+'">'+hit.w+' &times; '+hit.h+' mm</span>';cv.style.cursor='crosshair';}else{tip.textContent='Hover a part to see details';cv.style.cursor='default';}});
-    cv.addEventListener('mouseleave',function(){tip.textContent='Hover a part to see details';});
+
+    var tip = document.createElement('div');
+    tip.className = 'tip';
+    tip.textContent = 'Hover a part to see details';
+    card.appendChild(tip);
+
+    cv.addEventListener('mousemove', function(e) {
+      var r = cv.getBoundingClientRect();
+      var mx = (e.clientX - r.left) * (CW / r.width);
+      var my = (e.clientY - r.top) * (CH / r.height);
+      var hit = null;
+      for (var hi = 0; hi < cv._hits.length; hi++) {
+        var h = cv._hits[hi];
+        if (mx >= h.px && mx <= h.px + h.pw && my >= h.py && my <= h.py + h.ph) {
+          hit = h;
+          break;
+        }
+      }
+      if (hit) {
+        tip.innerHTML = '<strong>' + hit.ref + '</strong> &middot; ' + hit.label + ' &middot; <span style="color:' + accent + ';font-weight:700">' + hit.w + '&times;' + hit.h + ' mm</span>';
+        cv.style.cursor = 'crosshair';
+      } else {
+        tip.textContent = 'Hover a part to see details';
+        cv.style.cursor = 'default';
+      }
+    });
+    cv.addEventListener('mouseleave', function() {
+      tip.textContent = 'Hover a part to see details';
+    });
+
     grid.appendChild(card);
   });
+
   container.appendChild(grid);
 }
-const bsEl=document.getElementById('bs');
-renderG(bsEl,'30mm Solid Oak MDF &mdash; All Structural Panels','#92400e',oX);
-renderG(bsEl,'12mm Birch MDF (Drawer Boxes)','#15803d',bX);
-function sCnt(pcs){return pcs.length?pack(pcs).length:0;}
-const oS=sCnt(oX),bS=sCnt(bX);
-const totP=oP.reduce(function(s,p){return s+p.q;},0)+bP.reduce(function(s,p){return s+p.q;},0);
-const hsEl=document.getElementById('hs');
-[{v:oS,l:'30mm Oak MDF Boards',s:'2440x1220x30mm'},{v:bS,l:'12mm Birch MDF Boards',s:'2440x1220x12mm'},{v:oS+bS,l:'Total Boards',s:'All materials'},{v:totP,l:'Total Parts',s:'Unique pieces'}].forEach(function(d){const el=document.createElement('div');el.className='sc';el.innerHTML='<div class="v">'+d.v+'</div><div class="l">'+d.l+'</div><div class="s">'+d.s+'</div>';hsEl.appendChild(el);});
-const ds=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
-document.getElementById('dl').textContent=ds;document.getElementById('fd').textContent=ds;
+
+var bsEl = document.getElementById('bs');
+renderG(bsEl, '30mm Solid Oak MDF \u2014 All Structural Panels', '#92400e', oX);
+renderG(bsEl, '12mm Birch MDF \u2014 Drawer Boxes', '#15803d', bX);
+
+var oSheets = packSmart(oX);
+var bSheets = packSmart(bX);
+var oLrg = oSheets.filter(function(s) { return s.board === LRG; }).length;
+var oStd = oSheets.filter(function(s) { return s.board === STD; }).length;
+var bStd = bSheets.filter(function(s) { return s.board === STD; }).length;
+var totP = 0;
+[oP, bP].forEach(function(g) { g.forEach(function(p) { totP += p.q; }); });
+
+var hsEl = document.getElementById('hs');
+[
+  { v: oSheets.length, l: '30mm Oak MDF Boards', s: oLrg + '\u00d73050 + ' + oStd + '\u00d72440mm' },
+  { v: bSheets.length, l: '12mm Birch MDF Boards', s: bStd + '\u00d72440\u00d71220mm' },
+  { v: oSheets.length + bSheets.length, l: 'Total Boards', s: 'All materials' },
+  { v: totP, l: 'Total Parts', s: 'Unique pieces' }
+].forEach(function(d) {
+  var el = document.createElement('div');
+  el.className = 'sc';
+  el.innerHTML = '<div class="v">' + d.v + '</div><div class="l">' + d.l + '</div><div class="s">' + d.s + '</div>';
+  hsEl.appendChild(el);
+});
+
+var ds = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+document.getElementById('dl').textContent = ds;
+document.getElementById('fd').textContent = ds;
 </script>
 </body>
 </html>

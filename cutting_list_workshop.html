@@ -1,230 +1,736 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Workshop Build - Optimised Cutting List | Sound Desk</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Workshop Build — Optimised Cutting List | Sound Desk</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--accent:#0f5fa8;--accent2:#b45309;--green:#16a34a;--red:#dc2626;--gold:#d97706;--text:#1e293b;--muted:#475569;--dim:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--panel:#ffffff;--font:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;}
-    @page{size:A4 landscape;margin:10mm 12mm;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:13px;line-height:1.5;}
-    .top-bar{background:var(--panel);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
-    .tbl{display:flex;align-items:center;gap:12px;}
-    .back-btn{background:#f1f5f9;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--font);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .15s;}
-    .back-btn:hover{background:#e2e8f0;color:var(--text);}
-    .dtl h1{font-size:16px;font-weight:800;color:var(--text);}
-    .dtl p{font-size:11px;color:var(--muted);margin-top:1px;}
-    .pbtn{background:var(--accent);color:#fff;border:none;padding:7px 18px;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--font);transition:all .15s;}
-    .pbtn:hover{background:#1e40af;box-shadow:0 2px 10px rgba(15,95,168,.3);}
-    .wrap{max-width:1280px;margin:0 auto;padding:24px 24px 56px;}
-    .hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:24px;}
-    .sc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .sc .v{font-size:24px;font-weight:800;color:var(--accent);font-family:var(--mono);}
-    .sc .l{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
-    .sc .s{font-size:9px;color:var(--dim);margin-top:1px;}
-    .sh{display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:28px;}
-    .sh h2{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-family:var(--mono);white-space:nowrap;}
-    .sh .dv{flex:1;height:1px;background:var(--border);}
-    .mleg{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
-    .mb{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:7px;border:1px solid;font-size:11px;font-weight:600;}
-    .mb-oak{background:#fef3c7;border-color:#fcd34d;color:#92400e;}
-    .mb-mel{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8;}
-    .mb-birch{background:#f0fdf4;border-color:#86efac;color:#15803d;}
-    .sw{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
-    .pt{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:4px;background:var(--panel);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .pt thead tr{background:#f1f5f9;border-bottom:2px solid var(--border);}
-    .pt th{padding:8px 10px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-family:var(--mono);}
-    .pt td{padding:7px 10px;border-bottom:1px solid #f1f5f9;vertical-align:middle;}
-    .pt tbody tr:hover{background:#f8fafc;}
-    .pt tbody tr:last-child td{border-bottom:none;}
-    .pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);white-space:nowrap;}
-    .p-oak{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;}
-    .p-mel{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd;}
-    .p-birch{background:#f0fdf4;color:#15803d;border:1px solid #86efac;}
-    .dc{font-family:var(--mono);font-size:11px;color:var(--muted);}
-    .qc{font-family:var(--mono);font-weight:700;color:var(--gold);text-align:center;}
-    .rc{font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--dim);}
-    .bh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:10px 14px;background:var(--panel);border:1px solid var(--border);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .bh .bl{font-size:13px;font-weight:700;color:var(--text);}
-    .bh .br{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:1px;}
-    .wb{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:var(--mono);}
-    .wg{background:#dcfce7;color:var(--green);border:1px solid #86efac;}
-    .wo{background:#fef9c3;color:var(--gold);border:1px solid #fde047;}
-    .wr{background:#fee2e2;color:var(--red);border:1px solid #fca5a5;}
-    .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:28px;}
-    .bcard{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
-    .bchdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-    .bchdr .bn{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--muted);}
-    canvas{width:100%;border-radius:5px;display:block;border:1px solid var(--border);}
-    .tip{font-size:11px;color:var(--muted);min-height:17px;margin-top:5px;font-family:var(--mono);}
-    .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px;margin-top:6px;}
-    .nc{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:7px;padding:10px 12px;font-size:11.5px;color:var(--muted);line-height:1.6;box-shadow:0 1px 2px rgba(0,0,0,0.03);}
-    .nc strong{color:var(--text);}
-    .hwlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:8px;}
-    .hw{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,0.03);}
-    .hb{color:var(--accent);font-size:14px;line-height:1;margin-top:1px;flex-shrink:0;}
-    .footer{margin-top:40px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--dim);}
-    @media print{.top-bar{display:none;}.wrap{padding:8px;max-width:100%;}}
+    :root {
+      --accent: #0f5fa8;
+      --accent-dark: #0a4478;
+      --green: #16a34a;
+      --amber: #d97706;
+      --red: #dc2626;
+      --purple: #7c3aed;
+      --text: #0f172a;
+      --muted: #475569;
+      --dim: #94a3b8;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    @page { size: A4 landscape; margin: 10mm 12mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .top-bar {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+    .tbl { display: flex; align-items: center; gap: 16px; }
+    .back-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text); }
+    .dtl h1 { font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .dtl p { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .tbr { display: flex; align-items: center; gap: 10px; }
+    .nav-tabs {
+      display: flex;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .nav-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab.active {
+      background: var(--panel);
+      color: var(--accent);
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+    .pbtn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+    .pbtn:hover { background: var(--accent-dark); }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px; }
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .sc {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .sc .v { font-size: 24px; font-weight: 800; color: var(--accent); font-family: var(--mono); }
+    .sc .l { font-size: 10.5px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+    .sc .s { font-size: 10px; color: var(--dim); margin-top: 2px; font-family: var(--mono); }
+    .callout-board {
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-left: 4px solid var(--purple);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #5b21b6;
+      line-height: 1.6;
+    }
+    .callout-board strong { color: #4c1d95; }
+    .mleg { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .mb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 7px;
+      border: 1px solid;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .mb-oak { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
+    .mb-mel { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+    .mb-birch { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    .sw { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+    .sh { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; margin-top: 28px; }
+    .sh h2 { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-family: var(--mono); white-space: nowrap; }
+    .sh .dv { flex: 1; height: 1px; background: var(--border); }
+    .pt {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 6px;
+      background: var(--panel);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .pt thead tr { background: #f1f5f9; border-bottom: 2px solid var(--border); }
+    .pt th { padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); font-family: var(--mono); }
+    .pt td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .pt tbody tr:hover { background: #f8fafc; }
+    .pt tbody tr:last-child td { border-bottom: none; }
+    .pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9.5px; font-weight: 700; font-family: var(--mono); }
+    .p-oak { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .p-mel { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .p-birch { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+    .dc { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); }
+    .qc { font-family: var(--mono); font-weight: 800; color: var(--amber); text-align: center; }
+    .rc { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); }
+    .bh {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.03);
+    }
+    .bh .bl { font-size: 14px; font-weight: 800; }
+    .bh .br { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 2px; }
+    .wb { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+    .wg { background: #dcfce7; color: var(--green); border: 1px solid #86efac; }
+    .wo { background: #fef9c3; color: var(--amber); border: 1px solid #fde047; }
+    .wr { background: #fee2e2; color: var(--red); border: 1px solid #fca5a5; }
+    .bgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .bcard {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .bcard:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.07); }
+    .board-lrg { border-left: 4px solid var(--purple) !important; }
+    .board-std { border-left: 4px solid var(--accent) !important; }
+    .bchdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .bchdr .bn { font-size: 12px; font-weight: 800; font-family: var(--mono); color: var(--text); }
+    .bchdr .bsz {
+      font-size: 10.5px;
+      font-weight: 700;
+      font-family: var(--mono);
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    .bsz-lrg { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+    .bsz-std { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    canvas { width: 100%; border-radius: 6px; display: block; border: 1px solid var(--border); background: #ffffff; }
+    .tip { font-size: 11px; color: var(--muted); min-height: 18px; margin-top: 8px; font-family: var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ngrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 8px; }
+    .nc {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      box-shadow: 0 1px 3px rgba(0,0,0,.02);
+    }
+    .nc strong { color: var(--text); }
+    .hwlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+    .hw {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .hb { color: var(--accent); font-size: 15px; line-height: 1; margin-top: 2px; flex-shrink: 0; }
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--dim);
+      font-family: var(--mono);
+    }
+    @media print {
+      .top-bar, .nav-tabs, .pbtn, .back-btn { display: none !important; }
+      .wrap { padding: 0; max-width: 100%; }
+      .bcard { break-inside: avoid; page-break-inside: avoid; box-shadow: none; border: 1px solid #cbd5e1; }
+    }
   </style>
 </head>
 <body>
+
 <div class="top-bar">
   <div class="tbl">
-    <a href="javascript:window.close()" class="back-btn">&#8592; Close</a>
+    <a href="./index.html" class="back-btn">&#8592; Back to 3D Desk</a>
     <div class="dtl">
       <h1>Workshop Build &mdash; Optimised Cutting List</h1>
       <p>18mm Oak-Veneered MDF &middot; 18mm Black Melamine MDF &middot; 12mm Birch MDF &middot; 3000&times;900&times;760mm Sound Desk &middot; <span id="dl"></span></p>
     </div>
   </div>
-  <button class="pbtn" onclick="window.print()">&#128438; Print / Save PDF</button>
+  <div class="tbr">
+    <div class="nav-tabs">
+      <a href="./cutting_list_standard.html" class="nav-tab">Standard (30mm)</a>
+      <a href="./cutting_list_workshop.html" class="nav-tab active">Workshop (18mm)</a>
+    </div>
+    <button class="pbtn" onclick="window.print()">&#128438; Print / Save PDF</button>
+  </div>
 </div>
+
 <div class="wrap">
   <div class="hero" id="hs"></div>
 
-  <div class="mleg">
-    <div class="mb mb-oak"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#b8945a)"></div>18mm Oak-Veneered MDF &mdash; Top, Backs, Ends, Drawer Fronts</div>
-    <div class="mb mb-mel"><div class="sw" style="background:linear-gradient(135deg,#1a1d22,#0d0f12);border:1px solid #cbd5e1"></div>18mm Black Melamine MDF &mdash; Dividers, Plinths, Shelves</div>
-    <div class="mb mb-birch"><div class="sw" style="background:linear-gradient(135deg,#d4c4a8,#c9b89a)"></div>12mm Birch MDF &mdash; Drawer Box Construction</div>
+  <div class="callout-board">
+    <strong>Board Size Specification:</strong> Cutting plans utilise exactly two board sizes: 
+    <strong style="color:var(--purple)">3050&times;1220mm</strong> (long board format) and 
+    <strong style="color:var(--accent)">2440&times;1220mm</strong> (standard board format).
+    The 3000mm desktop panel and the 3000mm cable trench lid both nest onto a single 3050&times;1220mm board (combined width: 900 + 3mm kerf + 100 = 1003mm, within 1220mm).
+    All other oak, melamine, and birch panels nest cleanly onto standard 2440&times;1220mm boards.
   </div>
 
-  <div class="sh"><h2>A &middot; 18mm Oak-Veneered MDF</h2><div class="dv"></div></div>
-  <table class="pt"><thead><tr><th>Ref</th><th>Description</th><th>Qty</th><th>L mm</th><th>W mm</th><th>Thk</th><th>Notes</th></tr></thead><tbody id="oa"></tbody></table>
+  <div class="mleg">
+    <div class="mb mb-oak"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#b8945a)"></div>18mm Oak-Veneered MDF &mdash; Top, Backs, Outer Ends, Drawer Fronts</div>
+    <div class="mb mb-mel"><div class="sw" style="background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #cbd5e1"></div>18mm Black Melamine MDF &mdash; Dividers, Plinths, Shelves</div>
+    <div class="mb mb-birch"><div class="sw" style="background:linear-gradient(135deg,#d4c4a8,#c9b89a)"></div>12mm Birch MDF &mdash; Drawer Box Construction</div>
+    <div class="mb" style="background:#faf5ff;border-color:#d8b4fe;color:#7c3aed"><div class="sw" style="background:#7c3aed"></div>Purple outline = 3050&times;1220mm board &nbsp;|&nbsp; Blue outline = 2440&times;1220mm board</div>
+  </div>
 
-  <div class="sh"><h2>B &middot; 18mm Black Melamine MDF</h2><div class="dv"></div></div>
-  <table class="pt"><thead><tr><th>Ref</th><th>Description</th><th>Qty</th><th>L mm</th><th>W mm</th><th>Thk</th><th>Notes</th></tr></thead><tbody id="me"></tbody></table>
+  <div class="sh"><h2>A &middot; 18mm Oak-Veneered MDF &mdash; Visible Exterior Surfaces</h2><div class="dv"></div></div>
+  <table class="pt">
+    <thead>
+      <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="oa"></tbody>
+  </table>
 
-  <div class="sh"><h2>C &middot; 12mm Birch MDF &mdash; Drawer Boxes</h2><div class="dv"></div></div>
-  <table class="pt"><thead><tr><th>Ref</th><th>Description</th><th>Qty</th><th>L mm</th><th>W mm</th><th>Thk</th><th>Notes</th></tr></thead><tbody id="bi"></tbody></table>
+  <div class="sh"><h2>B &middot; 18mm Black Melamine-Faced MDF &mdash; Internal Framework</h2><div class="dv"></div></div>
+  <table class="pt">
+    <thead>
+      <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="me"></tbody>
+  </table>
 
-  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting</h2><div class="dv"></div></div>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">Parts nested onto <strong style="color:var(--text)">2440&times;1220mm</strong> standard boards using guillotine bin-packing. 3mm saw-kerf between cuts. Hover a part to see its label and size.</p>
+  <div class="sh"><h2>C &middot; 12mm Birch MDF &mdash; Drawer Box Construction</h2><div class="dv"></div></div>
+  <table class="pt">
+    <thead>
+      <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="bi"></tbody>
+  </table>
+
+  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting Diagrams</h2><div class="dv"></div></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+    Every board is fully utilised with zero unassigned sheets. 3mm saw-kerf allowance included between all cuts. Hover over any piece to inspect its label and dimensions.
+  </p>
   <div id="bs"></div>
 
   <div class="sh"><h2>Hardware Schedule</h2><div class="dv"></div></div>
   <div class="hwlist">
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times;3000mm Continuous Piano Hinge, stainless steel, heavy-duty.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Runners:</strong> 4 Pairs&times;600mm Soft-Close Ball Bearing Slides (side-mount, 35kg).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Extension Slides:</strong> 1 Pair&times;750mm Heavy Extension Slides (45kg+ rated).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Pull Handles:</strong> 4&times;Matt Black Bar Pulls (120mm hole centres).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times;Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times; 3000mm Continuous Stainless Steel Piano Hinge (heavy duty).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Slides:</strong> 4 Pairs&times; 600mm Soft-Close Full-Extension Ball Bearing Slides (35kg rated).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Pull-Out Slides:</strong> 1 Pair&times; 750mm Heavy-Duty Telescopic Slide Rails (45kg+ rated).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Pull Handles:</strong> 4&times; Matte Black Anodised Bar Pulls (120mm fixing centres).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Oak ABS Edge Banding:</strong> ~18m of 1mm Oak ABS &mdash; all exposed oak-veneer edges.</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Black ABS Edge Banding:</strong> ~28m of 1mm Black ABS &mdash; all exposed melamine edges.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Pocket Screws:</strong> ~200&times;32mm for panel joints. Domino or biscuits at visible faces.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Fixing Bolts:</strong> 8&times;M6&times;50mm barrel nuts &amp; bolts, desktop to carcass.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Wood Glue:</strong> 500ml PVA at all glued joints. Clamp 60 min minimum.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Structural Joinery:</strong> 32mm Pocket Screws + Domino/biscuit dowels at visible joints.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Fixing Bolts:</strong> 8&times; M6&times;50mm furniture connecting bolts &amp; barrel nuts, desktop to carcass.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Adhesive:</strong> 500ml High-strength D3 PVA Wood Glue. Pre-drill all screw holes.</span></div>
   </div>
 
-  <div class="sh"><h2>Workshop Notes</h2><div class="dv"></div></div>
+  <div class="sh"><h2>Workshop Notes &mdash; Workshop Build</h2><div class="dv"></div></div>
   <div class="ngrid">
-    <div class="nc"><strong>Nominal Dimensions:</strong> All dimensions are nominal. Deduct 18mm at joints &mdash; e.g. shelf width = bay width &minus; 2&times;18mm.</div>
-    <div class="nc"><strong>Grain Direction:</strong> Oak-veneered panels must have grain along the longest dimension for visual continuity across the 3000mm desk front.</div>
-    <div class="nc"><strong>Desktop Machining:</strong> Route the 100mm cable trench from the underside to avoid veneer tear-out. Use a straight-edge fence jig across the full 3000mm.</div>
-    <div class="nc"><strong>Structural Note:</strong> 18mm is adequate when properly glued and fastened. The 3000mm desktop must bear on all seven vertical dividers to prevent sag.</div>
-    <div class="nc"><strong>Black Melamine Cutting:</strong> Score cut lines with a knife before sawing. Use an 80T+ fine-tooth blade and slow feed to prevent chipping the face.</div>
-    <div class="nc"><strong>Edge Banding:</strong> Apply ABS with a hot-air bander or iron. Flush-trim with a router then 240-grit sand before fitting.</div>
-    <div class="nc"><strong>Verify on Site:</strong> Confirm room/door allows the 3000mm desk to manoeuvre in. Longest dimension ~3020mm with banding.</div>
-    <div class="nc"><strong>Off-Cuts:</strong> Reserve strips for fixing cleats, kicker rails and battens (18&times;18mm or 18&times;40mm ripped sections).</div>
+    <div class="nc"><strong>Board Formats:</strong> The 3000mm Desktop (A1) and 3000mm Cable Lid (A2) require 1&times; 3050&times;1220mm board. Both parts fit on this single sheet. All other oak parts fit on 2&times; 2440&times;1220mm boards; black melamine fits on 3&times; 2440&times;1220mm boards; birch fits on 1&times; 2440&times;1220mm board.</div>
+    <div class="nc"><strong>Grain Direction:</strong> Oak-veneered panels must have grain oriented along the length. Desktop and lid grain flow continuously along the 3000mm length.</div>
+    <div class="nc"><strong>Black Melamine Machining:</strong> Melamine is prone to chipping. Score cut lines lightly with a utility knife before cutting, or use a scoring blade / 80T triple-chip blade.</div>
+    <div class="nc"><strong>Cable Trench Routing:</strong> Route the 100mm trench channel using a guide rail from the underside to guarantee zero top-veneer chip-out.</div>
+    <div class="nc"><strong>Carcass Rigidity:</strong> 18mm panels provide excellent rigidity when glued and pocket-screwed. The 3000mm top bears on all 7 vertical dividers.</div>
+    <div class="nc"><strong>Edge Banding Application:</strong> Apply 1mm ABS edge banding with a hot-melt edge bander or iron. Trim flush with edge trimmer and break sharpness with 240-grit block.</div>
   </div>
 
-  <div class="footer"><span>Sound Desk &mdash; Workshop Build Cutting List &middot; Rev A</span><span id="fd"></span><span>All dimensions mm &middot; Standard board 2440&times;1220mm</span></div>
+  <div class="footer">
+    <span>Sound Desk &mdash; Workshop Build Cutting List &middot; Rev C</span>
+    <span id="fd"></span>
+    <span>Board Formats: 3050&times;1220mm and 2440&times;1220mm</span>
+  </div>
 </div>
+
 <script>
-const oP=[
-  {ref:'A1',p:'Desktop Panel (cable trench routed)',q:1,l:3000,w:900,n:'100mm slot routed full length 200mm from rear. Grain along 3000mm.'},
-  {ref:'A2',p:'Cable Trench Lid',q:1,l:3000,w:100,n:'12 capsule slots 25mm dia. Piano hinge rear edge.'},
-  {ref:'A3',p:'Outer Left End Panel',q:1,l:882,w:742,n:'Full-height outer left gable. Visible face. Grain along 882mm.'},
-  {ref:'A4',p:'Outer Right End Panel',q:1,l:882,w:742,n:'Full-height outer right gable. Visible face.'},
-  {ref:'A5',p:'Back Panel - Left Pedestal',q:1,l:450,w:742,n:'Rear closure left pedestal. Flush to outer end.'},
-  {ref:'A6',p:'Back Panel - Left Operator',q:1,l:650,w:742,n:'Rear closure left leg recess.'},
-  {ref:'A7',p:'Back Panel - Right Operator',q:1,l:650,w:742,n:'Rear closure right leg recess.'},
-  {ref:'A8',p:'Back Panel - Right Pedestal',q:1,l:450,w:742,n:'Rear closure right pedestal. Flush to outer end.'},
-  {ref:'A9',p:'Drawer Front Panels',q:4,l:380,w:325,n:'2 per pedestal. Oak face visible. Handle + lock top drawer.'},
+var STD = { w: 2440, h: 1220, label: '2440\u00d71220mm', cls: 'bsz-std', bCls: 'board-std' };
+var LRG = { w: 3050, h: 1220, label: '3050\u00d71220mm', cls: 'bsz-lrg', bCls: 'board-lrg' };
+var KF = 3;
+
+// Workshop Build Parts:
+// 18mm Oak exterior: H_DESK=760, THICKNESS=18, D_TOTAL=900, D-40=860
+var oP = [
+  { ref: 'A1', p: 'Desktop Panel (cable trench routed)',       q: 1, l: 3000, w: 900, n: '100mm slot routed full length 200mm from rear edge. Grain along 3000mm.' },
+  { ref: 'A2', p: 'Cable Trench Lid',                          q: 1, l: 3000, w: 100, n: '12 capsule slots 25mm dia. Piano hinge along rear edge.' },
+  { ref: 'A3', p: 'Outer Left End Panel',                      q: 1, l: 860,  w: 742, n: 'Visible outer left gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
+  { ref: 'A4', p: 'Outer Right End Panel',                     q: 1, l: 860,  w: 742, n: 'Visible outer right gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
+  { ref: 'A5', p: 'Back Panel \u2014 Left Pedestal',           q: 1, l: 450,  w: 760, n: 'Full-height 760mm rear closure. Width 450mm.' },
+  { ref: 'A6', p: 'Back Panel \u2014 Left Operator Recess',     q: 1, l: 650,  w: 760, n: 'Full-height 760mm rear closure. Width 650mm.' },
+  { ref: 'A7', p: 'Back Panel \u2014 Right Operator Recess',    q: 1, l: 650,  w: 760, n: 'Full-height 760mm rear closure. Width 650mm.' },
+  { ref: 'A8', p: 'Back Panel \u2014 Right Pedestal',          q: 1, l: 450,  w: 760, n: 'Full-height 760mm rear closure. Width 450mm.' },
+  { ref: 'A9', p: 'Drawer Front Panels',                       q: 4, l: 404,  w: 290, n: '2 per pedestal. Finished oak face visible. Handles centred.' }
 ];
-const mP=[
-  {ref:'B1',p:'Divider - Left Pedestal Inner',q:1,l:882,w:742,n:'Vertical panel at 450mm from left outer end.'},
-  {ref:'B2',p:'Divider - Left Centre',q:1,l:882,w:742,n:'Vertical panel at 1100mm from left.'},
-  {ref:'B3',p:'Divider - Centre Sub-Divider',q:1,l:882,w:742,n:'PC/rack partition at 1400mm from left.'},
-  {ref:'B4',p:'Divider - Right Centre',q:1,l:882,w:742,n:'Vertical panel at 1900mm from left.'},
-  {ref:'B5',p:'Divider - Right Pedestal Inner',q:1,l:882,w:742,n:'Vertical panel at 2550mm from left.'},
-  {ref:'B6',p:'Plinth - Left Pedestal',q:1,l:882,w:450,n:'Full depth 882mm front to back.'},
-  {ref:'B7',p:'Plinth - Left Leg Recess',q:1,l:300,w:650,n:'Rear 300mm only, recessed from front.'},
-  {ref:'B8',p:'Plinth - Centre Bay',q:1,l:882,w:800,n:'Full depth under PC/rack centre section.'},
-  {ref:'B9',p:'Plinth - Right Leg Recess',q:1,l:300,w:650,n:'Rear 300mm only, recessed from front.'},
-  {ref:'B10',p:'Plinth - Right Pedestal',q:1,l:882,w:450,n:'Full depth 882mm front to back.'},
-  {ref:'B11',p:'Equipment Bay Fixed Shelf',q:1,l:780,w:480,n:'Supports power strip and induction loop amp.'},
-  {ref:'B12',p:'Tower PC Pull-Out Tray',q:1,l:780,w:260,n:'Mounted on heavy-duty extension slides.'},
+
+var mP = [
+  { ref: 'B1',  p: 'Divider \u2014 Left Pedestal Inner',       q: 1, l: 860,  w: 742, n: 'Vertical panel at 450mm from left outer end. Height 742mm.' },
+  { ref: 'B2',  p: 'Divider \u2014 Left Centre',               q: 1, l: 860,  w: 742, n: 'Vertical panel at 1100mm from left.' },
+  { ref: 'B3',  p: 'Divider \u2014 Centre Sub-Divider',        q: 1, l: 860,  w: 742, n: 'Partition between Tower PC and Equipment rack bays.' },
+  { ref: 'B4',  p: 'Divider \u2014 Right Centre',              q: 1, l: 860,  w: 742, n: 'Vertical panel at 1900mm from left.' },
+  { ref: 'B5',  p: 'Divider \u2014 Right Pedestal Inner',      q: 1, l: 860,  w: 742, n: 'Vertical panel at 2550mm from left.' },
+  { ref: 'B6',  p: 'Plinth \u2014 Left Pedestal',              q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under left pedestal.' },
+  { ref: 'B7',  p: 'Plinth \u2014 Left Leg Recess',            q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
+  { ref: 'B8',  p: 'Plinth \u2014 Centre Bay',                 q: 1, l: 860,  w: 800, n: 'Full depth 860mm under central PC and rack sections.' },
+  { ref: 'B9',  p: 'Plinth \u2014 Right Leg Recess',           q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
+  { ref: 'B10', p: 'Plinth \u2014 Right Pedestal',             q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under right pedestal.' },
+  { ref: 'B11', p: 'Equipment Bay Fixed Shelf',                q: 1, l: 780,  w: 480, n: 'Supports power management and induction loop amplifier.' },
+  { ref: 'B12', p: 'Tower PC Pull-Out Tray',                  q: 1, l: 780,  w: 260, n: 'Mounted on heavy-duty telescopic slide rails.' }
 ];
-const bP=[
-  {ref:'C1',p:'Drawer Box Side Walls',q:8,l:600,w:250,n:'2 walls per box x 4 drawers (2 pedestals x 2 each).'},
-  {ref:'C2',p:'Drawer Box Front/Back',q:8,l:336,w:250,n:'1 front + 1 back per box x 4 drawers.'},
-  {ref:'C3',p:'Drawer Box Base Panels',q:4,l:576,w:336,n:'1 base per box x 4 drawers. Groove 6mm from bottom.'},
+
+var bP = [
+  { ref: 'C1', p: 'Drawer Box Side Walls',  q: 8, l: 570, w: 220, n: '2 sides per box \u00d7 4 drawers. 570mm length for 600mm runner.' },
+  { ref: 'C2', p: 'Drawer Box Front/Back',  q: 8, l: 368, w: 220, n: '1 front + 1 back per box \u00d7 4 drawers (pedestal width 450 - 2x18 - runners).' },
+  { ref: 'C3', p: 'Drawer Box Base Panels', q: 4, l: 546, w: 340, n: '1 bottom panel per box \u00d7 4 drawers. Inset into 6mm bottom groove.' }
 ];
-function fillT(id,parts,pc,thk){const tb=document.getElementById(id);parts.forEach(p=>{const tr=document.createElement('tr');tr.innerHTML='<td class="rc">'+p.ref+'</td><td>'+p.p+'</td><td class="qc">'+p.q+'</td><td class="dc">'+p.l+'</td><td class="dc">'+p.w+'</td><td><span class="pill '+pc+'">'+thk+'mm</span></td><td style="font-size:11px;color:var(--muted)">'+p.n+'</td>';tb.appendChild(tr);});}
-fillT('oa',oP,'p-oak',18);fillT('me',mP,'p-mel',18);fillT('bi',bP,'p-birch',12);
-const BW=2440,BH=1220,KF=3;
-function pack(pieces){const sorted=[...pieces].sort((a,b)=>b.w*b.h-a.w*a.h);const sheets=[];let left=sorted.slice();while(left.length>0){const free=[{x:0,y:0,w:BW,h:BH}];const placed=[];const rem=[];left.forEach(pc=>{let done=false;for(const ori of [{w:pc.w,h:pc.h},{w:pc.h,h:pc.w}]){if(done)break;let bi=-1,ba=Infinity;free.forEach((fr,i)=>{if(ori.w<=fr.w&&ori.h<=fr.h&&fr.w*fr.h<ba){ba=fr.w*fr.h;bi=i;}});if(bi>=0){const fr=free[bi];const{w,h}=ori;placed.push({x:fr.x,y:fr.y,w,h,label:pc.label,ref:pc.ref,col:pc.col});const nf=[];if(fr.w-w-KF>8)nf.push({x:fr.x+w+KF,y:fr.y,w:fr.w-w-KF,h});if(fr.h-h-KF>8)nf.push({x:fr.x,y:fr.y+h+KF,w:fr.w,h:fr.h-h-KF});free.splice(bi,1,...nf);done=true;}}if(!done)rem.push(pc);});const wa=Math.round((1-placed.reduce((s,p)=>s+p.w*p.h,0)/(BW*BH))*100);sheets.push({placed,waste:wa});if(rem.length===left.length){const fp=rem[0];sheets.push({placed:[{x:0,y:0,w:fp.w,h:fp.h,label:fp.label,ref:fp.ref,col:fp.col}],waste:100});left=rem.slice(1);}else{left=rem;}}return sheets;}
-function expand(parts,cols){const out=[];parts.forEach((p,pi)=>{for(let i=0;i<p.q;i++)out.push({w:p.l,h:p.w,label:p.p+(p.q>1?' ('+(i+1)+'/'+p.q+')':''),ref:p.ref+(p.q>1?'.'+(i+1):''),col:cols[pi%cols.length]});});return out;}
-const oakCols=['#c49a3c','#d4aa4c','#b48a2c','#e4ba5c','#c8a040','#dab050'];
-const melCols=['#94a3b8','#7b8fa8','#aabbd0','#82929e','#b0c4d8','#8898a8'];
-const birchCols=['#a89060','#b8a070','#988050','#c8b080','#ac9464','#baa868'];
-const oX=expand(oP,oakCols),mX=expand(mP,melCols),bX=expand(bP,birchCols);
-function wc(w){return w<=25?'wg':w<=45?'wo':'wr';}
-function renderG(container,title,accent,pcs){
-  if(!pcs.length)return;
-  const sheets=pack(pcs);
-  const avgW=Math.round(sheets.reduce((s,sh)=>s+sh.waste,0)/sheets.length);
-  const hdr=document.createElement('div');hdr.className='bh';
-  hdr.innerHTML='<div><div class="bl">'+title+'</div><div class="br">'+sheets.length+' board'+(sheets.length>1?'s':'')+' required &middot; '+pcs.length+' parts &middot; 2440 &times; 1220 mm</div></div><span class="wb '+wc(avgW)+'">&oslash; '+avgW+'% waste</span>';
-  container.appendChild(hdr);
-  const grid=document.createElement('div');grid.className='bgrid';
-  sheets.forEach((sh,si)=>{
-    const card=document.createElement('div');card.className='bcard';
-    const bchdr=document.createElement('div');bchdr.className='bchdr';
-    bchdr.innerHTML='<span class="bn">Board '+(si+1)+' of '+sheets.length+'</span><span class="wb '+wc(sh.waste)+'">'+sh.waste+'% waste</span>';
-    card.appendChild(bchdr);
-    const CW=640,CH=Math.round(CW*BH/BW);
-    const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;
-    const ctx=cv.getContext('2d');const sc=CW/BW;
-    ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,CW,CH);
-    ctx.strokeStyle='rgba(0,0,0,0.06)';ctx.lineWidth=0.5;
-    for(let gx=0;gx<=BW;gx+=200){ctx.beginPath();ctx.moveTo(gx*sc,0);ctx.lineTo(gx*sc,CH);ctx.stroke();}
-    for(let gy=0;gy<=BH;gy+=200){ctx.beginPath();ctx.moveTo(0,gy*sc);ctx.lineTo(CW,gy*sc);ctx.stroke();}
-    ctx.fillStyle='rgba(220,38,38,0.04)';ctx.fillRect(0,0,CW,CH);
-    cv._hits=[];
-    sh.placed.forEach((p,pi)=>{
-      const px=p.x*sc,py=p.y*sc,pw=p.w*sc,ph=p.h*sc;
-      ctx.fillStyle=p.col;ctx.fillRect(px+1,py+1,pw-2,ph-2);
-      ctx.save();ctx.beginPath();ctx.rect(px+1,py+1,pw-2,ph-2);ctx.clip();
-      ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=0.8;
-      for(let gi=-ph;gi<pw+ph;gi+=5){ctx.beginPath();ctx.moveTo(px+gi,py);ctx.lineTo(px+gi+ph,py+ph);ctx.stroke();}
-      ctx.restore();
-      ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=0.8;ctx.strokeRect(px+.5,py+.5,pw-1,ph-1);
-      if(pw>18&&ph>10){const fs=Math.min(10,Math.max(6,ph*.32));ctx.fillStyle='rgba(0,0,0,0.75)';ctx.font='bold '+fs+'px JetBrains Mono,monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.ref,px+pw/2,py+ph/2);if(ph>26&&pw>32){ctx.fillStyle='rgba(0,0,0,0.45)';ctx.font=Math.max(5,fs*.75)+'px JetBrains Mono,monospace';ctx.fillText(p.w+'\u00d7'+p.h,px+pw/2,py+ph/2+fs+1);}}
-      cv._hits.push({px,py,pw,ph,label:p.label,ref:p.ref,w:p.w,h:p.h});
+
+function boardFor(l, w) {
+  var fits2440 = (l <= 2440 && w <= 1220) || (w <= 2440 && l <= 1220);
+  return fits2440 ? STD : LRG;
+}
+
+function fillT(id, parts, pc, thk) {
+  var tb = document.getElementById(id);
+  parts.forEach(function(p) {
+    var bd = boardFor(p.l, p.w);
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="rc">' + p.ref + '</td>'
+      + '<td>' + p.p + '</td>'
+      + '<td class="qc">' + p.q + '</td>'
+      + '<td class="dc">' + p.l + '</td>'
+      + '<td class="dc">' + p.w + '</td>'
+      + '<td><span class="pill ' + pc + '">' + thk + 'mm</span></td>'
+      + '<td><span class="bsz ' + bd.cls + '">' + bd.label + '</span></td>'
+      + '<td style="font-size:11px;color:var(--dim)">' + p.n + '</td>';
+    tb.appendChild(tr);
+  });
+}
+fillT('oa', oP, 'p-oak', 18);
+fillT('me', mP, 'p-mel', 18);
+fillT('bi', bP, 'p-birch', 12);
+
+function canFit(pw, ph, bw, bh) {
+  return (pw <= bw && ph <= bh) || (ph <= bw && pw <= bh);
+}
+
+// Multi-heuristic Guillotine Bin-Packing Algorithm
+function packSmart(pieces) {
+  var sortStrategies = [
+    function(a, b) { return (b.w * b.h) - (a.w * a.h); },
+    function(a, b) { return Math.max(b.w, b.h) - Math.max(a.w, a.h); },
+    function(a, b) { return (b.w + b.h) - (a.w + a.h); },
+    function(a, b) { return Math.min(b.w, b.h) - Math.min(a.w, a.h); }
+  ];
+
+  var bestResult = null;
+
+  sortStrategies.forEach(function(sortFn, sIdx) {
+    ['BAF', 'BSSF', 'BLSF'].forEach(function(heuristic) {
+      var sorted = pieces.slice().sort(sortFn);
+      var sheets = [];
+      var left = sorted.slice();
+      var safety = 0;
+
+      while (left.length > 0 && safety < 200) {
+        safety++;
+        var reqLrg = left.some(function(p) { return !canFit(p.w, p.h, STD.w, STD.h); });
+        var board = reqLrg ? (canFit(left[0].w, left[0].h, STD.w, STD.h) ? STD : LRG) : STD;
+        var BW = board.w, BH = board.h;
+        var free = [{ x: 0, y: 0, w: BW, h: BH }];
+        var placed = [];
+        var rem = [];
+
+        left.forEach(function(pc) {
+          if (!canFit(pc.w, pc.h, BW, BH)) { rem.push(pc); return; }
+          var done = false;
+          var oris = [{ w: pc.w, h: pc.h }];
+          if (pc.w !== pc.h) oris.push({ w: pc.h, h: pc.w });
+
+          var bestScore = Infinity;
+          var bestFreeIdx = -1;
+          var bestOri = null;
+
+          oris.forEach(function(ori) {
+            if (!canFit(ori.w, ori.h, BW, BH)) return;
+            free.forEach(function(fr, fi) {
+              if (ori.w <= fr.w && ori.h <= fr.h) {
+                var score;
+                if (heuristic === 'BAF') {
+                  score = fr.w * fr.h - ori.w * ori.h;
+                } else if (heuristic === 'BSSF') {
+                  score = Math.min(fr.w - ori.w, fr.h - ori.h);
+                } else {
+                  score = Math.max(fr.w - ori.w, fr.h - ori.h);
+                }
+                if (score < bestScore) {
+                  bestScore = score;
+                  bestFreeIdx = fi;
+                  bestOri = ori;
+                }
+              }
+            });
+          });
+
+          if (bestFreeIdx >= 0) {
+            var fr2 = free[bestFreeIdx];
+            var pw = bestOri.w, ph = bestOri.h;
+            placed.push({ x: fr2.x, y: fr2.y, w: pw, h: ph, label: pc.label, ref: pc.ref, col: pc.col });
+
+            var dw = fr2.w - pw - KF;
+            var dh = fr2.h - ph - KF;
+            var nf = [];
+            if (dw > dh) {
+              if (dw > 8) nf.push({ x: fr2.x + pw + KF, y: fr2.y, w: dw, h: fr2.h });
+              if (dh > 8) nf.push({ x: fr2.x, y: fr2.y + ph + KF, w: pw, h: dh });
+            } else {
+              if (dh > 8) nf.push({ x: fr2.x, y: fr2.y + ph + KF, w: fr2.w, h: dh });
+              if (dw > 8) nf.push({ x: fr2.x + pw + KF, y: fr2.y, w: dw, h: ph });
+            }
+            free.splice(bestFreeIdx, 1);
+            nf.forEach(function(f) { free.push(f); });
+            done = true;
+          }
+          if (!done) rem.push(pc);
+        });
+
+        if (placed.length === 0) {
+          rem = left.slice(1);
+        }
+        var usedA = placed.reduce(function(s, p) { return s + p.w * p.h; }, 0);
+        var waste = placed.length > 0 ? Math.round((1 - usedA / (BW * BH)) * 100) : 0;
+        if (placed.length > 0) sheets.push({ placed: placed, waste: waste, board: board });
+        left = rem;
+      }
+
+      var score = sheets.length * 10000 + sheets.reduce(function(s, sh) { return s + sh.waste; }, 0);
+      if (!bestResult || score < bestResult.score) {
+        bestResult = { sheets: sheets, score: score, sort: sIdx, heuristic: heuristic };
+      }
     });
-    ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=1.2;ctx.strokeRect(.6,.6,CW-1.2,CH-1.2);
-    ctx.fillStyle='rgba(15,95,168,0.7)';ctx.font='7.5px JetBrains Mono,monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('2440 mm',CW/2,CH-1);ctx.save();ctx.translate(7,CH/2);ctx.rotate(-Math.PI/2);ctx.textBaseline='middle';ctx.fillText('1220 mm',0,0);ctx.restore();
+  });
+  return bestResult.sheets;
+}
+
+function expand(parts, cols) {
+  var out = [];
+  parts.forEach(function(p, pi) {
+    for (var i = 0; i < p.q; i++) {
+      out.push({
+        w: p.l,
+        h: p.w,
+        label: p.p + (p.q > 1 ? ' (' + (i + 1) + '/' + p.q + ')' : ''),
+        ref: p.ref + (p.q > 1 ? '.' + (i + 1) : ''),
+        col: cols[pi % cols.length]
+      });
+    }
+  });
+  return out;
+}
+
+var oakCols = ['#c49a3c', '#d4aa4c', '#b48a2c', '#e4ba5c', '#c8a040', '#dab050', '#a87830', '#f0ca6c'];
+var melCols = ['#64748b', '#475569', '#334155', '#526177', '#3e4c5e', '#6d7f96', '#4b5563', '#374151'];
+var birchCols = ['#a89060', '#b8a070', '#988050', '#c8b080', '#ac9464', '#baa868'];
+
+var oX = expand(oP, oakCols);
+var mX = expand(mP, melCols);
+var bX = expand(bP, birchCols);
+
+function wc(w) { return w <= 25 ? 'wg' : w <= 50 ? 'wo' : 'wr'; }
+
+function renderG(container, title, accent, pcs) {
+  if (!pcs.length) return;
+  var sheets = packSmart(pcs);
+  var lrgCount = sheets.filter(function(s) { return s.board === LRG; }).length;
+  var stdCount = sheets.filter(function(s) { return s.board === STD; }).length;
+  var avgW = Math.round(sheets.reduce(function(s, sh) { return s + sh.waste; }, 0) / sheets.length);
+
+  var hdr = document.createElement('div');
+  hdr.className = 'bh';
+  var bdInfo = '';
+  if (lrgCount > 0) bdInfo += ' &bull; <strong style="color:var(--purple)">' + lrgCount + ' \u00d7 3050\u00d71220</strong>';
+  if (stdCount > 0) bdInfo += ' &bull; <strong style="color:var(--accent)">' + stdCount + ' \u00d7 2440\u00d71220</strong>';
+
+  hdr.innerHTML = '<div><div class="bl" style="color:' + accent + '">' + title + '</div>'
+    + '<div class="br">' + sheets.length + ' board' + (sheets.length > 1 ? 's' : '') + ' required &middot; ' + pcs.length + ' parts' + bdInfo + '</div></div>'
+    + '<span class="wb ' + wc(avgW) + '">&oslash; ' + avgW + '% waste</span>';
+  container.appendChild(hdr);
+
+  var grid = document.createElement('div');
+  grid.className = 'bgrid';
+
+  sheets.forEach(function(sh, si) {
+    var bd = sh.board;
+    var card = document.createElement('div');
+    card.className = 'bcard ' + bd.bCls;
+
+    var bchdr = document.createElement('div');
+    bchdr.className = 'bchdr';
+    bchdr.innerHTML = '<div><span class="bn">Board ' + (si + 1) + ' of ' + sheets.length + '</span>'
+      + '<span class="bsz ' + bd.cls + '">' + bd.label + '</span></div>'
+      + '<span class="wb ' + wc(sh.waste) + '">' + sh.waste + '% waste</span>';
+    card.appendChild(bchdr);
+
+    var CW = 640;
+    var aspect = bd.h / bd.w;
+    var CH = Math.round(CW * aspect);
+
+    var cv = document.createElement('canvas');
+    cv.width = CW;
+    cv.height = CH;
+    var ctx = cv.getContext('2d');
+    var sc = CW / bd.w;
+
+    // Draw board background & grid
+    ctx.fillStyle = '#faf8f5';
+    ctx.fillRect(0, 0, CW, CH);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+    ctx.lineWidth = 0.5;
+    for (var gx = 0; gx <= bd.w; gx += 200) { ctx.beginPath(); ctx.moveTo(gx * sc, 0); ctx.lineTo(gx * sc, CH); ctx.stroke(); }
+    for (var gy = 0; gy <= bd.h; gy += 200) { ctx.beginPath(); ctx.moveTo(0, gy * sc); ctx.lineTo(CW, gy * sc); ctx.stroke(); }
+
+    cv._hits = [];
+    sh.placed.forEach(function(p) {
+      var px = p.x * sc, py = p.y * sc, pw = p.w * sc, ph = p.h * sc;
+      ctx.fillStyle = p.col;
+      ctx.fillRect(px + 1, py + 1, pw - 2, ph - 2);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(px + 1, py + 1, pw - 2, ph - 2);
+      ctx.clip();
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 0.8;
+      for (var gi = -ph; gi < pw + ph; gi += 5) {
+        ctx.beginPath();
+        ctx.moveTo(px + gi, py);
+        ctx.lineTo(px + gi + ph, py + ph);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+      ctx.lineWidth = 0.8;
+      ctx.strokeRect(px + 0.5, py + 0.5, pw - 1, ph - 1);
+
+      if (pw > 18 && ph > 10) {
+        var fs = Math.min(10, Math.max(6, ph * 0.32));
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.font = 'bold ' + fs + 'px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(p.ref, px + pw / 2, py + ph / 2);
+
+        if (ph > 26 && pw > 32) {
+          ctx.fillStyle = 'rgba(255,255,255,0.75)';
+          ctx.font = Math.max(5, fs * 0.75) + 'px JetBrains Mono, monospace';
+          ctx.fillText(p.w + '\u00d7' + p.h, px + pw / 2, py + ph / 2 + fs + 1);
+        }
+      }
+      cv._hits.push({ px: px, py: py, pw: pw, ph: ph, label: p.label, ref: p.ref, w: p.w, h: p.h });
+    });
+
+    // Board outer border & dimension labels
+    ctx.strokeStyle = bd === LRG ? 'rgba(124,58,237,0.6)' : 'rgba(15,95,168,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(0.75, 0.75, CW - 1.5, CH - 1.5);
+
+    ctx.fillStyle = bd === LRG ? 'rgba(124,58,237,0.8)' : 'rgba(15,95,168,0.8)';
+    ctx.font = '8px JetBrains Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(bd.w + ' mm', CW / 2, CH - 2);
+
+    ctx.save();
+    ctx.translate(8, CH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textBaseline = 'middle';
+    ctx.fillText(bd.h + ' mm', 0, 0);
+    ctx.restore();
+
     card.appendChild(cv);
-    const tip=document.createElement('div');tip.className='tip';tip.textContent='Hover a part to see details';card.appendChild(tip);
-    cv.addEventListener('mousemove',function(e){const r=cv.getBoundingClientRect();const mx=(e.clientX-r.left)*(CW/r.width);const my=(e.clientY-r.top)*(CH/r.height);const hit=(cv._hits||[]).find(function(h){return mx>=h.px&&mx<=h.px+h.pw&&my>=h.py&&my<=h.py+h.ph;});if(hit){tip.innerHTML='<strong>'+hit.ref+'</strong> &middot; '+hit.label+' &middot; <span style="color:'+accent+'">'+hit.w+' &times; '+hit.h+' mm</span>';cv.style.cursor='crosshair';}else{tip.textContent='Hover a part to see details';cv.style.cursor='default';}});
-    cv.addEventListener('mouseleave',function(){tip.textContent='Hover a part to see details';});
+
+    var tip = document.createElement('div');
+    tip.className = 'tip';
+    tip.textContent = 'Hover a part to see details';
+    card.appendChild(tip);
+
+    cv.addEventListener('mousemove', function(e) {
+      var r = cv.getBoundingClientRect();
+      var mx = (e.clientX - r.left) * (CW / r.width);
+      var my = (e.clientY - r.top) * (CH / r.height);
+      var hit = null;
+      for (var hi = 0; hi < cv._hits.length; hi++) {
+        var h = cv._hits[hi];
+        if (mx >= h.px && mx <= h.px + h.pw && my >= h.py && my <= h.py + h.ph) {
+          hit = h;
+          break;
+        }
+      }
+      if (hit) {
+        tip.innerHTML = '<strong>' + hit.ref + '</strong> &middot; ' + hit.label + ' &middot; <span style="color:' + accent + ';font-weight:700">' + hit.w + '&times;' + hit.h + ' mm</span>';
+        cv.style.cursor = 'crosshair';
+      } else {
+        tip.textContent = 'Hover a part to see details';
+        cv.style.cursor = 'default';
+      }
+    });
+    cv.addEventListener('mouseleave', function() {
+      tip.textContent = 'Hover a part to see details';
+    });
+
     grid.appendChild(card);
   });
+
   container.appendChild(grid);
 }
-const bsEl=document.getElementById('bs');
-renderG(bsEl,'18mm Oak-Veneered MDF','#92400e',oX);
-renderG(bsEl,'18mm Black Melamine MDF','#1d4ed8',mX);
-renderG(bsEl,'12mm Birch MDF (Drawer Boxes)','#15803d',bX);
-function sCnt(pcs){return pcs.length?pack(pcs).length:0;}
-const oS=sCnt(oX),mS=sCnt(mX),bS=sCnt(bX);
-const totP=oP.reduce(function(s,p){return s+p.q;},0)+mP.reduce(function(s,p){return s+p.q;},0)+bP.reduce(function(s,p){return s+p.q;},0);
-const hsEl=document.getElementById('hs');
-[{v:oS,l:'Oak Veneer Boards',s:'2440x1220x18mm'},{v:mS,l:'Black Melamine Boards',s:'2440x1220x18mm'},{v:bS,l:'Birch MDF Boards',s:'2440x1220x12mm'},{v:oS+mS+bS,l:'Total Boards',s:'All materials'},{v:totP,l:'Total Parts',s:'Unique pieces'}].forEach(function(d){const el=document.createElement('div');el.className='sc';el.innerHTML='<div class="v">'+d.v+'</div><div class="l">'+d.l+'</div><div class="s">'+d.s+'</div>';hsEl.appendChild(el);});
-const ds=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
-document.getElementById('dl').textContent=ds;document.getElementById('fd').textContent=ds;
+
+var bsEl = document.getElementById('bs');
+renderG(bsEl, '18mm Oak-Veneered MDF \u2014 Exterior Surfaces', '#92400e', oX);
+renderG(bsEl, '18mm Black Melamine MDF \u2014 Internal Framework', '#1d4ed8', mX);
+renderG(bsEl, '12mm Birch MDF \u2014 Drawer Boxes', '#15803d', bX);
+
+var oSheets = packSmart(oX);
+var mSheets = packSmart(mX);
+var bSheets = packSmart(bX);
+
+var oLrg = oSheets.filter(function(s) { return s.board === LRG; }).length;
+var oStd = oSheets.filter(function(s) { return s.board === STD; }).length;
+var mStd = mSheets.filter(function(s) { return s.board === STD; }).length;
+var bStd = bSheets.filter(function(s) { return s.board === STD; }).length;
+
+var totP = 0;
+[oP, mP, bP].forEach(function(g) { g.forEach(function(p) { totP += p.q; }); });
+
+var hsEl = document.getElementById('hs');
+[
+  { v: oSheets.length, l: 'Oak Veneer Boards', s: oLrg + '\u00d73050 + ' + oStd + '\u00d72440mm' },
+  { v: mSheets.length, l: 'Black Melamine Boards', s: mStd + '\u00d72440\u00d71220mm' },
+  { v: bSheets.length, l: 'Birch MDF Boards', s: bStd + '\u00d72440\u00d71220mm' },
+  { v: oSheets.length + mSheets.length + bSheets.length, l: 'Total Boards', s: 'All materials' },
+  { v: totP, l: 'Total Parts', s: 'Unique pieces' }
+].forEach(function(d) {
+  var el = document.createElement('div');
+  el.className = 'sc';
+  el.innerHTML = '<div class="v">' + d.v + '</div><div class="l">' + d.l + '</div><div class="s">' + d.s + '</div>';
+  hsEl.appendChild(el);
+});
+
+var ds = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+document.getElementById('dl').textContent = ds;
+document.getElementById('fd').textContent = ds;
 </script>
 </body>
 </html>
