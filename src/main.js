@@ -908,6 +908,6 @@ window.setVariant = setVariant;
 const generateCuttingListBtn = document.getElementById('generate-cutting-list-btn');
 if (generateCuttingListBtn) {
   generateCuttingListBtn.addEventListener('click', () => {
-    window.open('./cutting_list_workshop.html', '_blank');
+    window.open(import.meta.env.BASE_URL + 'cutting_list_workshop.html', '_blank');
   });
 }
