@@ -6,9 +6,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main:               resolve(__dirname, 'index.html'),
-        cutting_list:       resolve(__dirname, 'cutting_list.html'),
-        cutting_list_workshop: resolve(__dirname, 'cutting_list_workshop.html'),
+        main:                    resolve(__dirname, 'index.html'),
+        cutting_list:            resolve(__dirname, 'cutting_list.html'),
+        cutting_list_standard:   resolve(__dirname, 'cutting_list_standard.html'),
+        cutting_list_workshop:   resolve(__dirname, 'cutting_list_workshop.html'),
       }
     }
   }

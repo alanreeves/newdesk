@@ -893,18 +893,30 @@ function setVariant(variant) {
     wrkBtn.classList.add('active');
     desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span>';
     clBtn.style.display = 'flex';
+    const stdListBtn = document.getElementById('generate-standard-list-btn');
+    if (stdListBtn) stdListBtn.style.display = 'none';
   } else {
     wrkBtn.classList.remove('active');
     stdBtn.classList.add('active');
     desc.innerHTML = 'Original design · All panels 30mm solid oak MDF';
     clBtn.style.display = 'none';
+    const stdListBtn = document.getElementById('generate-standard-list-btn');
+    if (stdListBtn) stdListBtn.style.display = 'flex';
   }
 }
 
 // Expose setVariant globally so the inline onclick handlers in index.html can call it
 window.setVariant = setVariant;
 
-// Wire up Cutting List button
+// Wire up Standard Cutting List button
+const generateStandardListBtn = document.getElementById('generate-standard-list-btn');
+if (generateStandardListBtn) {
+  generateStandardListBtn.addEventListener('click', () => {
+    window.open(import.meta.env.BASE_URL + 'cutting_list_standard.html', '_blank');
+  });
+}
+
+// Wire up Workshop Cutting List button
 const generateCuttingListBtn = document.getElementById('generate-cutting-list-btn');
 if (generateCuttingListBtn) {
   generateCuttingListBtn.addEventListener('click', () => {
