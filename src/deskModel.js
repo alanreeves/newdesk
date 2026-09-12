@@ -521,12 +521,13 @@ export function buildDeskScene() {
 
   rootGroup.add(animatedGroups.trenchLidGroup);
 
+  const plinthMeshes = {};
   const plinths = [
-    { start: -1.50, end: -1.05, fullDepth: true },  // Left pedestal (45cm)
-    { start: -1.05, end: -0.40, fullDepth: false }, // Left operator leg recess (65cm)
-    { start: -0.40, end: 0.40, fullDepth: true },   // PC & Rack bays (80cm)
-    { start: 0.40, end: 1.05, fullDepth: false },   // Right operator leg recess (65cm)
-    { start: 1.05, end: 1.50, fullDepth: true }     // Right pedestal (45cm)
+    { key: 'leftPed',  start: -1.50, end: -1.05, fullDepth: true },  // Left pedestal (45cm)
+    { key: 'leftOp',   start: -1.05, end: -0.40, fullDepth: false }, // Left operator leg recess (65cm)
+    { key: 'center',   start: -0.40, end: 0.40,  fullDepth: true },  // PC & Rack bays (80cm)
+    { key: 'rightOp',  start: 0.40,  end: 1.05,  fullDepth: false }, // Right operator leg recess (65cm)
+    { key: 'rightPed', start: 1.05,  end: 1.50,  fullDepth: true }   // Right pedestal (45cm)
   ];
 
   plinths.forEach(p => {
@@ -550,15 +551,16 @@ export function buildDeskScene() {
     pMesh.castShadow = true;
     pMesh.receiveShadow = true;
     pMesh.userData.variantRole = 'black_interior';
+    pMesh.userData.plinthKey = p.key;
+    plinthMeshes[p.key] = pMesh;
     taggedMeshes.black_interior.push(pMesh);
     rootGroup.add(pMesh);
   });
 
   // Outer end panels (x=-1.50 and x=1.50) → oak_exterior in Workshop Build
   // Internal dividers (x=-1.05, -0.40, -0.10, 0.40, 1.05) → black_interior in Workshop Build
+  const outerGables = {};
   const outerEndDivs = [-1.50, 1.50];
-  const innerDivs = [-1.05, -0.40, -0.10, 0.40, 1.05];
-
   outerEndDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -570,8 +572,12 @@ export function buildDeskScene() {
     vMesh.userData.variantRole = 'oak_exterior';
     taggedMeshes.oak_exterior.push(vMesh);
     rootGroup.add(vMesh);
+    if (x < 0) outerGables.left = vMesh;
+    else outerGables.right = vMesh;
   });
 
+  const innerDivMeshes = {};
+  const innerDivs = [-1.05, -0.40, -0.10, 0.40, 1.05];
   innerDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -583,6 +589,11 @@ export function buildDeskScene() {
     vMesh.userData.variantRole = 'black_interior';
     taggedMeshes.black_interior.push(vMesh);
     rootGroup.add(vMesh);
+    if (x === -1.05) innerDivMeshes.leftPed = vMesh;
+    else if (x === -0.40) innerDivMeshes.leftCenter = vMesh;
+    else if (x === -0.10) innerDivMeshes.subCenter = vMesh;
+    else if (x === 0.40) innerDivMeshes.rightCenter = vMesh;
+    else if (x === 1.05) innerDivMeshes.rightPed = vMesh;
   });
 
   const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
@@ -1443,6 +1454,18 @@ export function buildDeskScene() {
     equipmentPins,
     oakMaterial,
     blackMelamineMaterial,
-    taggedMeshes
+    drawerBoxMaterial,
+    taggedMeshes,
+    desktopMesh,
+    trenchFloorMesh,
+    trenchBackWall,
+    cableTrunking,
+    plinthMeshes,
+    outerGables,
+    innerDivMeshes,
+    backLeftPedestal,
+    backLeftOperator,
+    backRightOperator,
+    backRightPedestal
   };
 }

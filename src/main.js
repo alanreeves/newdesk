@@ -823,37 +823,61 @@ const STANDARD_THICKNESS = 0.030;
 const WORKSHOP_THICKNESS = 0.018;
 
 /**
- * Swaps materials and scales panel geometry thickness on all tagged structural meshes.
- * oak_exterior meshes keep oakMaterial in both variants (only thickness changes in workshop).
- * black_interior meshes use oakMaterial in standard and blackMelamineMaterial in workshop.
+ * Swaps materials, scales panel geometry thickness, and adjusts 2800mm/3000mm length dimensions.
+ * - 'standard': 3.00m length, 30mm thickness, oak throughout
+ * - 'workshop': 3.00m length, 18mm thickness, oak exterior + black melamine interior
+ * - 'egger':    2.80m length, 18mm thickness, Egger Natural Kendal Oak MFC complete build (including drawers)
  */
 function applyVariant(variant) {
-  const { taggedMeshes, oakMaterial, blackMelamineMaterial } = deskData;
+  const {
+    taggedMeshes,
+    oakMaterial,
+    blackMelamineMaterial,
+    drawerBoxMaterial,
+    desktopMesh,
+    trenchLidGroup,
+    trenchFloorMesh,
+    trenchBackWall,
+    cableTrunking,
+    plinthMeshes,
+    outerGables,
+    innerDivMeshes,
+    backLeftPedestal,
+    backLeftOperator,
+    backRightOperator,
+    backRightPedestal,
+    leftDrawersGroup,
+    rightDrawersGroup
+  } = deskData;
+
   const isWorkshop = variant === 'workshop';
-  const newThickness = isWorkshop ? WORKSHOP_THICKNESS : STANDARD_THICKNESS;
+  const isEgger = variant === 'egger';
+  const newThickness = (isWorkshop || isEgger) ? WORKSHOP_THICKNESS : STANDARD_THICKNESS;
   const thicknessRatio = newThickness / STANDARD_THICKNESS; // 0.6 or 1.0
 
-  // Swap materials on black_interior tagged meshes
-  taggedMeshes.black_interior.forEach(mesh => {
-    mesh.material = isWorkshop ? blackMelamineMaterial : oakMaterial;
-  });
+  // 1. Swap materials
+  if (isWorkshop) {
+    taggedMeshes.black_interior.forEach(mesh => { mesh.material = blackMelamineMaterial; });
+    taggedMeshes.oak_exterior.forEach(mesh => { mesh.material = oakMaterial; });
+    if (drawerBoxMaterial) drawerBoxMaterial.color.setHex(0xdfc5a6);
+  } else {
+    // Standard and Egger both use oak finish throughout
+    taggedMeshes.black_interior.forEach(mesh => { mesh.material = oakMaterial; });
+    taggedMeshes.oak_exterior.forEach(mesh => { mesh.material = oakMaterial; });
+    if (drawerBoxMaterial) drawerBoxMaterial.color.setHex(isEgger ? 0xdfc3a1 : 0xdfc5a6);
+  }
 
-  // Scale geometry thickness on ALL structural tagged meshes (oak_exterior + black_interior)
-  // We scale the X or Z dimension depending on the panel orientation
+  // 2. Scale geometry thickness on structural tagged meshes (oak_exterior + black_interior)
   [...taggedMeshes.oak_exterior, ...taggedMeshes.black_interior].forEach(mesh => {
-    // Skip the desktop and lid (complex extruded geometry — thickness change is subtle there)
     if (mesh.userData.variantGeom && mesh.userData.variantGeom.type === 'desktop') return;
 
-    // Read the current geometry bounding box to determine which axis is "thickness"
-    // For back panels: Z is thickness. For vertical dividers: X is thickness. For plinths: Y≈thickness (35mm fixed). 
-    // We use the stored originalScale approach: store once on first variant change.
     if (!mesh.userData._origScale) {
       mesh.userData._origScale = { x: mesh.scale.x, y: mesh.scale.y, z: mesh.scale.z };
     }
 
     const orig = mesh.userData._origScale;
     const geo = mesh.geometry;
-    // Detect thickness axis by looking at the smallest bounding box dimension of a BoxGeometry
+
     if (!mesh.userData._thicknessAxis) {
       geo.computeBoundingBox();
       const bb = geo.boundingBox;
@@ -861,10 +885,9 @@ function applyVariant(variant) {
       const sy = bb.max.y - bb.min.y;
       const sz = bb.max.z - bb.min.z;
       const minDim = Math.min(sx, sy, sz);
-      // Allow a tolerance; the "thickness" dimension is the smallest one (e.g., 0.03 vs 0.86/0.76)
       if (Math.abs(sx - minDim) < 0.001) mesh.userData._thicknessAxis = 'x';
       else if (Math.abs(sz - minDim) < 0.001) mesh.userData._thicknessAxis = 'z';
-      else mesh.userData._thicknessAxis = null; // plinths (y is not the smallest) - skip
+      else mesh.userData._thicknessAxis = null;
     }
 
     const axis = mesh.userData._thicknessAxis;
@@ -874,6 +897,58 @@ function applyVariant(variant) {
       gsap.to(mesh.scale, { z: orig.z * thicknessRatio, duration: 0.6, ease: 'power2.inOut' });
     }
   });
+
+  // 3. Length Dimensions (2.80m for Egger vs 3.00m for Standard & Workshop)
+  const lengthScale = isEgger ? (2.80 / 3.00) : 1.0;
+  const pedShift = isEgger ? 0.10 : 0.0;
+  const opShift = isEgger ? 0.05 : 0.0;
+  const opScale = isEgger ? (0.55 / 0.65) : 1.0;
+
+  if (desktopMesh) gsap.to(desktopMesh.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
+  if (trenchLidGroup) gsap.to(trenchLidGroup.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
+  if (trenchFloorMesh) gsap.to(trenchFloorMesh.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
+  if (trenchBackWall) gsap.to(trenchBackWall.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
+
+  // Outer Gables
+  if (outerGables && outerGables.left) gsap.to(outerGables.left.position, { x: -1.50 + pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (outerGables && outerGables.right) gsap.to(outerGables.right.position, { x: 1.50 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+
+  // Pedestal Inner Dividers
+  if (innerDivMeshes && innerDivMeshes.leftPed) gsap.to(innerDivMeshes.leftPed.position, { x: -1.05 + pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (innerDivMeshes && innerDivMeshes.rightPed) gsap.to(innerDivMeshes.rightPed.position, { x: 1.05 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+
+  // Drawers
+  if (leftDrawersGroup) gsap.to(leftDrawersGroup.position, { x: pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (rightDrawersGroup) gsap.to(rightDrawersGroup.position, { x: -pedShift, duration: 0.6, ease: 'power2.inOut' });
+
+  // Back Panels
+  if (backLeftPedestal) gsap.to(backLeftPedestal.position, { x: -1.275 + pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (backRightPedestal) gsap.to(backRightPedestal.position, { x: 1.275 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (backLeftOperator) {
+    gsap.to(backLeftOperator.position, { x: -0.725 + opShift, duration: 0.6, ease: 'power2.inOut' });
+    gsap.to(backLeftOperator.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+  }
+  if (backRightOperator) {
+    gsap.to(backRightOperator.position, { x: 0.725 - opShift, duration: 0.6, ease: 'power2.inOut' });
+    gsap.to(backRightOperator.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+  }
+
+  // Plinths
+  if (plinthMeshes) {
+    if (plinthMeshes.leftPed) gsap.to(plinthMeshes.leftPed.position, { x: -1.275 + pedShift, duration: 0.6, ease: 'power2.inOut' });
+    if (plinthMeshes.rightPed) gsap.to(plinthMeshes.rightPed.position, { x: 1.275 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+    if (plinthMeshes.leftOp) {
+      gsap.to(plinthMeshes.leftOp.position, { x: -0.725 + opShift, duration: 0.6, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.leftOp.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+    }
+    if (plinthMeshes.rightOp) {
+      gsap.to(plinthMeshes.rightOp.position, { x: 0.725 - opShift, duration: 0.6, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.rightOp.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+    }
+  }
+
+  // Cable Trunking
+  if (cableTrunking) gsap.to(cableTrunking.position, { x: -1.53 + pedShift, duration: 0.6, ease: 'power2.inOut' });
 }
 
 function setVariant(variant) {
@@ -885,23 +960,27 @@ function setVariant(variant) {
   // Update UI
   const stdBtn = document.getElementById('variant-standard-btn');
   const wrkBtn = document.getElementById('variant-workshop-btn');
+  const eggerBtn = document.getElementById('variant-egger-btn');
   const desc = document.getElementById('variant-description');
-  const clBtn = document.getElementById('generate-cutting-list-btn');
+  const stdClBtn = document.getElementById('generate-standard-list-btn');
+  const wrkClBtn = document.getElementById('generate-cutting-list-btn');
+  const eggerClBtn = document.getElementById('generate-egger-list-btn');
+
+  [stdBtn, wrkBtn, eggerBtn].forEach(b => { if (b) b.classList.remove('active'); });
+  [stdClBtn, wrkClBtn, eggerClBtn].forEach(b => { if (b) b.style.display = 'none'; });
 
   if (variant === 'workshop') {
-    stdBtn.classList.remove('active');
-    wrkBtn.classList.add('active');
-    desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span>';
-    clBtn.style.display = 'flex';
-    const stdListBtn = document.getElementById('generate-standard-list-btn');
-    if (stdListBtn) stdListBtn.style.display = 'none';
+    if (wrkBtn) wrkBtn.classList.add('active');
+    if (desc) desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span> (3.0m length)';
+    if (wrkClBtn) wrkClBtn.style.display = 'flex';
+  } else if (variant === 'egger') {
+    if (eggerBtn) eggerBtn.classList.add('active');
+    if (desc) desc.innerHTML = '18mm Egger Natural Kendal Oak MFC <span style="color:#34d399">complete build · including drawers</span><br><strong style="color:#38bdf8">2.8m length</strong> (optimised for 2800&times;2070mm boards)';
+    if (eggerClBtn) eggerClBtn.style.display = 'flex';
   } else {
-    wrkBtn.classList.remove('active');
-    stdBtn.classList.add('active');
-    desc.innerHTML = 'Original design · All panels 30mm solid oak MDF';
-    clBtn.style.display = 'none';
-    const stdListBtn = document.getElementById('generate-standard-list-btn');
-    if (stdListBtn) stdListBtn.style.display = 'flex';
+    if (stdBtn) stdBtn.classList.add('active');
+    if (desc) desc.innerHTML = 'Original design · All panels 30mm solid oak MDF (3.0m length)';
+    if (stdClBtn) stdClBtn.style.display = 'flex';
   }
 }
 
@@ -921,5 +1000,13 @@ const generateCuttingListBtn = document.getElementById('generate-cutting-list-bt
 if (generateCuttingListBtn) {
   generateCuttingListBtn.addEventListener('click', () => {
     window.open(import.meta.env.BASE_URL + 'cutting_list_workshop.html', '_blank');
+  });
+}
+
+// Wire up Egger Cutting List button
+const generateEggerListBtn = document.getElementById('generate-egger-list-btn');
+if (generateEggerListBtn) {
+  generateEggerListBtn.addEventListener('click', () => {
+    window.open(import.meta.env.BASE_URL + 'cutting_list_egger.html', '_blank');
   });
 }

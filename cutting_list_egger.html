@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Standard Build — Optimised Cutting List | Sound Desk</title>
+  <title>Egger 2800mm Build — Optimised Cutting List | Sound Desk</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --accent: #0f5fa8;
-      --accent-dark: #0a4478;
+      --accent: #059669;
+      --accent-dark: #047857;
       --green: #16a34a;
       --amber: #d97706;
       --red: #dc2626;
-      --purple: #7c3aed;
+      --emerald: #059669;
       --text: #0f172a;
       --muted: #475569;
       --dim: #94a3b8;
@@ -121,17 +121,17 @@
     .sc .l { font-size: 10.5px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
     .sc .s { font-size: 10px; color: var(--dim); margin-top: 2px; font-family: var(--mono); }
     .callout-board {
-      background: #f5f3ff;
-      border: 1px solid #ddd6fe;
-      border-left: 4px solid var(--purple);
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-left: 4px solid var(--emerald);
       border-radius: 8px;
       padding: 12px 16px;
       margin-bottom: 20px;
       font-size: 12px;
-      color: #5b21b6;
+      color: #065f46;
       line-height: 1.6;
     }
-    .callout-board strong { color: #4c1d95; }
+    .callout-board strong { color: #047857; }
     .mleg { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
     .mb {
       display: flex;
@@ -144,7 +144,7 @@
       font-weight: 600;
     }
     .mb-oak { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
-    .mb-birch { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    .mb-mfc { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
     .sw { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
     .sh { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; margin-top: 28px; }
     .sh h2 { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-family: var(--mono); white-space: nowrap; }
@@ -166,8 +166,7 @@
     .pt tbody tr:hover { background: #f8fafc; }
     .pt tbody tr:last-child td { border-bottom: none; }
     .pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9.5px; font-weight: 700; font-family: var(--mono); }
-    .p-oak { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    .p-birch { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+    .p-mfc { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
     .dc { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); }
     .qc { font-family: var(--mono); font-weight: 800; color: var(--amber); text-align: center; }
     .rc { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); }
@@ -195,11 +194,10 @@
       border-radius: 10px;
       padding: 14px;
       box-shadow: 0 1px 4px rgba(0,0,0,.04);
+      border-left: 4px solid var(--emerald) !important;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .bcard:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.07); }
-    .board-lrg { border-left: 4px solid var(--purple) !important; }
-    .board-std { border-left: 4px solid var(--accent) !important; }
     .bchdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .bchdr .bn { font-size: 12px; font-weight: 800; font-family: var(--mono); color: var(--text); }
     .bchdr .bsz {
@@ -209,9 +207,10 @@
       padding: 2px 7px;
       border-radius: 4px;
       margin-left: 6px;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
     }
-    .bsz-lrg { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
-    .bsz-std { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
     canvas { width: 100%; border-radius: 6px; display: block; border: 1px solid var(--border); background: #ffffff; }
     .tip { font-size: 11px; color: var(--muted); min-height: 18px; margin-top: 8px; font-family: var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ngrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 8px; }
@@ -263,15 +262,15 @@
   <div class="tbl">
     <a href="./index.html" class="back-btn">&#8592; Back to 3D Desk</a>
     <div class="dtl">
-      <h1>Standard Build &mdash; Optimised Cutting List</h1>
-      <p>30mm Solid Oak MDF &middot; 12mm Birch MDF &middot; 3000&times;900&times;760mm Sound Desk &middot; <span id="dl"></span></p>
+      <h1>Egger 2800mm Build &mdash; Optimised Cutting List</h1>
+      <p>18mm Egger MFC (Natural Kendal Oak H3170) &middot; Complete Build (including Drawers) &middot; 2800&times;900&times;760mm Sound Desk &middot; <span id="dl"></span></p>
     </div>
   </div>
   <div class="tbr">
     <div class="nav-tabs">
-      <a href="./cutting_list_standard.html" class="nav-tab active">Standard (30mm)</a>
+      <a href="./cutting_list_standard.html" class="nav-tab">Standard (30mm)</a>
       <a href="./cutting_list_workshop.html" class="nav-tab">Workshop (18mm)</a>
-      <a href="./cutting_list_egger.html" class="nav-tab">Egger MFC (2.8m)</a>
+      <a href="./cutting_list_egger.html" class="nav-tab active">Egger MFC (2.8m)</a>
     </div>
     <button class="pbtn" onclick="window.print()">&#128438; Print / Save PDF</button>
   </div>
@@ -281,131 +280,121 @@
   <div class="hero" id="hs"></div>
 
   <div class="callout-board">
-    <strong>Board Size Specification:</strong> Cutting plans utilise exactly two board sizes: 
-    <strong style="color:var(--purple)">3050&times;1220mm</strong> (long board format) and 
-    <strong style="color:var(--accent)">2440&times;1220mm</strong> (standard board format).
-    The 3000mm desktop panel and the 3000mm cable trench lid both nest onto a single 3050&times;1220mm board (combined width: 900 + 3mm kerf + 100 = 1003mm, well within 1220mm).
-    All other structural panels nest onto standard 2440&times;1220mm boards.
+    <strong>Egger 2800&times;2070mm Optimised Format:</strong> By setting the overall desk length to <strong>2800mm</strong>, the desktop (2800&times;900mm) and cable trench lid (2800&times;100mm) are each cut as a <strong>single continuous, seamless piece</strong> with zero joins.
+    The entire desk&mdash;including all carcass gables, dividers, plinths, backs, shelf, tray, and all 4 internal drawer boxes&mdash;is built from <strong>EXACTLY 3 BOARDS</strong> of 2800&times;2070mm Egger MFC.
+    The 200mm length reduction is distributed evenly by sizing the two operator footwells to 550mm each (leaving pedestals at 450mm and the centre equipment bay at 800mm).
   </div>
 
   <div class="mleg">
-    <div class="mb mb-oak"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#b8945a)"></div>30mm Solid Oak MDF &mdash; All Structural Panels</div>
-    <div class="mb mb-birch"><div class="sw" style="background:linear-gradient(135deg,#d4c4a8,#c9b89a)"></div>12mm Birch MDF &mdash; Drawer Box Construction</div>
-    <div class="mb" style="background:#faf5ff;border-color:#d8b4fe;color:#7c3aed"><div class="sw" style="background:#7c3aed"></div>Purple outline = 3050&times;1220mm board &nbsp;|&nbsp; Blue outline = 2440&times;1220mm board</div>
+    <div class="mb mb-mfc"><div class="sw" style="background:linear-gradient(135deg,#d2b68c,#b8945a)"></div>18mm Egger MFC (Natural Kendal Oak) &mdash; Complete Desk &amp; Drawer Boxes</div>
+    <div class="mb" style="background:#ecfdf5;border-color:#a7f3d0;color:#065f46"><div class="sw" style="background:#059669"></div>Green outline = 2800&times;2070mm Egger Board Format</div>
   </div>
 
-  <div class="sh"><h2>A &middot; 30mm Solid Oak MDF &mdash; Structural Panels</h2><div class="dv"></div></div>
+  <div class="sh"><h2>A &middot; Carcass, Worktop &amp; Structural Panels</h2><div class="dv"></div></div>
   <table class="pt">
     <thead>
       <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
     </thead>
-    <tbody id="oa"></tbody>
+    <tbody id="ca"></tbody>
   </table>
 
-  <div class="sh"><h2>B &middot; 12mm Birch MDF &mdash; Drawer Box Construction</h2><div class="dv"></div></div>
+  <div class="sh"><h2>B &middot; Drawer Box Construction (Built from same 18mm Egger MFC)</h2><div class="dv"></div></div>
   <table class="pt">
     <thead>
       <tr><th>Ref</th><th>Description</th><th>Qty</th><th>L&nbsp;mm</th><th>W&nbsp;mm</th><th>Thk</th><th>Board Format</th><th>Notes</th></tr>
     </thead>
-    <tbody id="bi"></tbody>
+    <tbody id="dr"></tbody>
   </table>
 
-  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting Diagrams</h2><div class="dv"></div></div>
+  <div class="sh"><h2>Board Layout &mdash; Optimised Nesting Diagrams (3 Boards Total)</h2><div class="dv"></div></div>
   <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-    Every board is fully utilised with zero unassigned sheets. 3mm saw-kerf allowance included between all cuts. Hover over any piece to inspect its label and dimensions.
+    Guillotine cuts with 3mm saw-kerf allowance. The long 2800mm wood grain flows along the worktop and carcass gables. Hover over any piece to inspect its label and dimensions.
   </p>
   <div id="bs"></div>
 
   <div class="sh"><h2>Hardware Schedule</h2><div class="dv"></div></div>
   <div class="hwlist">
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times; 3000mm Continuous Stainless Steel Piano Hinge (heavy duty).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times; 2800mm Continuous Stainless Steel Piano Hinge (heavy duty).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Slides:</strong> 4 Pairs&times; 600mm Soft-Close Full-Extension Ball Bearing Slides (35kg rated).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Pull-Out Slides:</strong> 1 Pair&times; 750mm Heavy-Duty Telescopic Slide Rails (45kg+ rated).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Pull Handles:</strong> 4&times; Matte Black Anodised Bar Pulls (120mm fixing centres).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Oak ABS Edge Banding:</strong> ~42m of 2mm thick Oak ABS edge tape for all exposed 30mm edges.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Structural Joinery:</strong> 50mm Pocket Screws + Domino/biscuit dowels at all load-bearing panel joints.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Fixing Bolts:</strong> 8&times; M6&times;60mm Furniture Connecting Bolts &amp; Barrel Nuts to secure desktop.</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Adhesive:</strong> 750ml High-strength D3 PVA Wood Glue. Pre-drill all screw holes to avoid splitting 30mm core.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 22&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Egger 2mm ABS Edge Banding:</strong> ~55m of matching Natural Kendal Oak ABS edge tape for all exposed edges.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Confirmat / Twin-Thread Screws:</strong> 50mm Confirmat or 4&times;45mm twin-thread screws for structural MFC joints.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Connecting Bolts:</strong> 8&times; M6&times;50mm furniture connecting bolts &amp; barrel nuts to secure desktop to carcass.</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Adhesive:</strong> 500ml High-strength PVA Wood Glue. Pre-drill all screw holes with 3.5mm stepped bit.</span></div>
   </div>
 
-  <div class="sh"><h2>Workshop Notes &mdash; Standard Build</h2><div class="dv"></div></div>
+  <div class="sh"><h2>Workshop Notes &mdash; Egger MFC 2800mm Build</h2><div class="dv"></div></div>
   <div class="ngrid">
-    <div class="nc"><strong>Board Formats:</strong> The 3000mm Desktop (A1) and 3000mm Cable Lid (A2) require 1&times; 3050&times;1220mm board. Both parts fit on this single sheet. All other structural panels fit on 4&times; 2440&times;1220mm boards.</div>
-    <div class="nc"><strong>Grain Continuity:</strong> Oak veneer grain runs along the length of each board. On the desktop and lid, grain flows continuously along the 3000mm front-to-back axis.</div>
-    <div class="nc"><strong>Panel Weight:</strong> A full 30mm MDF board weighs ~80kg. Use a panel lift or team-handling during ripping and assembly.</div>
-    <div class="nc"><strong>Cable Trench Routing:</strong> Route the 100mm trench channel using a guide rail from the underside to guarantee zero top-veneer chip-out.</div>
-    <div class="nc"><strong>Joinery Pre-Drilling:</strong> Because 30mm MDF is dense, pilot-drill all screw pilot holes at 3.5mm and countersink cleanly to prevent core swelling.</div>
-    <div class="nc"><strong>Off-Cut Reclamation:</strong> The remaining strips on Sheet 1 (214mm wide &times; 3050mm long) provide excellent material for structural cleats and cable duct supports.</div>
+    <div class="nc"><strong>Seamless 2800mm Top:</strong> The 2800mm desktop panel (A1) and 2800mm cable trench lid (A2) are cut along the full 2800mm length of Sheet 1, giving a perfectly continuous wood grain and eliminating any joint line.</div>
+    <div class="nc"><strong>Complete Build in 3 Boards:</strong> All 44 panels (including carcass, dividers, plinths, and all 4 drawer boxes) are produced from just 3 boards of 2800&times;2070mm. Sheet 3 has ~2.2 m&sup2; of clean off-cut for workshop shelving.</div>
+    <div class="nc"><strong>Chip-Free MFC Machining:</strong> To prevent surface melamine chipping, use an 80-tooth triple-chip grind (TCG) blade on a table/plunge saw, score cut lines with a sharp knife first, or use a sacrificial backing board.</div>
+    <div class="nc"><strong>Pre-Drilling Pilots:</strong> Melamine chipboard cores can mushroom if screws are driven without pilot holes. Always pre-drill with a 3.5mm bit and countersink cleanly before fastening.</div>
+    <div class="nc"><strong>Edge Banding Application:</strong> Apply 2mm matching ABS edge banding with hot-melt glue or pre-glued tape with a heat gun. 2mm ABS gives durable, impact-resistant radiused edges that protect high-wear corners.</div>
+    <div class="nc"><strong>Under-Top Load Distribution:</strong> The 2800mm desktop bears directly on all seven 18mm vertical gables and dividers, providing exceptional rigidity with zero risk of sag across the desk.</div>
   </div>
 
   <div class="footer">
-    <span>Sound Desk &mdash; Standard Build Cutting List &middot; Rev C</span>
+    <span>Sound Desk &mdash; Egger 2800mm Build Cutting List &middot; Rev A</span>
     <span id="fd"></span>
-    <span>Board Formats: 3050&times;1220mm and 2440&times;1220mm</span>
+    <span>Board Format: 2800&times;2070mm Egger MFC &middot; 3 Boards Total</span>
   </div>
 </div>
 
 <script>
-var STD = { w: 2440, h: 1220, label: '2440\u00d71220mm', cls: 'bsz-std', bCls: 'board-std' };
-var LRG = { w: 3050, h: 1220, label: '3050\u00d71220mm', cls: 'bsz-lrg', bCls: 'board-lrg' };
+var BD = { w: 2800, h: 2070, label: '2800\u00d72070mm' };
 var KF = 3;
 
-// Standard Build Parts (30mm Oak MDF for all structural panels)
-// Dimensions match desk model geometry: H_DESK=760, THICKNESS=30, D_TOTAL=900, D-40=860
-var oP = [
-  { ref: 'A1',  p: 'Desktop Panel (cable trench routed)',       q: 1, l: 3000, w: 900, n: '100mm slot routed full length 200mm from rear edge. Grain along 3000mm.' },
-  { ref: 'A2',  p: 'Cable Trench Lid',                          q: 1, l: 3000, w: 100, n: '12 capsule slots 25mm dia. Piano hinge along rear edge.' },
-  { ref: 'A3',  p: 'Outer Left End Panel',                      q: 1, l: 860,  w: 730, n: 'Visible outer left gable. Height 730mm (760 - 30mm top). Depth 860mm.' },
-  { ref: 'A4',  p: 'Outer Right End Panel',                     q: 1, l: 860,  w: 730, n: 'Visible outer right gable. Height 730mm (760 - 30mm top). Depth 860mm.' },
-  { ref: 'A5',  p: 'Back Panel \u2014 Left Pedestal',           q: 1, l: 450,  w: 730, n: 'Rear closure left pedestal. Sits between outer end and inner divider.' },
-  { ref: 'A6',  p: 'Back Panel \u2014 Left Operator Recess',     q: 1, l: 650,  w: 730, n: 'Rear closure left leg recess.' },
-  { ref: 'A7',  p: 'Back Panel \u2014 Right Operator Recess',    q: 1, l: 650,  w: 730, n: 'Rear closure right leg recess.' },
-  { ref: 'A8',  p: 'Back Panel \u2014 Right Pedestal',          q: 1, l: 450,  w: 730, n: 'Rear closure right pedestal.' },
-  { ref: 'A9',  p: 'Internal Divider \u2014 Left Pedestal Inner',q: 1, l: 860,  w: 730, n: 'Vertical panel at 450mm from left outer end. Full depth 860mm.' },
-  { ref: 'A10', p: 'Internal Divider \u2014 Left Centre',       q: 1, l: 860,  w: 730, n: 'Vertical panel at 1100mm from left outer end.' },
-  { ref: 'A11', p: 'Internal Divider \u2014 Centre Sub-Divider',q: 1, l: 860,  w: 730, n: 'Partition between Tower PC and Equipment rack bays.' },
-  { ref: 'A12', p: 'Internal Divider \u2014 Right Centre',      q: 1, l: 860,  w: 730, n: 'Vertical panel at 1900mm from left outer end.' },
-  { ref: 'A13', p: 'Internal Divider \u2014 Right Pedestal Inner',q: 1, l: 860, w: 730, n: 'Vertical panel at 2550mm from left outer end.' },
-  { ref: 'A14', p: 'Plinth \u2014 Left Pedestal',               q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under left pedestal.' },
-  { ref: 'A15', p: 'Plinth \u2014 Left Leg Recess',             q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
-  { ref: 'A16', p: 'Plinth \u2014 Centre Bay',                  q: 1, l: 860,  w: 800, n: 'Full depth 860mm under central PC and rack sections.' },
-  { ref: 'A17', p: 'Plinth \u2014 Right Leg Recess',            q: 1, l: 650,  w: 300, n: 'Rear 300mm depth only, recessed for operator footwell.' },
-  { ref: 'A18', p: 'Plinth \u2014 Right Pedestal',              q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under right pedestal.' },
-  { ref: 'A19', p: 'Equipment Bay Fixed Shelf',                 q: 1, l: 780,  w: 480, n: 'Supports power management and induction loop amplifier.' },
+// Carcass and worktop pieces (18mm Egger MFC)
+var cP = [
+  { ref: 'A1',  p: 'Desktop Panel (cable trench routed)',       q: 1, l: 2800, w: 900, n: 'Seamless single piece along full 2800mm length. 100mm trench routed from underside.' },
+  { ref: 'A2',  p: 'Cable Trench Lid',                          q: 1, l: 2800, w: 100, n: 'Seamless single piece along full 2800mm length. Piano hinge rear edge.' },
+  { ref: 'A3',  p: 'Outer Left End Panel (Gable)',              q: 1, l: 860,  w: 742, n: 'Visible outer left gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
+  { ref: 'A4',  p: 'Outer Right End Panel (Gable)',             q: 1, l: 860,  w: 742, n: 'Visible outer right gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
+  { ref: 'A5',  p: 'Internal Divider \u2014 Left Pedestal Inner',q: 1, l: 860,  w: 742, n: 'Vertical panel at 450mm from left outer end.' },
+  { ref: 'A6',  p: 'Internal Divider \u2014 Left Centre',       q: 1, l: 860,  w: 742, n: 'Vertical panel at 1000mm from left outer end.' },
+  { ref: 'A7',  p: 'Internal Divider \u2014 Centre Sub-Divider',q: 1, l: 860,  w: 742, n: 'Partition between PC tower and equipment rack bays.' },
+  { ref: 'A8',  p: 'Internal Divider \u2014 Right Centre',      q: 1, l: 860,  w: 742, n: 'Vertical panel at 1800mm from left outer end.' },
+  { ref: 'A9',  p: 'Internal Divider \u2014 Right Pedestal Inner',q: 1, l: 860, w: 742, n: 'Vertical panel at 2350mm from left outer end.' },
+  { ref: 'A10', p: 'Plinth \u2014 Left Pedestal',               q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under left pedestal.' },
+  { ref: 'A11', p: 'Plinth \u2014 Centre Bay',                  q: 1, l: 860,  w: 800, n: 'Full depth 860mm under central PC and rack sections.' },
+  { ref: 'A12', p: 'Plinth \u2014 Right Pedestal',              q: 1, l: 860,  w: 450, n: 'Full depth 860mm front to back under right pedestal.' },
+  { ref: 'A13', p: 'Plinth \u2014 Left Leg Recess (Kicker)',    q: 1, l: 550,  w: 300, n: 'Rear 300mm depth only under 550mm operator footwell.' },
+  { ref: 'A14', p: 'Plinth \u2014 Right Leg Recess (Kicker)',   q: 1, l: 550,  w: 300, n: 'Rear 300mm depth only under 550mm operator footwell.' },
+  { ref: 'A15', p: 'Back Panel \u2014 Left Pedestal',           q: 1, l: 450,  w: 760, n: 'Full-height 760mm rear closure panel.' },
+  { ref: 'A16', p: 'Back Panel \u2014 Left Operator Recess',     q: 1, l: 550,  w: 760, n: 'Rear closure panel for 550mm operator recess.' },
+  { ref: 'A17', p: 'Back Panel \u2014 Right Operator Recess',    q: 1, l: 550,  w: 760, n: 'Rear closure panel for 550mm operator recess.' },
+  { ref: 'A18', p: 'Back Panel \u2014 Right Pedestal',          q: 1, l: 450,  w: 760, n: 'Full-height 760mm rear closure panel.' },
+  { ref: 'A19', p: 'Equipment Bay Fixed Shelf',                 q: 1, l: 780,  w: 480, n: 'Supports power strip and induction loop amplifier.' },
   { ref: 'A20', p: 'Tower PC Pull-Out Tray',                   q: 1, l: 780,  w: 260, n: 'Mounted on heavy-duty telescopic slide rails.' },
-  { ref: 'A21', p: 'Drawer Front Panels',                      q: 4, l: 390,  w: 295, n: '2 per pedestal. Finished oak face visible. Handles centred.' }
+  { ref: 'A21', p: 'Drawer Front Panels',                      q: 4, l: 404,  w: 290, n: '2 per pedestal. Finished oak face visible. Handles centred.' }
 ];
 
-var bP = [
+// Drawer Box pieces (cut from same 18mm Egger MFC)
+var dP = [
   { ref: 'B1', p: 'Drawer Box Side Walls',  q: 8, l: 570, w: 220, n: '2 sides per box \u00d7 4 drawers. 570mm length for 600mm runner.' },
-  { ref: 'B2', p: 'Drawer Box Front/Back',  q: 8, l: 306, w: 220, n: '1 front + 1 back per box \u00d7 4 drawers.' },
-  { ref: 'B3', p: 'Drawer Box Base Panels', q: 4, l: 546, w: 306, n: '1 bottom panel per box \u00d7 4 drawers. Inset into 6mm bottom groove.' }
+  { ref: 'B2', p: 'Drawer Box Front/Back',  q: 8, l: 368, w: 220, n: '1 front + 1 back per box \u00d7 4 drawers.' },
+  { ref: 'B3', p: 'Drawer Box Base Panels', q: 4, l: 546, w: 340, n: '1 bottom panel per box \u00d7 4 drawers. Rebated or grooved into sides.' }
 ];
 
-function boardFor(l, w) {
-  var fits2440 = (l <= 2440 && w <= 1220) || (w <= 2440 && l <= 1220);
-  return fits2440 ? STD : LRG;
-}
-
-function fillT(id, parts, pc, thk) {
+function fillT(id, parts) {
   var tb = document.getElementById(id);
   parts.forEach(function(p) {
-    var bd = boardFor(p.l, p.w);
     var tr = document.createElement('tr');
     tr.innerHTML = '<td class="rc">' + p.ref + '</td>'
       + '<td>' + p.p + '</td>'
       + '<td class="qc">' + p.q + '</td>'
       + '<td class="dc">' + p.l + '</td>'
       + '<td class="dc">' + p.w + '</td>'
-      + '<td><span class="pill ' + pc + '">' + thk + 'mm</span></td>'
-      + '<td><span class="bsz ' + bd.cls + '">' + bd.label + '</span></td>'
+      + '<td><span class="pill p-mfc">18mm</span></td>'
+      + '<td><span class="bsz">' + BD.label + '</span></td>'
       + '<td style="font-size:11px;color:var(--dim)">' + p.n + '</td>';
     tb.appendChild(tr);
   });
 }
-fillT('oa', oP, 'p-oak', 30);
-fillT('bi', bP, 'p-birch', 12);
+fillT('ca', cP);
+fillT('dr', dP);
 
 function canFit(pw, ph, bw, bh) {
   return (pw <= bw && ph <= bh) || (ph <= bw && pw <= bh);
@@ -431,9 +420,7 @@ function packSmart(pieces) {
 
       while (left.length > 0 && safety < 200) {
         safety++;
-        var reqLrg = left.some(function(p) { return !canFit(p.w, p.h, STD.w, STD.h); });
-        var board = reqLrg ? (canFit(left[0].w, left[0].h, STD.w, STD.h) ? STD : LRG) : STD;
-        var BW = board.w, BH = board.h;
+        var BW = BD.w, BH = BD.h;
         var free = [{ x: 0, y: 0, w: BW, h: BH }];
         var placed = [];
         var rem = [];
@@ -450,7 +437,7 @@ function packSmart(pieces) {
 
           oris.forEach(function(ori) {
             if (!canFit(ori.w, ori.h, BW, BH)) return;
-            free.forEach(function(fr, fi) {
+            free.forEach((fr, fi) => {
               if (ori.w <= fr.w && ori.h <= fr.h) {
                 var score;
                 if (heuristic === 'BAF') {
@@ -496,7 +483,7 @@ function packSmart(pieces) {
         }
         var usedA = placed.reduce(function(s, p) { return s + p.w * p.h; }, 0);
         var waste = placed.length > 0 ? Math.round((1 - usedA / (BW * BH)) * 100) : 0;
-        if (placed.length > 0) sheets.push({ placed: placed, waste: waste, board: board });
+        if (placed.length > 0) sheets.push({ placed: placed, waste: waste, board: BD });
         left = rem;
       }
 
@@ -525,28 +512,25 @@ function expand(parts, cols) {
   return out;
 }
 
-var oakCols = ['#c49a3c', '#d4aa4c', '#b48a2c', '#e4ba5c', '#c8a040', '#dab050', '#a87830', '#f0ca6c', '#ba9038', '#cc9e44'];
-var birchCols = ['#a89060', '#b8a070', '#988050', '#c8b080', '#ac9464', '#baa868'];
-var oX = expand(oP, oakCols);
-var bX = expand(bP, birchCols);
+var mfcColors = [
+  '#c49a3c', '#d4aa4c', '#b48a2c', '#e4ba5c', '#c8a040', '#dab050',
+  '#a87830', '#f0ca6c', '#ba9038', '#cc9e44', '#b8945a', '#c29c62'
+];
+
+var allParts = [...cP, ...dP];
+var expandedParts = expand(allParts, mfcColors);
 
 function wc(w) { return w <= 25 ? 'wg' : w <= 50 ? 'wo' : 'wr'; }
 
 function renderG(container, title, accent, pcs) {
   if (!pcs.length) return;
   var sheets = packSmart(pcs);
-  var lrgCount = sheets.filter(function(s) { return s.board === LRG; }).length;
-  var stdCount = sheets.filter(function(s) { return s.board === STD; }).length;
   var avgW = Math.round(sheets.reduce(function(s, sh) { return s + sh.waste; }, 0) / sheets.length);
 
   var hdr = document.createElement('div');
   hdr.className = 'bh';
-  var bdInfo = '';
-  if (lrgCount > 0) bdInfo += ' &bull; <strong style="color:var(--purple)">' + lrgCount + ' \u00d7 3050\u00d71220</strong>';
-  if (stdCount > 0) bdInfo += ' &bull; <strong style="color:var(--accent)">' + stdCount + ' \u00d7 2440\u00d71220</strong>';
-
   hdr.innerHTML = '<div><div class="bl" style="color:' + accent + '">' + title + '</div>'
-    + '<div class="br">' + sheets.length + ' board' + (sheets.length > 1 ? 's' : '') + ' required &middot; ' + pcs.length + ' parts' + bdInfo + '</div></div>'
+    + '<div class="br">' + sheets.length + ' boards required &middot; ' + pcs.length + ' parts &bull; <strong style="color:var(--emerald)">' + sheets.length + ' \u00d7 2800\u00d72070mm</strong></div></div>'
     + '<span class="wb ' + wc(avgW) + '">&oslash; ' + avgW + '% waste</span>';
   container.appendChild(hdr);
 
@@ -554,34 +538,33 @@ function renderG(container, title, accent, pcs) {
   grid.className = 'bgrid';
 
   sheets.forEach(function(sh, si) {
-    var bd = sh.board;
     var card = document.createElement('div');
-    card.className = 'bcard ' + bd.bCls;
+    card.className = 'bcard';
 
     var bchdr = document.createElement('div');
     bchdr.className = 'bchdr';
     bchdr.innerHTML = '<div><span class="bn">Board ' + (si + 1) + ' of ' + sheets.length + '</span>'
-      + '<span class="bsz ' + bd.cls + '">' + bd.label + '</span></div>'
+      + '<span class="bsz">' + BD.label + '</span></div>'
       + '<span class="wb ' + wc(sh.waste) + '">' + sh.waste + '% waste</span>';
     card.appendChild(bchdr);
 
     var CW = 640;
-    var aspect = bd.h / bd.w;
+    var aspect = BD.h / BD.w;
     var CH = Math.round(CW * aspect);
 
     var cv = document.createElement('canvas');
     cv.width = CW;
     cv.height = CH;
     var ctx = cv.getContext('2d');
-    var sc = CW / bd.w;
+    var sc = CW / BD.w;
 
     // Draw board background & grid
     ctx.fillStyle = '#faf8f5';
     ctx.fillRect(0, 0, CW, CH);
     ctx.strokeStyle = 'rgba(0,0,0,0.05)';
     ctx.lineWidth = 0.5;
-    for (var gx = 0; gx <= bd.w; gx += 200) { ctx.beginPath(); ctx.moveTo(gx * sc, 0); ctx.lineTo(gx * sc, CH); ctx.stroke(); }
-    for (var gy = 0; gy <= bd.h; gy += 200) { ctx.beginPath(); ctx.moveTo(0, gy * sc); ctx.lineTo(CW, gy * sc); ctx.stroke(); }
+    for (var gx = 0; gx <= BD.w; gx += 200) { ctx.beginPath(); ctx.moveTo(gx * sc, 0); ctx.lineTo(gx * sc, CH); ctx.stroke(); }
+    for (var gy = 0; gy <= BD.h; gy += 200) { ctx.beginPath(); ctx.moveTo(0, gy * sc); ctx.lineTo(CW, gy * sc); ctx.stroke(); }
 
     cv._hits = [];
     sh.placed.forEach(function(p) {
@@ -625,21 +608,21 @@ function renderG(container, title, accent, pcs) {
     });
 
     // Board outer border & dimension labels
-    ctx.strokeStyle = bd === LRG ? 'rgba(124,58,237,0.6)' : 'rgba(15,95,168,0.4)';
+    ctx.strokeStyle = 'rgba(5,150,105,0.5)';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(0.75, 0.75, CW - 1.5, CH - 1.5);
 
-    ctx.fillStyle = bd === LRG ? 'rgba(124,58,237,0.8)' : 'rgba(15,95,168,0.8)';
+    ctx.fillStyle = 'rgba(5,150,105,0.85)';
     ctx.font = '8px JetBrains Mono, monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(bd.w + ' mm', CW / 2, CH - 2);
+    ctx.fillText(BD.w + ' mm', CW / 2, CH - 2);
 
     ctx.save();
     ctx.translate(8, CH / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.textBaseline = 'middle';
-    ctx.fillText(bd.h + ' mm', 0, 0);
+    ctx.fillText(BD.h + ' mm', 0, 0);
     ctx.restore();
 
     card.appendChild(cv);
@@ -680,23 +663,18 @@ function renderG(container, title, accent, pcs) {
 }
 
 var bsEl = document.getElementById('bs');
-renderG(bsEl, '30mm Solid Oak MDF \u2014 All Structural Panels', '#92400e', oX);
-renderG(bsEl, '12mm Birch MDF \u2014 Drawer Boxes', '#15803d', bX);
+renderG(bsEl, '18mm Egger MFC (Natural Kendal Oak) \u2014 Complete Build', '#059669', expandedParts);
 
-var oSheets = packSmart(oX);
-var bSheets = packSmart(bX);
-var oLrg = oSheets.filter(function(s) { return s.board === LRG; }).length;
-var oStd = oSheets.filter(function(s) { return s.board === STD; }).length;
-var bStd = bSheets.filter(function(s) { return s.board === STD; }).length;
+var sheets = packSmart(expandedParts);
 var totP = 0;
-[oP, bP].forEach(function(g) { g.forEach(function(p) { totP += p.q; }); });
+allParts.forEach(function(p) { totP += p.q; });
 
 var hsEl = document.getElementById('hs');
 [
-  { v: oSheets.length, l: '30mm Oak MDF Boards', s: oLrg + '\u00d73050 + ' + oStd + '\u00d72440mm' },
-  { v: bSheets.length, l: '12mm Birch MDF Boards', s: bStd + '\u00d72440\u00d71220mm' },
-  { v: oSheets.length + bSheets.length, l: 'Total Boards', s: 'All materials' },
-  { v: totP, l: 'Total Parts', s: 'Unique pieces' }
+  { v: sheets.length, l: 'Egger 18mm MFC Boards', s: '3 \u00d7 2800\u00d72070mm' },
+  { v: '0', l: 'Separate Drawer Sheets', s: 'Drawers cut from same boards' },
+  { v: sheets.length, l: 'Total Boards', s: 'Complete Build' },
+  { v: totP, l: 'Total Parts', s: 'All pieces including drawers' }
 ].forEach(function(d) {
   var el = document.createElement('div');
   el.className = 'sc';
