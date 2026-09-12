@@ -388,6 +388,37 @@ html, body {
   box-shadow: 0 0 8px var(--accent-gold);
 }
 
+/* Material Variant Tab Toggle */
+.variant-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  color: var(--text-muted);
+  padding: 6px 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: var(--font-main);
+}
+
+.variant-tab:hover {
+  color: var(--text-main);
+  background: rgba(255,255,255,0.06);
+}
+
+.variant-tab.active {
+  background: linear-gradient(135deg, rgba(56,189,248,0.25), rgba(56,189,248,0.1));
+  color: #fff;
+  box-shadow: 0 0 10px rgba(56,189,248,0.18);
+}
+
 /* Bottom Zoom Bar */
 .zoom-bar {
   position: absolute;

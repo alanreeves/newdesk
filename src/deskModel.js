@@ -271,6 +271,14 @@ export function buildDeskScene() {
     roughness: 0.45,
     metalness: 0.02
   });
+
+  // Black melamine-faced MDF for Workshop Build internal dividers/plinths/shelves
+  const blackMelamineMaterial = new THREE.MeshStandardMaterial({
+    color: 0x0d0f12,
+    roughness: 0.55,
+    metalness: 0.04,
+    envMapIntensity: 0.5
+  });
   
   const darkMetalMaterial = new THREE.MeshStandardMaterial({
     color: 0x1f232d,
@@ -297,13 +305,18 @@ export function buildDeskScene() {
     cablesGroup: new THREE.Group()
   };
 
+  // Tagged meshes for variant material/geometry swapping
+  // 'oak_exterior': top, backs, outer end panels, drawer fronts → oak in both variants, 18mm in workshop
+  // 'black_interior': internal dividers, plinths, shelves → oak in standard, black melamine in workshop
+  const taggedMeshes = { oak_exterior: [], black_interior: [] };
+
   const interactiveEquipment = [];
   const equipmentPins = [];
 
   const W_TOTAL = 3.00;
   const D_TOTAL = 0.90;
   const H_DESK = 0.76;
-  const THICKNESS = 0.03;
+  const THICKNESS = 0.03; // Standard build: 30mm. Workshop build uses 18mm via swapVariant()
 
   // 1. STRAIGHT LIGHT OAK DESKTOP WITH REAR CABLE TRENCH
   const desktopShape = new THREE.Shape();
@@ -361,6 +374,9 @@ export function buildDeskScene() {
   desktopMesh.position.set(0, H_DESK, 0);
   desktopMesh.castShadow = true;
   desktopMesh.receiveShadow = true;
+  desktopMesh.userData.variantRole = 'oak_exterior';
+  desktopMesh.userData.variantGeom = { type: 'desktop' };
+  taggedMeshes.oak_exterior.push(desktopMesh);
   rootGroup.add(desktopMesh);
 
   // Cable Tidy Trench Floor (with cutouts)
@@ -468,6 +484,8 @@ export function buildDeskScene() {
   const lidMesh = new THREE.Mesh(lidGeo, oakMaterial);
   lidMesh.position.set(0, 0, 0);
   lidMesh.castShadow = true;
+  lidMesh.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(lidMesh);
   animatedGroups.trenchLidGroup.add(lidMesh);
 
   // Black rubber grommets for lid slots
@@ -526,16 +544,22 @@ export function buildDeskScene() {
 
     const pMesh = new THREE.Mesh(
       new THREE.BoxGeometry(pWidth, 0.035, pDepth),
-      oakMaterial
+      oakMaterial // swapped to blackMelamineMaterial in Workshop Build
     );
     pMesh.position.set(pCenterX, 0.0175, pCenterZ);
     pMesh.castShadow = true;
     pMesh.receiveShadow = true;
+    pMesh.userData.variantRole = 'black_interior';
+    taggedMeshes.black_interior.push(pMesh);
     rootGroup.add(pMesh);
   });
 
-  const verticalDivs = [-1.50, -1.05, -0.40, -0.10, 0.40, 1.05, 1.50];
-  verticalDivs.forEach(x => {
+  // Outer end panels (x=-1.50 and x=1.50) → oak_exterior in Workshop Build
+  // Internal dividers (x=-1.05, -0.40, -0.10, 0.40, 1.05) → black_interior in Workshop Build
+  const outerEndDivs = [-1.50, 1.50];
+  const innerDivs = [-1.05, -0.40, -0.10, 0.40, 1.05];
+
+  outerEndDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
       oakMaterial
@@ -543,23 +567,46 @@ export function buildDeskScene() {
     vMesh.position.set(x, (H_DESK - THICKNESS) / 2, 0);
     vMesh.castShadow = true;
     vMesh.receiveShadow = true;
+    vMesh.userData.variantRole = 'oak_exterior';
+    taggedMeshes.oak_exterior.push(vMesh);
+    rootGroup.add(vMesh);
+  });
+
+  innerDivs.forEach(x => {
+    const vMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
+      oakMaterial // swapped to blackMelamineMaterial in Workshop Build
+    );
+    vMesh.position.set(x, (H_DESK - THICKNESS) / 2, 0);
+    vMesh.castShadow = true;
+    vMesh.receiveShadow = true;
+    vMesh.userData.variantRole = 'black_interior';
+    taggedMeshes.black_interior.push(vMesh);
     rootGroup.add(vMesh);
   });
 
   const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
   backLeftPedestal.position.set(-1.275, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backLeftPedestal.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(backLeftPedestal);
   rootGroup.add(backLeftPedestal);
 
   const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
   backLeftOperator.position.set(-0.725, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backLeftOperator.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(backLeftOperator);
   rootGroup.add(backLeftOperator);
 
   const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.65, H_DESK, THICKNESS), oakMaterial);
   backRightOperator.position.set(0.725, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backRightOperator.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(backRightOperator);
   rootGroup.add(backRightOperator);
 
   const backRightPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
   backRightPedestal.position.set(1.275, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backRightPedestal.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(backRightPedestal);
   rootGroup.add(backRightPedestal);
 
   // 2. DRAWER UNITS
@@ -589,6 +636,8 @@ export function buildDeskScene() {
       frontMesh.position.set(centerX, drawerY, D_TOTAL / 2 - THICKNESS / 2);
       frontMesh.castShadow = true;
       frontMesh.receiveShadow = true;
+      frontMesh.userData.variantRole = 'oak_exterior';
+      taggedMeshes.oak_exterior.push(frontMesh);
       groupRef.add(frontMesh);
 
       // Handle
@@ -858,9 +907,11 @@ export function buildDeskScene() {
 
   const rackShelf = new THREE.Mesh(
     new THREE.BoxGeometry(0.48, THICKNESS, D_TOTAL - 0.12),
-    oakMaterial
+    oakMaterial // swapped to blackMelamineMaterial in Workshop Build
   );
   rackShelf.position.set(0.15, 0.22, 0);
+  rackShelf.userData.variantRole = 'black_interior';
+  taggedMeshes.black_interior.push(rackShelf);
   rootGroup.add(rackShelf);
 
   const indAmpMesh = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.088, 0.36), darkMetalMaterial);
@@ -1072,6 +1123,8 @@ export function buildDeskScene() {
   shelfTray.position.set(-0.75, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
   shelfTray.castShadow = true;
   shelfTray.receiveShadow = true;
+  shelfTray.userData.variantRole = 'oak_exterior';
+  taggedMeshes.oak_exterior.push(shelfTray);
   animatedGroups.keyboardShelfGroup.add(shelfTray);
 
   const shelfRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
@@ -1388,6 +1441,8 @@ export function buildDeskScene() {
     keyboardShelfGroup: animatedGroups.keyboardShelfGroup,
     interactiveEquipment,
     equipmentPins,
-    oakMaterial
+    oakMaterial,
+    blackMelamineMaterial,
+    taggedMeshes
   };
 }

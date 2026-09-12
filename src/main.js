@@ -811,3 +811,103 @@ function animate() {
 }
 
 animate();
+
+// ==========================================
+// 9. MATERIAL VARIANT SYSTEM
+// ==========================================
+
+let currentVariant = 'standard';
+
+// Thickness scale factors: standard = 30mm (1.0), workshop = 18mm (0.6)
+const STANDARD_THICKNESS = 0.030;
+const WORKSHOP_THICKNESS = 0.018;
+
+/**
+ * Swaps materials and scales panel geometry thickness on all tagged structural meshes.
+ * oak_exterior meshes keep oakMaterial in both variants (only thickness changes in workshop).
+ * black_interior meshes use oakMaterial in standard and blackMelamineMaterial in workshop.
+ */
+function applyVariant(variant) {
+  const { taggedMeshes, oakMaterial, blackMelamineMaterial } = deskData;
+  const isWorkshop = variant === 'workshop';
+  const newThickness = isWorkshop ? WORKSHOP_THICKNESS : STANDARD_THICKNESS;
+  const thicknessRatio = newThickness / STANDARD_THICKNESS; // 0.6 or 1.0
+
+  // Swap materials on black_interior tagged meshes
+  taggedMeshes.black_interior.forEach(mesh => {
+    mesh.material = isWorkshop ? blackMelamineMaterial : oakMaterial;
+  });
+
+  // Scale geometry thickness on ALL structural tagged meshes (oak_exterior + black_interior)
+  // We scale the X or Z dimension depending on the panel orientation
+  [...taggedMeshes.oak_exterior, ...taggedMeshes.black_interior].forEach(mesh => {
+    // Skip the desktop and lid (complex extruded geometry — thickness change is subtle there)
+    if (mesh.userData.variantGeom && mesh.userData.variantGeom.type === 'desktop') return;
+
+    // Read the current geometry bounding box to determine which axis is "thickness"
+    // For back panels: Z is thickness. For vertical dividers: X is thickness. For plinths: Y≈thickness (35mm fixed). 
+    // We use the stored originalScale approach: store once on first variant change.
+    if (!mesh.userData._origScale) {
+      mesh.userData._origScale = { x: mesh.scale.x, y: mesh.scale.y, z: mesh.scale.z };
+    }
+
+    const orig = mesh.userData._origScale;
+    const geo = mesh.geometry;
+    // Detect thickness axis by looking at the smallest bounding box dimension of a BoxGeometry
+    if (!mesh.userData._thicknessAxis) {
+      geo.computeBoundingBox();
+      const bb = geo.boundingBox;
+      const sx = bb.max.x - bb.min.x;
+      const sy = bb.max.y - bb.min.y;
+      const sz = bb.max.z - bb.min.z;
+      const minDim = Math.min(sx, sy, sz);
+      // Allow a tolerance; the "thickness" dimension is the smallest one (e.g., 0.03 vs 0.86/0.76)
+      if (Math.abs(sx - minDim) < 0.001) mesh.userData._thicknessAxis = 'x';
+      else if (Math.abs(sz - minDim) < 0.001) mesh.userData._thicknessAxis = 'z';
+      else mesh.userData._thicknessAxis = null; // plinths (y is not the smallest) - skip
+    }
+
+    const axis = mesh.userData._thicknessAxis;
+    if (axis === 'x') {
+      gsap.to(mesh.scale, { x: orig.x * thicknessRatio, duration: 0.6, ease: 'power2.inOut' });
+    } else if (axis === 'z') {
+      gsap.to(mesh.scale, { z: orig.z * thicknessRatio, duration: 0.6, ease: 'power2.inOut' });
+    }
+  });
+}
+
+function setVariant(variant) {
+  if (variant === currentVariant) return;
+  currentVariant = variant;
+
+  applyVariant(variant);
+
+  // Update UI
+  const stdBtn = document.getElementById('variant-standard-btn');
+  const wrkBtn = document.getElementById('variant-workshop-btn');
+  const desc = document.getElementById('variant-description');
+  const clBtn = document.getElementById('generate-cutting-list-btn');
+
+  if (variant === 'workshop') {
+    stdBtn.classList.remove('active');
+    wrkBtn.classList.add('active');
+    desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span>';
+    clBtn.style.display = 'flex';
+  } else {
+    wrkBtn.classList.remove('active');
+    stdBtn.classList.add('active');
+    desc.innerHTML = 'Original design · All panels 30mm solid oak MDF';
+    clBtn.style.display = 'none';
+  }
+}
+
+// Expose setVariant globally so the inline onclick handlers in index.html can call it
+window.setVariant = setVariant;
+
+// Wire up Cutting List button
+const generateCuttingListBtn = document.getElementById('generate-cutting-list-btn');
+if (generateCuttingListBtn) {
+  generateCuttingListBtn.addEventListener('click', () => {
+    window.open('./cutting_list_workshop.html', '_blank');
+  });
+}
