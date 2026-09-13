@@ -1426,12 +1426,18 @@ export function buildDeskScene() {
 
   powerTray.userData = {
     id: 'cable_trays',
-    name: 'Recessed Cable Tidy Trench & Trays',
+    name: 'Dual-Channel Cable Tidy Trench & Trays',
     category: 'INFRASTRUCTURE',
-    dims: 'Recessed top trench (Power Tray Left, Data Tray Right)',
-    location: 'Cutout channel running along rear edge of desktop',
-    specs: ['Separates AC Power lines (red) from Network/Data lines (blue)', 'Allows cables to drop cleanly through grommets under desk'],
-    note: 'Maintains flat, clutter-free desktop work surface.'
+    dims: '2800mm Full-Length Trench (Segregated Audio & Mains Power)',
+    location: 'Rear desktop cutout channel with longitudinal isolation divider',
+    specs: [
+      'Dual isolated channels keep 230V AC mains away from sensitive audio lines',
+      'Eliminates 50/60Hz mains hum, EMI, and ground-loop noise in mic/line signals',
+      'Front channel: XLR / TRS audio cables, snake multicores, Dante, USB/video',
+      'Rear channel: 230V AC mains distribution, PDU feeds, and IEC power cables',
+      '12 lid capsule slots + 12 floor pass-through apertures for sub-desk routing'
+    ],
+    note: 'Essential pro-audio standard: power and signal lines never run bundled in parallel.'
   };
   interactiveEquipment.push(powerTray);
   equipmentPins.push({ userData: powerTray.userData, worldPos: new THREE.Vector3(0, H_DESK, -0.36) });

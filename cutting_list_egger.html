@@ -315,10 +315,11 @@
   <div class="sh"><h2>Hardware Schedule</h2><div class="dv"></div></div>
   <div class="hwlist">
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Lid Hinge:</strong> 1&times; 2800mm Continuous Stainless Steel Piano Hinge (heavy duty).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Trench Channel Divider:</strong> 1&times; 2800mm (or 2&times; 1400mm) Longitudinal Separation Barrier (50mm high aluminum/metal or off-cut MFC baffle) creating isolated Audio vs Power channels.</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Drawer Slides:</strong> 4 Pairs&times; 600mm Soft-Close Full-Extension Ball Bearing Slides (35kg rated).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>PC Pull-Out Slides:</strong> 1 Pair&times; 750mm Heavy-Duty Telescopic Slide Rails (45kg+ rated).</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Pull Handles:</strong> 4&times; Matte Black Anodised Bar Pulls (120mm fixing centres).</span></div>
-    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out: 12 in trench lid, 12 in trench floor).</span></div>
+    <div class="hw"><span class="hb">&#9670;</span><span><strong>Cable Grommets:</strong> 24&times; Flexible Black Rubber Capsule Grommets (25&times;60mm cut-out: 12 in trench lid, 12 in trench floor) &mdash; dedicated into Clean Audio / Data slots and AC Mains Power slots.</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Egger 2mm ABS Edge Banding:</strong> ~55m of matching Natural Kendal Oak ABS edge tape for all exposed edges.</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Confirmat / Twin-Thread Screws:</strong> 50mm Confirmat or 4&times;45mm twin-thread screws for structural MFC joints.</span></div>
     <div class="hw"><span class="hb">&#9670;</span><span><strong>Connecting Bolts:</strong> 8&times; M6&times;50mm furniture connecting bolts &amp; barrel nuts to secure desktop to carcass.</span></div>
@@ -329,7 +330,11 @@
   <div class="ngrid">
     <div class="nc"><strong>Seamless 2800mm Top:</strong> The 2800mm desktop panel (A1) and 2800mm cable trench lid (A2) are cut along the full 2800mm length of Sheet 1, giving a perfectly continuous wood grain and eliminating any joint line.</div>
     <div class="nc"><strong>Complete Build in 3 Boards:</strong> All 44 panels (including carcass, dividers, plinths, and all 4 drawer boxes) are produced from just 3 boards of 2800&times;2070mm. Sheet 3 has ~2.2 m&sup2; of clean off-cut for workshop shelving.</div>
-    <div class="nc"><strong>Trench Floor &amp; Under-Desk Cable Access:</strong> The cable trench floor must NOT be a solid, closed panel. It must be routed with pass-through apertures (12&times; 25&times;60mm capsule slots or 60&ndash;80mm circular grommet holes) positioned directly above the Tower PC slide-out tray (left centre) and the 19" equipment rack bay (right centre). This allows power cords, USB, display, and audio snakes from under-desk hardware to rise directly into the upper cable trough.</div>
+    <div class="nc"><strong>Dual-Channel Cable Segregation (Audio vs Power):</strong> To eliminate 50Hz mains hum, buzz, and electromagnetic interference (EMI), the rear cable trench is fitted with a central longitudinal divider creating two completely isolated channels:
+      <br>&bull; <em>Front Channel (Clean Audio &amp; Data):</em> Dedicated exclusively to balanced/unbalanced microphone &amp; line cables (XLR, TRS), snake multicores, Dante/Ethernet network lines, and digital USB/video signals.
+      <br>&bull; <em>Rear Channel (AC Mains Power):</em> Houses high-voltage 230V mains distribution, PDU cords, IEC leads, and equipment power transformers.
+      <br><em>Audio Rule:</em> Power and audio cables must never run bundled in parallel. Where crossing is required, cables must cross at an exact 90&deg; right angle to prevent inductive noise pickup.</div>
+    <div class="nc"><strong>Trench Floor &amp; Under-Desk Cable Access:</strong> The cable trench floor must NOT be a solid, closed panel. It must be routed with pass-through apertures (12&times; 25&times;60mm capsule slots or 60&ndash;80mm circular grommet holes) positioned directly above the Tower PC slide-out tray (left centre) and the 19" equipment rack bay (right centre). This allows power cords, USB, display, and audio snakes from under-desk hardware to rise directly into their designated trench channels.</div>
     <div class="nc"><strong>Chip-Free MFC Machining:</strong> To prevent surface melamine chipping, use an 80-tooth triple-chip grind (TCG) blade on a table/plunge saw, score cut lines with a sharp knife first, or use a sacrificial backing board.</div>
     <div class="nc"><strong>Pre-Drilling Pilots:</strong> Melamine chipboard cores can mushroom if screws are driven without pilot holes. Always pre-drill with a 3.5mm bit and countersink cleanly before fastening.</div>
     <div class="nc"><strong>Edge Banding Application:</strong> Apply 2mm matching ABS edge banding with hot-melt glue or pre-glued tape with a heat gun. 2mm ABS gives durable, impact-resistant radiused edges that protect high-wear corners.</div>
@@ -337,7 +342,7 @@
   </div>
 
   <div class="footer">
-    <span>Sound Desk &mdash; Egger 2800mm Build Cutting List &middot; Rev A</span>
+    <span>Sound Desk &mdash; Egger 2800mm Build Cutting List &middot; Rev B</span>
     <span id="fd"></span>
     <span>Board Format: 2800&times;2070mm Egger MFC &middot; 3 Boards Total</span>
   </div>
@@ -349,8 +354,8 @@ var KF = 3;
 
 // Carcass and worktop pieces (18mm Egger MFC)
 var cP = [
-  { ref: 'A1',  p: 'Desktop Panel (cable trench routed)',       q: 1, l: 2800, w: 900, n: 'Seamless single piece along full 2800mm length. 100mm trench routed from underside.' },
-  { ref: 'A2',  p: 'Cable Trench Lid',                          q: 1, l: 2800, w: 100, n: 'Seamless single piece along full 2800mm length. 12 capsule slots (25\u00d760mm) with grommets. Piano hinge along rear edge.' },
+  { ref: 'A1',  p: 'Desktop Panel (cable trench routed)',       q: 1, l: 2800, w: 900, n: 'Seamless single piece along full 2800mm length. 100mm trench routed from underside with dual segregated channels for power vs audio.' },
+  { ref: 'A2',  p: 'Cable Trench Lid',                          q: 1, l: 2800, w: 100, n: 'Seamless single piece along full 2800mm length. 12 capsule slots (25\u00d760mm) with grommets dedicated to Audio vs Power channels. Piano hinge along rear edge.' },
   { ref: 'A3',  p: 'Outer Left End Panel (Gable)',              q: 1, l: 860,  w: 742, n: 'Visible outer left gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
   { ref: 'A4',  p: 'Outer Right End Panel (Gable)',             q: 1, l: 860,  w: 742, n: 'Visible outer right gable. Height 742mm (760 - 18mm top). Depth 860mm.' },
   { ref: 'A5',  p: 'Internal Divider \u2014 Left Pedestal Inner',q: 1, l: 860,  w: 742, n: 'Vertical panel at 450mm from left outer end.' },
