@@ -146,17 +146,17 @@ function addDim(x1, y1, z1, x2, y2, z2, label) {
 
 function create3DDimensions() {
   // Overall Dimensions
-  addDim(-1.50, 0.02, 0.6, 1.50, 0.02, 0.6, "Total Width: 300 cm");
-  addDim(-1.65, 0.76, -0.45, -1.65, 0.76, 0.45, "Depth: 90 cm");
-  addDim(1.65, 0, 0, 1.65, 0.76, 0, "Height: 76 cm");
+  addDim(-1.40, 0.02, 0.6, 1.40, 0.02, 0.6, "Total Width: 280 cm");
+  addDim(-1.55, 0.76, -0.45, -1.55, 0.76, 0.45, "Depth: 90 cm");
+  addDim(1.55, 0, 0, 1.55, 0.76, 0, "Height: 76 cm");
 
   // Compartment Widths along the front
-  addDim(-1.50, 0.02, 0.48, -1.05, 0.02, 0.48, "45cm"); // Left Pedestal
-  addDim(-1.05, 0.02, 0.48, -0.40, 0.02, 0.48, "65cm"); // Op 1 Leg Recess
+  addDim(-1.40, 0.02, 0.48, -0.95, 0.02, 0.48, "45cm"); // Left Pedestal
+  addDim(-0.95, 0.02, 0.48, -0.40, 0.02, 0.48, "55cm"); // Op 1 Leg Recess
   addDim(-0.40, 0.02, 0.48, -0.10, 0.02, 0.48, "30cm"); // PC
   addDim(-0.10, 0.02, 0.48, 0.40, 0.02, 0.48, "50cm");  // Amps
-  addDim(0.40, 0.02, 0.48, 1.05, 0.02, 0.48, "65cm");   // Op 2 Leg Recess
-  addDim(1.05, 0.02, 0.48, 1.50, 0.02, 0.48, "45cm");   // Right Pedestal
+  addDim(0.40, 0.02, 0.48, 0.95, 0.02, 0.48, "55cm");   // Op 2 Leg Recess
+  addDim(0.95, 0.02, 0.48, 1.40, 0.02, 0.48, "45cm");   // Right Pedestal
 }
 create3DDimensions();
 
@@ -816,17 +816,18 @@ animate();
 // 9. MATERIAL VARIANT SYSTEM
 // ==========================================
 
-let currentVariant = 'standard';
+let currentVariant = 'egger';
 
-// Thickness scale factors: standard = 30mm (1.0), workshop = 18mm (0.6)
-const STANDARD_THICKNESS = 0.030;
-const WORKSHOP_THICKNESS = 0.018;
+// Thickness scale factors: standard = 19mm (1.0), workshop = 18mm (0.947), egger = 18mm (0.947)
+const STANDARD_THICKNESS = 0.019; // 19mm Oak-Veneered MDF
+const WORKSHOP_THICKNESS = 0.018; // 18mm Oak Veneer + Black Melamine
+const EGGER_THICKNESS = 0.018;    // 18mm Egger MFC
 
 /**
- * Swaps materials, scales panel geometry thickness, and adjusts 2800mm/3000mm length dimensions.
- * - 'standard': 3.00m length, 30mm thickness, oak throughout
- * - 'workshop': 3.00m length, 18mm thickness, oak exterior + black melamine interior
- * - 'egger':    2.80m length, 18mm thickness, Egger Natural Kendal Oak MFC complete build (including drawers)
+ * Swaps materials, scales panel geometry thickness, and ensures unified 2.80m length.
+ * - 'egger':    2.80m length, 18mm thickness, Egger Natural Kendal Oak MFC complete build (DEFAULT)
+ * - 'standard': 2.80m length, 19mm thickness, Oak-Veneered MDF throughout
+ * - 'workshop': 2.80m length, 18mm thickness, oak exterior + black melamine interior
  */
 function applyVariant(variant) {
   const {
@@ -853,7 +854,7 @@ function applyVariant(variant) {
   const isWorkshop = variant === 'workshop';
   const isEgger = variant === 'egger';
   const newThickness = (isWorkshop || isEgger) ? WORKSHOP_THICKNESS : STANDARD_THICKNESS;
-  const thicknessRatio = newThickness / STANDARD_THICKNESS; // 0.6 or 1.0
+  const thicknessRatio = newThickness / STANDARD_THICKNESS;
 
   // 1. Swap materials
   if (isWorkshop) {
@@ -898,61 +899,55 @@ function applyVariant(variant) {
     }
   });
 
-  // 3. Length Dimensions (2.80m for Egger vs 3.00m for Standard & Workshop)
-  const lengthScale = isEgger ? (2.80 / 3.00) : 1.0;
-  const pedShift = isEgger ? 0.10 : 0.0;
-  const opShift = isEgger ? 0.05 : 0.0;
-  const opScale = isEgger ? (0.55 / 0.65) : 1.0;
+  // 3. Length Dimensions (Unified 2.80m for all variants)
+  if (desktopMesh) gsap.to(desktopMesh.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
+  if (trenchLidGroup) gsap.to(trenchLidGroup.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
+  if (trenchFloorMesh) gsap.to(trenchFloorMesh.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
+  if (trenchBackWall) gsap.to(trenchBackWall.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
 
-  if (desktopMesh) gsap.to(desktopMesh.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
-  if (trenchLidGroup) gsap.to(trenchLidGroup.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
-  if (trenchFloorMesh) gsap.to(trenchFloorMesh.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
-  if (trenchBackWall) gsap.to(trenchBackWall.scale, { x: lengthScale, duration: 0.6, ease: 'power2.inOut' });
+  // Outer Gables (at native 2.80m positions -1.40 and 1.40)
+  if (outerGables && outerGables.left) gsap.to(outerGables.left.position, { x: -1.40, duration: 0.4, ease: 'power2.inOut' });
+  if (outerGables && outerGables.right) gsap.to(outerGables.right.position, { x: 1.40, duration: 0.4, ease: 'power2.inOut' });
 
-  // Outer Gables
-  if (outerGables && outerGables.left) gsap.to(outerGables.left.position, { x: -1.50 + pedShift, duration: 0.6, ease: 'power2.inOut' });
-  if (outerGables && outerGables.right) gsap.to(outerGables.right.position, { x: 1.50 - pedShift, duration: 0.6, ease: 'power2.inOut' });
-
-  // Pedestal Inner Dividers
-  if (innerDivMeshes && innerDivMeshes.leftPed) gsap.to(innerDivMeshes.leftPed.position, { x: -1.05 + pedShift, duration: 0.6, ease: 'power2.inOut' });
-  if (innerDivMeshes && innerDivMeshes.rightPed) gsap.to(innerDivMeshes.rightPed.position, { x: 1.05 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+  // Pedestal Inner Dividers (at native positions -0.95 and 0.95)
+  if (innerDivMeshes && innerDivMeshes.leftPed) gsap.to(innerDivMeshes.leftPed.position, { x: -0.95, duration: 0.4, ease: 'power2.inOut' });
+  if (innerDivMeshes && innerDivMeshes.rightPed) gsap.to(innerDivMeshes.rightPed.position, { x: 0.95, duration: 0.4, ease: 'power2.inOut' });
 
   // Drawers
-  if (leftDrawersGroup) gsap.to(leftDrawersGroup.position, { x: pedShift, duration: 0.6, ease: 'power2.inOut' });
-  if (rightDrawersGroup) gsap.to(rightDrawersGroup.position, { x: -pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (leftDrawersGroup) gsap.to(leftDrawersGroup.position, { x: 0.0, duration: 0.4, ease: 'power2.inOut' });
+  if (rightDrawersGroup) gsap.to(rightDrawersGroup.position, { x: 0.0, duration: 0.4, ease: 'power2.inOut' });
 
   // Back Panels
-  if (backLeftPedestal) gsap.to(backLeftPedestal.position, { x: -1.275 + pedShift, duration: 0.6, ease: 'power2.inOut' });
-  if (backRightPedestal) gsap.to(backRightPedestal.position, { x: 1.275 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (backLeftPedestal) gsap.to(backLeftPedestal.position, { x: -1.175, duration: 0.4, ease: 'power2.inOut' });
+  if (backRightPedestal) gsap.to(backRightPedestal.position, { x: 1.175, duration: 0.4, ease: 'power2.inOut' });
   if (backLeftOperator) {
-    gsap.to(backLeftOperator.position, { x: -0.725 + opShift, duration: 0.6, ease: 'power2.inOut' });
-    gsap.to(backLeftOperator.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+    gsap.to(backLeftOperator.position, { x: -0.675, duration: 0.4, ease: 'power2.inOut' });
+    gsap.to(backLeftOperator.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
   }
   if (backRightOperator) {
-    gsap.to(backRightOperator.position, { x: 0.725 - opShift, duration: 0.6, ease: 'power2.inOut' });
-    gsap.to(backRightOperator.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+    gsap.to(backRightOperator.position, { x: 0.675, duration: 0.4, ease: 'power2.inOut' });
+    gsap.to(backRightOperator.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
   }
 
   // Plinths
   if (plinthMeshes) {
-    if (plinthMeshes.leftPed) gsap.to(plinthMeshes.leftPed.position, { x: -1.275 + pedShift, duration: 0.6, ease: 'power2.inOut' });
-    if (plinthMeshes.rightPed) gsap.to(plinthMeshes.rightPed.position, { x: 1.275 - pedShift, duration: 0.6, ease: 'power2.inOut' });
+    if (plinthMeshes.leftPed) gsap.to(plinthMeshes.leftPed.position, { x: -1.175, duration: 0.4, ease: 'power2.inOut' });
+    if (plinthMeshes.rightPed) gsap.to(plinthMeshes.rightPed.position, { x: 1.175, duration: 0.4, ease: 'power2.inOut' });
     if (plinthMeshes.leftOp) {
-      gsap.to(plinthMeshes.leftOp.position, { x: -0.725 + opShift, duration: 0.6, ease: 'power2.inOut' });
-      gsap.to(plinthMeshes.leftOp.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.leftOp.position, { x: -0.675, duration: 0.4, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.leftOp.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
     }
     if (plinthMeshes.rightOp) {
-      gsap.to(plinthMeshes.rightOp.position, { x: 0.725 - opShift, duration: 0.6, ease: 'power2.inOut' });
-      gsap.to(plinthMeshes.rightOp.scale, { x: opScale, duration: 0.6, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.rightOp.position, { x: 0.675, duration: 0.4, ease: 'power2.inOut' });
+      gsap.to(plinthMeshes.rightOp.scale, { x: 1.0, duration: 0.4, ease: 'power2.inOut' });
     }
   }
 
   // Cable Trunking
-  if (cableTrunking) gsap.to(cableTrunking.position, { x: -1.53 + pedShift, duration: 0.6, ease: 'power2.inOut' });
+  if (cableTrunking) gsap.to(cableTrunking.position, { x: -1.43, duration: 0.4, ease: 'power2.inOut' });
 }
 
 function setVariant(variant) {
-  if (variant === currentVariant) return;
   currentVariant = variant;
 
   applyVariant(variant);
@@ -971,18 +966,21 @@ function setVariant(variant) {
 
   if (variant === 'workshop') {
     if (wrkBtn) wrkBtn.classList.add('active');
-    if (desc) desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span> (3.0m length)';
+    if (desc) desc.innerHTML = '18mm Oak-Veneered MDF <span style="color:#38bdf8">top · backs · ends</span><br>18mm Black Melamine MDF <span style="color:#64748b">internals · plinths</span> (2.8m length)';
     if (wrkClBtn) wrkClBtn.style.display = 'flex';
-  } else if (variant === 'egger') {
+  } else if (variant === 'standard') {
+    if (stdBtn) stdBtn.classList.add('active');
+    if (desc) desc.innerHTML = '19mm Oak-Veneered MDF <span style="color:#38bdf8">complete build · 2.8m length</span><br>All structural panels &amp; desktop 19mm oak veneer';
+    if (stdClBtn) stdClBtn.style.display = 'flex';
+  } else {
     if (eggerBtn) eggerBtn.classList.add('active');
     if (desc) desc.innerHTML = '18mm Egger Natural Kendal Oak MFC <span style="color:#34d399">complete build · including drawers</span><br><strong style="color:#38bdf8">2.8m length</strong> (optimised for 2800&times;2070mm boards)';
     if (eggerClBtn) eggerClBtn.style.display = 'flex';
-  } else {
-    if (stdBtn) stdBtn.classList.add('active');
-    if (desc) desc.innerHTML = 'Original design · All panels 30mm solid oak MDF (3.0m length)';
-    if (stdClBtn) stdClBtn.style.display = 'flex';
   }
 }
+
+// Initialise with Egger variant as the default
+applyVariant('egger');
 
 // Expose setVariant globally so the inline onclick handlers in index.html can call it
 window.setVariant = setVariant;
