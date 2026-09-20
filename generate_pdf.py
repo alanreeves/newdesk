@@ -168,7 +168,7 @@ def build_pdf():
     d_headers = ["Ref", "Description", "Qty", "Length", "Width", "Thick", "Edge Banding"]
     d_rows = [
         ["D1", "Main Desktop (Straight Edge)", "1", "3000 mm", "900 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
-        ["D2", "Cable Trench Hinged Lid", "1", "3000 mm", "100 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
+        ["D2", "Cable Trench Hinged Lid", "1", "3000 mm", "150 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
         ["D3", "Trench Cable Slots (12 Off)", "12", "60 mm (R12.5)", "25 mm", "30 mm", "Rubber Grommets Fitted"]
     ]
     story.append(create_section_table(d_headers, d_rows, [12*mm, 52*mm, 10*mm, 24*mm, 22*mm, 16*mm, 50*mm]))
@@ -221,10 +221,12 @@ def build_pdf():
     # 7. Section 5 & 6: Hardware & Notes
     notes_elements = [
         Paragraph("5. Hardware & Workshop Instructions", section_style),
-        Paragraph("• <b>Trench Lid Hinge:</b> 1 × 3000 mm Heavy-Duty Continuous Stainless Steel Piano Hinge.<br/>"
+        Paragraph("• <b>Trench Lid Hinge:</b> 1 × 3000 mm Heavy-Duty Continuous Stainless Steel Piano Hinge (fitted to 150mm lid).<br/>"
+                  "• <b>Trench Aluminium Divider:</b> 1 × 3000 mm × 48 mm × 1.5–2.0 mm aluminium sheet slotted into central floor rebate groove to separate Audio and Power.<br/>"
+                  "• <b>Removable Floor Access:</b> Liftable floor panels with finger pulls above PC & rack bays allow large 13A UK plugs & transformers to pass through.<br/>"
                   "• <b>Drawer Runners:</b> 4 Pairs × 600 mm Heavy-Duty Soft-Close Side-Mount Ball Bearing Slides.<br/>"
                   "• <b>PC Extension Slides:</b> 1 Pair × 750 mm Undermount/Side Heavy Extension Slides (Rated 45kg+).<br/>"
-                  "• <b>Grain Direction:</b> Desktop (D1), Lid (D2), Gables (V1-V7), and Drawer Fronts (DF1) must have wood grain running horizontally along 3000mm length.<br/>"
+                  "• <b>Grain Direction:</b> Desktop (D1), Lid (D2), Gables (V1-V7), and Drawer Fronts (DF1) must have wood grain running horizontally along length.<br/>"
                   "• <b>Desktop Profile:</b> Straight front edge with 2mm Light Oak ABS edge banding applied to all four outer edges.<br/>"
                   "• <b>Ventilation:</b> 80mm circular cutouts routed in rear of PC & amp bay for active air cooling.", cell_style)
     ]

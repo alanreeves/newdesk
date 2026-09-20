@@ -234,13 +234,13 @@ function generatePDF(){
   doc.addPage('a4','landscape');
   titleBlock('PLAN VIEW & REAR ELEVATION','2');
   var PLX=26,PLY=26,pd=s(D);
-  var tD=s(100),bkOH=s(20),divT=s(T);
+  var tD=s(150),bkOH=s(20),divT=s(T);
   secHead('PLAN VIEW (LOOKING DOWN FROM ABOVE) - SCALE 1:20',PLX+fw/2,PLY-6);
   grid(PLX,PLY,fw,pd,s(200));
   _sf([230,212,188]);_sd(C.black);_lw(0.2);_rx(PLX,PLY,fw,pd,'FD');
   fr(PLX,PLY,fw,tD,C.trench,[110,108,104],0.2);
   doc.setFontSize(4.5);_st([60,58,55]);
-  _tx('CABLE TIDY TRENCH - 100mm deep x 3000mm (with lid & slots)',PLX+fw/2,PLY+tD/2+1.5,{align:'center'});
+  _tx('CABLE TIDY TRENCH - 150mm deep x 3000mm (with lid, slots & alu divider)',PLX+fw/2,PLY+tD/2+1.5,{align:'center'});
   _st(C.black);
   fr(PLX+lpW,PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
   fr(PLX+s(1900),PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
@@ -335,7 +335,7 @@ function generatePDF(){
   var items=[
     {cat:'A - MAIN CARCASS  (30mm — material to be decided)'},
     {no:1,item:'Desktop Panel',l:3000,w:900,t:30,qty:1,note:'Curved front profile; rear cable trench cutout'},
-    {no:2,item:'Cable Trench Lid',l:3000,w:100,t:30,qty:1,note:'12 cable slots Ø25mm; piano hinge at rear'},
+    {no:2,item:'Cable Trench Lid',l:3000,w:150,t:30,qty:1,note:'150mm lid with 12 slots; piano hinge at rear; liftable floor below'},
     {no:3,item:'Outer Left Side Panel',l:860,w:730,t:30,qty:1,note:'Left outer carcass wall - full depth'},
     {no:4,item:'Left Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 450mm from left'},
     {no:5,item:'Left Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1100mm from left'},

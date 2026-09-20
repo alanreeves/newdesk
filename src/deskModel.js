@@ -337,12 +337,12 @@ export function buildDeskScene() {
   desktopShape.lineTo(-halfW, -halfD + 0.04);
   desktopShape.quadraticCurveTo(-halfW, -halfD, -halfW + 0.04, -halfD);
 
-  // Rear Cable Tidy Trench Cutout (Full Length)
+  // Rear Cable Tidy Trench Cutout (Full Length: 150mm wide x 2800mm long)
   const trenchHole = new THREE.Path();
   trenchHole.moveTo(-halfW, -0.41);
   trenchHole.lineTo(halfW, -0.41);
-  trenchHole.lineTo(halfW, -0.31);
-  trenchHole.lineTo(-halfW, -0.31);
+  trenchHole.lineTo(halfW, -0.26);
+  trenchHole.lineTo(-halfW, -0.26);
   trenchHole.lineTo(-halfW, -0.41);
 
   desktopShape.holes.push(trenchHole);
@@ -379,14 +379,20 @@ export function buildDeskScene() {
   taggedMeshes.oak_exterior.push(desktopMesh);
   rootGroup.add(desktopMesh);
 
-  // Cable Tidy Trench Floor (with cutouts)
+  // Cable Tidy Trench Floor (150mm wide x 2800mm long: z = -0.41 to -0.26)
+  // Halfway across the trench floor is z = -0.335 (75mm from rear edge)
+  const floorDepth = 0.15;
+  const floorFrontZ = -0.26;
+  const floorRearZ = -0.41;
+  const floorCenterZ = -0.335; // Groove position for aluminium separator plate
+
   const floorShape = new THREE.Shape();
   const fw = W_TOTAL / 2;
-  floorShape.moveTo(-fw, -0.41);
-  floorShape.lineTo(fw, -0.41);
-  floorShape.lineTo(fw, -0.31);
-  floorShape.lineTo(-fw, -0.31);
-  floorShape.lineTo(-fw, -0.41);
+  floorShape.moveTo(-fw, floorRearZ);
+  floorShape.lineTo(fw, floorRearZ);
+  floorShape.lineTo(fw, floorFrontZ);
+  floorShape.lineTo(-fw, floorFrontZ);
+  floorShape.lineTo(-fw, floorRearZ);
 
   const slotWidth = 0.025;
   const slotRadius = slotWidth / 2;
@@ -397,18 +403,39 @@ export function buildDeskScene() {
     slots.push(1.00 - i * (2.00 / (numSlots - 1)));
   }
 
-  slots.forEach(sx => {
+  // 12 pass-through apertures cut through the trench floor (staggered across audio vs power halves)
+  slots.forEach((sx, idx) => {
     const hole = new THREE.Path();
-    // Capsule shape for the floor (2.5cm wide x 6cm deep)
-    hole.moveTo(sx + slotRadius, -0.39 + slotRadius);
-    hole.lineTo(sx + slotRadius, -0.33 - slotRadius);
-    // Top arc (counter-clockwise from 0 to PI goes through +y)
-    hole.absarc(sx, -0.33 - slotRadius, slotRadius, 0, Math.PI, false);
-    hole.lineTo(sx - slotRadius, -0.39 + slotRadius);
-    // Bottom arc (counter-clockwise from PI to 2PI goes through -y)
-    hole.absarc(sx, -0.39 + slotRadius, slotRadius, Math.PI, Math.PI * 2, false);
+    // Capsule shape for floor slots (2.5cm wide x 4cm deep)
+    // Alternate slots between rear power channel (-0.385 to -0.355) and front audio channel (-0.315 to -0.285)
+    const slotYCenter = (idx % 2 === 0) ? -0.372 : -0.298;
+    const sLen = 0.018;
+    hole.moveTo(sx + slotRadius, slotYCenter - sLen);
+    hole.lineTo(sx + slotRadius, slotYCenter + sLen);
+    hole.absarc(sx, slotYCenter + sLen, slotRadius, 0, Math.PI, false);
+    hole.lineTo(sx - slotRadius, slotYCenter - sLen);
+    hole.absarc(sx, slotYCenter - sLen, slotRadius, Math.PI, Math.PI * 2, false);
     floorShape.holes.push(hole);
   });
+
+  // Large lift-out floor apertures for passing bulky 13A UK mains plugs & power transformers
+  // Hatch 1: Above Tower PC compartment (x = -0.40 to -0.10, width 22cm x depth 11cm)
+  const pcHatchHole = new THREE.Path();
+  pcHatchHole.moveTo(-0.36, -0.395);
+  pcHatchHole.lineTo(-0.14, -0.395);
+  pcHatchHole.lineTo(-0.14, -0.275);
+  pcHatchHole.lineTo(-0.36, -0.275);
+  pcHatchHole.lineTo(-0.36, -0.395);
+  floorShape.holes.push(pcHatchHole);
+
+  // Hatch 2: Above 19" Equipment Rack bay (x = -0.10 to 0.40, width 32cm x depth 11cm)
+  const rackHatchHole = new THREE.Path();
+  rackHatchHole.moveTo(0.04, -0.395);
+  rackHatchHole.lineTo(0.36, -0.395);
+  rackHatchHole.lineTo(0.36, -0.275);
+  rackHatchHole.lineTo(0.04, -0.275);
+  rackHatchHole.lineTo(0.04, -0.395);
+  floorShape.holes.push(rackHatchHole);
 
   const floorGeo = new THREE.ExtrudeGeometry(floorShape, { depth: 0.015, bevelEnabled: false });
   floorGeo.rotateX(Math.PI / 2);
@@ -416,59 +443,115 @@ export function buildDeskScene() {
   trenchFloorMesh.position.set(0, H_DESK - THICKNESS - 0.04, 0);
   rootGroup.add(trenchFloorMesh);
 
+  // Liftable floor hatch covers (with brass/silver finger-pull hole)
+  const liftablePlateMat = new THREE.MeshStandardMaterial({
+    color: 0x22262d,
+    roughness: 0.4,
+    metalness: 0.7
+  });
+
+  const createLiftableCover = (cx, cz, w, d) => {
+    const hatchShape = new THREE.Shape();
+    const hw = w / 2 - 0.002;
+    const hd = d / 2 - 0.002;
+    hatchShape.moveTo(-hw, -hd);
+    hatchShape.lineTo(hw, -hd);
+    hatchShape.lineTo(hw, hd);
+    hatchShape.lineTo(-hw, hd);
+    hatchShape.lineTo(-hw, -hd);
+
+    // Finger pull hole (22mm diameter)
+    const fingerHole = new THREE.Path();
+    fingerHole.absarc(0, 0, 0.012, 0, Math.PI * 2, true);
+    hatchShape.holes.push(fingerHole);
+
+    const hGeo = new THREE.ExtrudeGeometry(hatchShape, { depth: 0.005, bevelEnabled: true, bevelThickness: 0.001, bevelSize: 0.001, bevelSegments: 1 });
+    hGeo.rotateX(Math.PI / 2);
+    const coverMesh = new THREE.Mesh(hGeo, liftablePlateMat);
+    coverMesh.position.set(cx, H_DESK - THICKNESS - 0.04 + 0.002, cz);
+    return coverMesh;
+  };
+
+  const pcCover = createLiftableCover(-0.25, -0.335, 0.22, 0.12);
+  const rackCover = createLiftableCover(0.20, -0.335, 0.32, 0.12);
+  rootGroup.add(pcCover);
+  rootGroup.add(rackCover);
+
   // Black rubber grommets for floor slots
   const floorGrommetShape = new THREE.Shape();
   const fgOuterR = slotRadius + 0.003;
-  const fgTopY = -0.33 - slotRadius;
-  const fgBotY = -0.39 + slotRadius;
-
-  floorGrommetShape.moveTo(fgOuterR, fgBotY);
-  floorGrommetShape.lineTo(fgOuterR, fgTopY);
-  floorGrommetShape.absarc(0, fgTopY, fgOuterR, 0, Math.PI, false);
-  floorGrommetShape.lineTo(-fgOuterR, fgBotY);
-  floorGrommetShape.absarc(0, fgBotY, fgOuterR, Math.PI, Math.PI * 2, false);
+  const sLen = 0.018;
+  floorGrommetShape.moveTo(fgOuterR, -sLen);
+  floorGrommetShape.lineTo(fgOuterR, sLen);
+  floorGrommetShape.absarc(0, sLen, fgOuterR, 0, Math.PI, false);
+  floorGrommetShape.lineTo(-fgOuterR, -sLen);
+  floorGrommetShape.absarc(0, -sLen, fgOuterR, Math.PI, Math.PI * 2, false);
 
   const fgHole = new THREE.Path();
-  fgHole.moveTo(slotRadius, fgBotY);
-  fgHole.lineTo(slotRadius, fgTopY);
-  fgHole.absarc(0, fgTopY, slotRadius, 0, Math.PI, false);
-  fgHole.lineTo(-slotRadius, fgBotY);
-  fgHole.absarc(0, fgBotY, slotRadius, Math.PI, Math.PI * 2, false);
+  fgHole.moveTo(slotRadius, -sLen);
+  fgHole.lineTo(slotRadius, sLen);
+  fgHole.absarc(0, sLen, slotRadius, 0, Math.PI, false);
+  fgHole.lineTo(-slotRadius, -sLen);
+  fgHole.absarc(0, -sLen, slotRadius, Math.PI, Math.PI * 2, false);
   floorGrommetShape.holes.push(fgHole);
 
   const floorGrommetGeo = new THREE.ExtrudeGeometry(floorGrommetShape, { depth: 0.017, bevelEnabled: true, bevelThickness: 0.001, bevelSize: 0.001, bevelSegments: 1 });
   floorGrommetGeo.rotateX(Math.PI / 2);
 
-  slots.forEach(sx => {
+  slots.forEach((sx, idx) => {
+    // Avoid placing individual grommet directly inside the large liftable hatch zones
+    if ((sx > -0.38 && sx < -0.12) || (sx > 0.02 && sx < 0.38)) return;
     const mesh = new THREE.Mesh(floorGrommetGeo, blackPlasticMaterial);
-    mesh.position.set(sx, H_DESK - THICKNESS - 0.04 + 0.001, 0);
+    const slotYCenter = (idx % 2 === 0) ? -0.372 : -0.298;
+    mesh.position.set(sx, H_DESK - THICKNESS - 0.04 + 0.001, slotYCenter);
     rootGroup.add(mesh);
   });
+
+  // Longitudinal Groove in Trench Floor (Halfway across: 3mm wide x 6mm deep rebate at z = -0.335)
+  const grooveGeo = new THREE.BoxGeometry(W_TOTAL - 0.02, 0.006, 0.004);
+  const grooveMat = new THREE.MeshBasicMaterial({ color: 0x050608 });
+  const floorGrooveMesh = new THREE.Mesh(grooveGeo, grooveMat);
+  floorGrooveMesh.position.set(0, H_DESK - THICKNESS - 0.04 + 0.001, floorCenterZ);
+  rootGroup.add(floorGrooveMesh);
+
+  // Aluminium Sheet Divider (Slotting into the floor groove to separate Power and Audio halves)
+  // Dimensions: 2800mm long x 45mm high x 2mm thick brushed aluminium plate
+  const aluMaterial = new THREE.MeshStandardMaterial({
+    color: 0xd9e1e8,
+    metalness: 0.88,
+    roughness: 0.22
+  });
+  const aluDivider = new THREE.Mesh(
+    new THREE.BoxGeometry(W_TOTAL - 0.02, 0.048, 0.002),
+    aluMaterial
+  );
+  aluDivider.position.set(0, H_DESK - THICKNESS - 0.04 + 0.024, floorCenterZ);
+  aluDivider.castShadow = true;
+  rootGroup.add(aluDivider);
 
   const trenchBackWall = new THREE.Mesh(new THREE.BoxGeometry(W_TOTAL, 0.05, 0.01), darkMetalMaterial);
   trenchBackWall.position.set(0, H_DESK - 0.02, -0.415);
   rootGroup.add(trenchBackWall);
 
-  // Cable Tidy Lid & Hinge
+  // Cable Tidy Lid & Hinge (Widened to 150mm: opens around hinge pivot at y = H_DESK, z = -0.41)
   animatedGroups.trenchLidGroup = new THREE.Group();
-  // Pivot point is at the hinge: y = H_DESK, z = -0.41
   animatedGroups.trenchLidGroup.position.set(0, H_DESK, -0.41);
 
   const lidShape = new THREE.Shape();
   lidShape.moveTo(-fw, 0); 
   lidShape.lineTo(fw, 0);
-  lidShape.lineTo(fw, 0.10); 
+  lidShape.lineTo(fw, 0.15); // 150mm widened lid width
   
-  // Cut U-shaped slots on the opening edge (2.5cm wide, 6cm deep)
+  // Cut U-shaped slots on the opening edge (2.5cm wide, 6cm deep into the 150mm lid)
   for (let i = 0; i < slots.length; i++) {
     const sx = slots[i];
-    lidShape.lineTo(sx + slotRadius, 0.10);
-    lidShape.lineTo(sx + slotRadius, 0.04 + slotRadius);
+    lidShape.lineTo(sx + slotRadius, 0.15);
+    lidShape.lineTo(sx + slotRadius, 0.09 + slotRadius);
     // Bottom of the U (clockwise from 0 to PI goes through -y)
-    lidShape.absarc(sx, 0.04 + slotRadius, slotRadius, 0, Math.PI, true);
-    lidShape.lineTo(sx - slotRadius, 0.10);
+    lidShape.absarc(sx, 0.09 + slotRadius, slotRadius, 0, Math.PI, true);
+    lidShape.lineTo(sx - slotRadius, 0.15);
   }
-  lidShape.lineTo(-fw, 0.10);
+  lidShape.lineTo(-fw, 0.15);
   lidShape.lineTo(-fw, 0);
 
   const lidGeo = new THREE.ExtrudeGeometry(lidShape, { steps: 1, depth: THICKNESS, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 2 });
@@ -488,19 +571,19 @@ export function buildDeskScene() {
   taggedMeshes.oak_exterior.push(lidMesh);
   animatedGroups.trenchLidGroup.add(lidMesh);
 
-  // Black rubber grommets for lid slots
+  // Black rubber grommets for lid slots (opening edge at y = 0.15)
   const lidGrommetShape = new THREE.Shape();
   const lgOuterR = slotRadius + 0.003;
-  const lgArcCenterY = 0.04 + slotRadius;
-  lidGrommetShape.moveTo(lgOuterR, 0.10);
+  const lgArcCenterY = 0.09 + slotRadius;
+  lidGrommetShape.moveTo(lgOuterR, 0.15);
   lidGrommetShape.lineTo(lgOuterR, lgArcCenterY);
   lidGrommetShape.absarc(0, lgArcCenterY, lgOuterR, 0, Math.PI, true);
-  lidGrommetShape.lineTo(-lgOuterR, 0.10);
-  lidGrommetShape.lineTo(-slotRadius, 0.10);
+  lidGrommetShape.lineTo(-lgOuterR, 0.15);
+  lidGrommetShape.lineTo(-slotRadius, 0.15);
   lidGrommetShape.lineTo(-slotRadius, lgArcCenterY);
   lidGrommetShape.absarc(0, lgArcCenterY, slotRadius, Math.PI, 0, false);
-  lidGrommetShape.lineTo(slotRadius, 0.10);
-  lidGrommetShape.lineTo(lgOuterR, 0.10);
+  lidGrommetShape.lineTo(slotRadius, 0.15);
+  lidGrommetShape.lineTo(lgOuterR, 0.15);
 
   const lidGrommetGeo = new THREE.ExtrudeGeometry(lidGrommetShape, { depth: THICKNESS + 0.002, bevelEnabled: true, bevelThickness: 0.001, bevelSize: 0.001, bevelSegments: 1 });
   lidGrommetGeo.rotateX(Math.PI / 2);
@@ -1361,11 +1444,11 @@ export function buildDeskScene() {
   rootGroup.add(leftHp);
   equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.18, H_DESK + 0.10, -0.05) });
 
-  const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
-  powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.36);
+  const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.13), darkMetalMaterial);
+  powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.335);
 
-  const netTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.08), darkMetalMaterial);
-  netTray.position.set(0.60, H_DESK - THICKNESS - 0.02, -0.36);
+  const netTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.13), darkMetalMaterial);
+  netTray.position.set(0.60, H_DESK - THICKNESS - 0.02, -0.335);
 
   const pwrMat = new THREE.MeshBasicMaterial({ color: 0x111111 }); // Black
   const dataMat = new THREE.MeshBasicMaterial({ color: 0x2563eb }); // Blue
@@ -1379,8 +1462,8 @@ export function buildDeskScene() {
     const curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(startX, startY, startZ),
       new THREE.Vector3(startX, H_DESK + 0.005, startZ - 0.04), // droop onto desk
-      new THREE.Vector3(slotX, H_DESK + 0.005, -0.30),          // across desk to slot
-      new THREE.Vector3(slotX, H_DESK - 0.02, -0.34)            // down into slot
+      new THREE.Vector3(slotX, H_DESK + 0.005, -0.25),          // across desk to slot
+      new THREE.Vector3(slotX, H_DESK - 0.02, isPower ? -0.37 : -0.30) // down into power or audio slot
     ]);
     const cableMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 16, 0.007, 8, false), isPower ? pwrMat : dataMat);
     animatedGroups.cablesGroup.add(cableMesh);
@@ -1394,21 +1477,21 @@ export function buildDeskScene() {
   // 2. Monitor: 1 Power, 1 Display
   drawCable(-0.70, H_DESK + 0.05, -0.22, true);  
   drawCable(-0.75, H_DESK + 0.05, -0.22, false); 
-
+ 
   // 3. Router: 1 Power, 1 Ethernet
-  drawCable(0.13, H_DESK + 0.019, -0.26, true);
-  drawCable(0.17, H_DESK + 0.019, -0.26, false);
+  drawCable(0.13, H_DESK + 0.019, -0.24, true);
+  drawCable(0.17, H_DESK + 0.019, -0.24, false);
 
   // 4. Mic Receiver: 1 Power, 1 Audio
-  drawCable(-0.10, H_DESK + 0.022, -0.27, true);
-  drawCable(-0.14, H_DESK + 0.022, -0.27, false);
+  drawCable(-0.10, H_DESK + 0.022, -0.25, true);
+  drawCable(-0.14, H_DESK + 0.022, -0.25, false);
 
   // Vertical Cable Container on the outside left hand side
   const cableTrunking = new THREE.Mesh(
     new THREE.BoxGeometry(0.06, H_DESK - 0.05, 0.06), 
     new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 })
   );
-  cableTrunking.position.set(-1.43, (H_DESK - 0.05) / 2, -0.36);
+  cableTrunking.position.set(-1.43, (H_DESK - 0.05) / 2, -0.335);
   
   cableTrunking.userData = {
     id: 'cable_trunking',
@@ -1420,27 +1503,29 @@ export function buildDeskScene() {
     note: 'Routes the main cable bundle from the trench cleanly to the floor power sockets.'
   };
   interactiveEquipment.push(cableTrunking);
-  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.43, H_DESK - 0.1, -0.36) });
+  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.43, H_DESK - 0.1, -0.335) });
   
   rootGroup.add(cableTrunking);
 
   powerTray.userData = {
     id: 'cable_trays',
-    name: 'Dual-Channel Cable Tidy Trench & Trays',
+    name: 'Dual-Channel 150mm Cable Tidy Trench & Trays',
     category: 'INFRASTRUCTURE',
-    dims: '2800mm Full-Length Trench (Segregated Audio & Mains Power)',
-    location: 'Rear desktop cutout channel with longitudinal isolation divider',
+    dims: '150mm Wide x 2800mm Full-Length Trench (Segregated Audio & Mains Power)',
+    location: 'Rear desktop cutout channel with central aluminium isolation sheet divider',
     specs: [
-      'Dual isolated channels keep 230V AC mains away from sensitive audio lines',
-      'Eliminates 50/60Hz mains hum, EMI, and ground-loop noise in mic/line signals',
-      'Front channel: XLR / TRS audio cables, snake multicores, Dante, USB/video',
-      'Rear channel: 230V AC mains distribution, PDU feeds, and IEC power cables',
-      '12 lid capsule slots + 12 floor pass-through apertures for sub-desk routing'
+      'Widened 150mm channel with central routed groove (3mm x 6mm rebate at 75mm midpoint)',
+      '1.5–2mm Aluminium sheet divider slotted into groove physically segregates Audio vs Mains',
+      'Eliminates 50/60Hz mains hum, EMI, and ground-loop interference into mic/line paths',
+      'Rear channel (75mm): 230V AC mains distribution, PDU power bars, and IEC power cables',
+      'Front channel (75mm): XLR/TRS balanced audio, snake multicores, Dante, USB & video lines',
+      'Liftable floor panels with finger pulls allow bulky 13A UK plugs and wall warts to pass up from under desk',
+      'Floor pass-through apertures positioned directly above PC tower & 19" rack bays'
     ],
-    note: 'Essential pro-audio standard: power and signal lines never run bundled in parallel.'
+    note: 'Liftable floor sections allow bulky 13A UK plug tops & transformers to pass without disassembling cables.'
   };
   interactiveEquipment.push(powerTray);
-  equipmentPins.push({ userData: powerTray.userData, worldPos: new THREE.Vector3(0, H_DESK, -0.36) });
+  equipmentPins.push({ userData: powerTray.userData, worldPos: new THREE.Vector3(0, H_DESK, -0.335) });
 
   animatedGroups.cablesGroup.visible = false;
   rootGroup.add(powerTray);
