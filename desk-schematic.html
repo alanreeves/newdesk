@@ -152,15 +152,15 @@ function generatePDF(){
   _ln(FX,bodyY,FX+fw,bodyY);
   _sd(C.black);_lw(0.5);_rx(FX,FY,fw,fh,'S');
 
-  // Left drawer
+  // Left drawers (2 drawers: top with lock + bottom identical size)
   fr(FX+(lpW-drW)/2,drTopY,drW,drH,C.face,[68,42,18],0.2);
   fr(FX+lpW/2-s(60),drTopY+drH/2-s(7),s(120),s(14),C.metal,[38,38,42],0.15);
   _sf(C.chrome);_sd([90,92,96]);_lw(0.15);
   doc.circle(FX+lpW/2+s(128),drTopY+s(18),s(8)/2,'FD');
-  fr(FX+s(22),rcY,lpW-s(44),rcH,C.recess,[162,150,128],0.15);
-  doc.setFontSize(3.8);_st([108,88,66]);
-  _tx('OPEN',FX+lpW/2,rcY+rcH/2+0.5,{align:'center'});
-  _tx('RECESS',FX+lpW/2,rcY+rcH/2+3.2,{align:'center'});
+  // Second drawer underneath
+  var drBotY = bodyY + s(RECESS_TOP);
+  fr(FX+(lpW-drW)/2,drBotY,drW,drH,C.face,[68,42,18],0.2);
+  fr(FX+lpW/2-s(60),drBotY+drH/2-s(7),s(120),s(14),C.metal,[38,38,42],0.15);
 
   // Right drawer (mirror)
   fr(rpX+(lpW-drW)/2,drTopY,drW,drH,C.face,[68,42,18],0.2);
@@ -354,11 +354,11 @@ function generatePDF(){
     {no:16,item:'Plinth - Centre Bay',l:800,w:860,t:35,qty:1,note:'Full depth under centre section'},
     {no:17,item:'Plinth - Right Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
     {no:18,item:'Plinth - Right Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
-    {cat:'D - DRAWER BOXES  (12mm — material to be decided, top drawer only x 2 pedestals)'},
-    {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:4,note:'2 walls per box x 2 pedestals (L & R)'},
-    {no:20,item:'Drawer Back Panel',l:336,w:305,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
-    {no:21,item:'Drawer Base Panel',l:588,w:336,t:12,qty:2,note:'1 per drawer box x 2 pedestals'},
-    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:2,note:'Material to be decided; top drawer only - handle + lock'}
+    {cat:'D - DRAWER BOXES  (12mm — material to be decided, 2 in left pedestal, 1 in right pedestal)'},
+    {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:6,note:'2 walls per box x 3 drawers (2 Left, 1 Right)'},
+    {no:20,item:'Drawer Back Panel',l:336,w:305,t:12,qty:3,note:'1 per drawer box x 3 drawers'},
+    {no:21,item:'Drawer Base Panel',l:588,w:336,t:12,qty:3,note:'1 per drawer box x 3 drawers'},
+    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:3,note:'3 fronts (2 Left, 1 Right); top drawers have handle + lock'}
   ];
   var ty=22,RH=6.2,CH=6.8;
   _sf([22,45,112]);doc.rect(TM,ty,TW,7.5,'F');

@@ -928,7 +928,7 @@ export function buildDeskScene() {
     }
   };
 
-  buildPedestalDrawers(-1.175, animatedGroups.leftDrawersGroup, 2, true);
+  buildPedestalDrawers(-1.175, animatedGroups.leftDrawersGroup, 2, false);
   buildPedestalDrawers(1.175, animatedGroups.rightDrawersGroup, 2, true);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
