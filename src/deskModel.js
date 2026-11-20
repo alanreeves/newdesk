@@ -272,14 +272,6 @@ export function buildDeskScene() {
     metalness: 0.02
   });
 
-  // Black melamine-faced MDF for Workshop Build internal dividers/plinths/shelves
-  const blackMelamineMaterial = new THREE.MeshStandardMaterial({
-    color: 0x0d0f12,
-    roughness: 0.55,
-    metalness: 0.04,
-    envMapIntensity: 0.5
-  });
-  
   const darkMetalMaterial = new THREE.MeshStandardMaterial({
     color: 0x1f232d,
     roughness: 0.3,
@@ -305,9 +297,7 @@ export function buildDeskScene() {
     cablesGroup: new THREE.Group()
   };
 
-  // Tagged meshes for variant material/geometry swapping
-  // 'oak_exterior': top, backs, outer end panels, drawer fronts → oak in both variants, 18mm in workshop
-  // 'black_interior': internal dividers, plinths, shelves → oak in standard, black melamine in workshop
+  // Tagged structural panels (18mm Egger Natural Kendal Oak MFC throughout)
   const taggedMeshes = { oak_exterior: [], black_interior: [] };
 
   const interactiveEquipment = [];
@@ -316,7 +306,7 @@ export function buildDeskScene() {
   const W_TOTAL = 2.73;
   const D_TOTAL = 0.90;
   const H_DESK = 0.76;
-  const THICKNESS = 0.019; // Standard build: 19mm Oak-Veneered MDF. Workshop & Egger use 18mm via applyVariant()
+  const THICKNESS = 0.018; // 18mm Egger Natural Kendal Oak MFC (H3170) single-material build
 
   // 1. STRAIGHT LIGHT OAK DESKTOP WITH REAR CABLE TRENCH
   const desktopShape = new THREE.Shape();
@@ -628,7 +618,7 @@ export function buildDeskScene() {
 
     const pMesh = new THREE.Mesh(
       new THREE.BoxGeometry(pWidth, 0.035, pDepth),
-      oakMaterial // swapped to blackMelamineMaterial in Workshop Build
+      oakMaterial
     );
     pMesh.position.set(pCenterX, 0.0175, pCenterZ);
     pMesh.castShadow = true;
@@ -640,8 +630,7 @@ export function buildDeskScene() {
     rootGroup.add(pMesh);
   });
 
-  // Outer end panels (x=-1.365 and x=1.365) → oak_exterior in Workshop Build
-  // Internal dividers (x=-0.915, -0.40, -0.10, 0.40, 0.915) → black_interior in Workshop Build
+  // Outer end panels (x=-1.365 and x=1.365) & internal dividers (x=-0.915, -0.40, -0.10, 0.40, 0.915)
   const outerGables = {};
   const outerEndDivs = [-1.365, 1.365];
   outerEndDivs.forEach(x => {
@@ -664,7 +653,7 @@ export function buildDeskScene() {
   innerDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
-      oakMaterial // swapped to blackMelamineMaterial in Workshop Build
+      oakMaterial
     );
     vMesh.position.set(x, (H_DESK - THICKNESS) / 2, 0);
     vMesh.castShadow = true;
@@ -703,11 +692,11 @@ export function buildDeskScene() {
   taggedMeshes.oak_exterior.push(backRightPedestal);
   rootGroup.add(backRightPedestal);
 
-  // 2. DRAWER UNITS
+  // 2. DRAWER UNITS (18mm Egger Natural Kendal Oak MFC)
   const drawerBoxMaterial = new THREE.MeshStandardMaterial({
-    color: 0xdfc5a6, // Birch / light wood interior for drawer box
-    roughness: 0.5,
-    metalness: 0.01
+    color: 0xdfc3a1, // Matching Egger Natural Kendal Oak MFC drawer box
+    roughness: 0.48,
+    metalness: 0.02
   });
 
   const buildPedestalDrawers = (centerX, groupRef, numDrawers = 3, openBottomRecess = false) => {
@@ -1001,7 +990,7 @@ export function buildDeskScene() {
 
   const rackShelf = new THREE.Mesh(
     new THREE.BoxGeometry(0.48, THICKNESS, D_TOTAL - 0.12),
-    oakMaterial // swapped to blackMelamineMaterial in Workshop Build
+    oakMaterial
   );
   rackShelf.position.set(0.15, 0.22, 0);
   rackShelf.userData.variantRole = 'black_interior';
@@ -1544,7 +1533,6 @@ export function buildDeskScene() {
     interactiveEquipment,
     equipmentPins,
     oakMaterial,
-    blackMelamineMaterial,
     drawerBoxMaterial,
     taggedMeshes,
     desktopMesh,

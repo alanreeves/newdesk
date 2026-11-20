@@ -33,7 +33,7 @@ h1 span{color:#38bdf8}
     <div class="stat"><div class="v">2730</div><div class="l">Width mm</div></div>
     <div class="stat"><div class="v">900</div><div class="l">Depth mm</div></div>
     <div class="stat"><div class="v">760</div><div class="l">Height mm</div></div>
-    <div class="stat"><div class="v">22</div><div class="l">Panels</div></div>
+    <div class="stat"><div class="v">38</div><div class="l">Panels</div></div>
   </div>
   <div class="chips">
     <div class="chip"><strong>Page 1</strong>Front &amp; Side Elevations</div>
@@ -48,10 +48,10 @@ function generatePDF(){
   var jsPDF=window.jspdf.jsPDF;
   var SCALE=20;
   var s=function(v){return v/SCALE;};
-  var W=2730,D=900,H=760,T=30,TP=35,DD=860,DH=730;
+  var W=2730,D=900,H=760,T=18,TP=18,DD=860,DH=742;
   var W_LP=450,W_LR=515,W_CTR=800;
   var DIVX=[0,450,965,1265,1765,2280,2730];
-  var DR_TOP=19,DR_H=332,DR_W=380,RECESS_TOP=355,RECESS_H=340,PLINTH_TOP=695;
+  var DR_TOP=18,DR_H=290,DR_W=404,RECESS_TOP=318,RECESS_H=340,PLINTH_TOP=724;
   var C={
     navy:[14,30,65],white:[255,255,255],black:[15,15,20],
     dimLine:[35,95,210],grid:[208,211,220],
@@ -105,7 +105,7 @@ function generatePDF(){
     doc.setFontSize(9.5);doc.setFont('helvetica','bold');_st(C.white);
     _tx('SOUND DESK - WORKSHOP SCHEMATIC',PW/2,6.5,{align:'center'});
     doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
-    _tx('All dimensions in millimetres  |  Material: To be decided  |  Structural panels 30mm',PW/2,11.5,{align:'center'});
+    _tx('All dimensions in millimetres  |  Material: 18mm Egger Natural Kendal Oak MFC (H3170)  |  Single-material build',PW/2,11.5,{align:'center'});
     _sf(C.footBg);_rx(0,PH-12,PW,12,'F');
     _sd([155,160,185]);_lw(0.3);_ln(0,PH-12,PW,PH-12);
     _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
@@ -190,10 +190,10 @@ function generatePDF(){
   dimH(rrX,rrX+lrW,floorY,'515',false,8);
   dimH(rpX,rpX+lpW,floorY,'450',false,8);
   dimV(FX+fw,FY,floorY,'760',false,5);
-  dimV(FX+fw+12,FY,bodyY,'30',false,4);
-  dimV(FX-3,drTopY,drTopY+drH,'332',true,4);
+  dimV(FX+fw+12,FY,bodyY,'18',false,4);
+  dimV(FX-3,drTopY,drTopY+drH,'290',true,4);
   dimV(FX-11,rcY,rcY+rcH,'340',true,4);
-  dimV(FX-19,plY,floorY,'35',true,4);
+  dimV(FX-19,plY,floorY,'18',true,4);
 
   // SIDE ELEVATION
   var SX=FX+fw+28,SY=FY;
@@ -218,7 +218,7 @@ function generatePDF(){
   dimH(SX+sOH,SX+sOH+spD,SY+fh,'860',false,8);
   dimH(SX+sOH,SX+sOH+s(300),SY+fh,'300 LR plinth',false,14);
   dimV(SX+sd2,SY,SY+fh,'760',false,5);
-  dimV(SX-3,SY,SY+ft,'30',true,4);
+  dimV(SX-3,SY,SY+ft,'18',true,4);
 
   // Scale bar
   var sbX=SX,sbY=PH-28;
@@ -291,10 +291,10 @@ function generatePDF(){
   _ln(REX,rBodyY,REX+fw,rBodyY);
   fr(REX,REY,fw,ft*0.55,C.trench,[110,108,104],0.15);
   doc.setFontSize(3.8);_st([60,40,20]);
-  _tx('450x760x30',REX+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('515x760x30',REX+lpW+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('515x760x30',REX+s(1765)+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('450x760x30',REX+s(2280)+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('450x760x18',REX+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('515x760x18',REX+lpW+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('515x760x18',REX+s(1765)+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('450x760x18',REX+s(2280)+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
   _st(C.black);
   _sd(C.black);_lw(0.5);_rx(REX,REY,fw,fh,'S');
   dimH(REX,REX+fw,REY,'2730',true,5);
@@ -312,7 +312,7 @@ function generatePDF(){
   doc.setFontSize(10);doc.setFont('helvetica','bold');_st(C.white);
   _tx('SOUND DESK - CUTTING LIST',CPW/2,7,{align:'center'});
   doc.setFontSize(6.5);doc.setFont('helvetica','normal');_st([165,192,235]);
-  _tx('All dimensions in mm  |  Material: To be decided',CPW/2,12.5,{align:'center'});
+  _tx('All dimensions in mm  |  Single Material: 18mm Egger Natural Kendal Oak MFC (H3170)  |  3 Boards (2800x2070mm)',CPW/2,12.5,{align:'center'});
   _sf(C.footBg);doc.rect(0,CPH-12,CPW,12,'F');
   _sd([155,160,185]);_lw(0.3);_ln(0,CPH-12,CPW,CPH-12);
   _st(C.footTxt);doc.setFontSize(7);doc.setFont('helvetica','bold');
@@ -333,32 +333,34 @@ function generatePDF(){
     {lbl:'Notes',x:141,w:55,al:'left'}
   ];
   var items=[
-    {cat:'A - MAIN CARCASS  (30mm — material to be decided)'},
-    {no:1,item:'Desktop Panel',l:2730,w:900,t:30,qty:1,note:'Straight front profile; rear cable trench cutout'},
-    {no:2,item:'Cable Trench Lid',l:2730,w:150,t:30,qty:1,note:'150mm lid with 12 slots; piano hinge at rear; liftable floor below'},
-    {no:3,item:'Outer Left Side Panel',l:860,w:730,t:30,qty:1,note:'Left outer carcass wall - full depth'},
-    {no:4,item:'Left Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 450mm from left'},
-    {no:5,item:'Left Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 965mm from left'},
-    {no:6,item:'Centre Sub-Divider',l:860,w:730,t:30,qty:1,note:'PC/rack bay partition at 1265mm from left'},
-    {no:7,item:'Right Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1765mm from left'},
-    {no:8,item:'Right Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 2280mm from left'},
-    {no:9,item:'Outer Right Side Panel',l:860,w:730,t:30,qty:1,note:'Right outer carcass wall - full depth'},
-    {cat:'B - BACK PANELS  (30mm — material to be decided)'},
-    {no:10,item:'Back Panel - Left Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of left pedestal'},
-    {no:11,item:'Back Panel - Left Operator',l:515,w:760,t:30,qty:1,note:'Rear closure of left leg recess'},
-    {no:12,item:'Back Panel - Right Operator',l:515,w:760,t:30,qty:1,note:'Rear closure of right leg recess'},
-    {no:13,item:'Back Panel - Right Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of right pedestal'},
-    {cat:'C - PLINTHS  (35mm — material to be decided)'},
-    {no:14,item:'Plinth - Left Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
-    {no:15,item:'Plinth - Left Leg Recess',l:515,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
-    {no:16,item:'Plinth - Centre Bay',l:800,w:860,t:35,qty:1,note:'Full depth under centre section'},
-    {no:17,item:'Plinth - Right Leg Recess',l:515,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
-    {no:18,item:'Plinth - Right Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
-    {cat:'D - DRAWER BOXES  (12mm — material to be decided, 2 in left pedestal, 1 in right pedestal)'},
-    {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:6,note:'2 walls per box x 3 drawers (2 Left, 1 Right)'},
-    {no:20,item:'Drawer Back Panel',l:336,w:305,t:12,qty:3,note:'1 per drawer box x 3 drawers'},
-    {no:21,item:'Drawer Base Panel',l:588,w:336,t:12,qty:3,note:'1 per drawer box x 3 drawers'},
-    {no:22,item:'Drawer Front Panel',l:380,w:332,t:30,qty:3,note:'3 fronts (2 Left, 1 Right); top drawers have handle + lock'}
+    {cat:'A - MAIN CARCASS & WORKTOP  (18mm Egger Natural Kendal Oak MFC H3170)'},
+    {no:1,item:'Desktop Panel',l:2730,w:900,t:18,qty:1,note:'Straight front profile; 150mm rear cable trench cutout'},
+    {no:2,item:'Cable Trench Lid',l:2730,w:150,t:18,qty:1,note:'150mm lid with 12 slots; piano hinge at rear; liftable floor below'},
+    {no:3,item:'Outer Left Side Panel',l:860,w:742,t:18,qty:1,note:'Left outer carcass wall - full depth'},
+    {no:4,item:'Left Pedestal Inner Panel',l:860,w:742,t:18,qty:1,note:'Vertical divider at 450mm from left'},
+    {no:5,item:'Left Centre Panel',l:860,w:742,t:18,qty:1,note:'Vertical divider at 965mm from left'},
+    {no:6,item:'Centre Sub-Divider',l:860,w:742,t:18,qty:1,note:'PC/rack bay partition at 1265mm from left'},
+    {no:7,item:'Right Centre Panel',l:860,w:742,t:18,qty:1,note:'Vertical divider at 1765mm from left'},
+    {no:8,item:'Right Pedestal Inner Panel',l:860,w:742,t:18,qty:1,note:'Vertical divider at 2280mm from left'},
+    {no:9,item:'Outer Right Side Panel',l:860,w:742,t:18,qty:1,note:'Right outer carcass wall - full depth'},
+    {cat:'B - BACK PANELS, SHELF & TRAY  (18mm Egger MFC)'},
+    {no:10,item:'Back Panel - Left Pedestal',l:450,w:760,t:18,qty:1,note:'Full-height rear closure of left pedestal'},
+    {no:11,item:'Back Panel - Left Operator',l:515,w:760,t:18,qty:1,note:'Rear closure of left leg recess'},
+    {no:12,item:'Back Panel - Right Operator',l:515,w:760,t:18,qty:1,note:'Rear closure of right leg recess'},
+    {no:13,item:'Back Panel - Right Pedestal',l:450,w:760,t:18,qty:1,note:'Full-height rear closure of right pedestal'},
+    {no:14,item:'Equipment Bay Fixed Shelf',l:780,w:480,t:18,qty:1,note:'Supports power strip & induction loop amp'},
+    {no:15,item:'Tower PC Pull-Out Tray',l:780,w:260,t:18,qty:1,note:'Mounted on 750mm heavy-duty telescopic slides'},
+    {cat:'C - PLINTHS  (18mm Egger MFC)'},
+    {no:16,item:'Plinth - Left Pedestal',l:860,w:450,t:18,qty:1,note:'Full depth 860mm front to back'},
+    {no:17,item:'Plinth - Left Leg Recess',l:515,w:300,t:18,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:18,item:'Plinth - Centre Bay',l:860,w:800,t:18,qty:1,note:'Full depth under centre section'},
+    {no:19,item:'Plinth - Right Leg Recess',l:515,w:300,t:18,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:20,item:'Plinth - Right Pedestal',l:860,w:450,t:18,qty:1,note:'Full depth 860mm front to back'},
+    {cat:'D - DRAWER BOXES & FRONTS  (18mm Egger MFC, 2 in left pedestal, 1 in right pedestal)'},
+    {no:21,item:'Drawer Box Side Walls',l:570,w:220,t:18,qty:6,note:'2 walls per box x 3 drawers (for 600mm slides)'},
+    {no:22,item:'Drawer Box Front / Back',l:368,w:220,t:18,qty:6,note:'1 front + 1 back per box x 3 drawers'},
+    {no:23,item:'Drawer Box Base Panel',l:546,w:340,t:18,qty:3,note:'1 per drawer box x 3 drawers'},
+    {no:24,item:'Drawer Front Panel',l:404,w:290,t:18,qty:3,note:'3 fronts (2 Left, 1 Right); top drawers have handle + lock'}
   ];
   var ty=22,RH=6.2,CH=6.8;
   _sf([22,45,112]);doc.rect(TM,ty,TW,7.5,'F');
@@ -404,10 +406,10 @@ function generatePDF(){
   doc.setFont('helvetica','normal');doc.setFontSize(6.5);_st([50,40,15]);
   var notes=[
     '1.  All dimensions in millimetres. Verify all dimensions on site before cutting.',
-    '2.  All timber materials are TO BE DECIDED — thicknesses shown (30mm carcass, 35mm plinths, 12mm drawer boxes).',
-    '3.  Drawer box construction: through-dovetail or Domino mortise & tenon joints recommended.',
-    '4.  Hardware: Piano hinge (cable trench lid); full-extension 35kg ball-bearing slides 600mm (drawers).',
-    '5.  Desktop shape requires CNC routing or full-scale MDF template for the ergonomic front curve.',
+    '2.  Single-material build: 18mm Egger Natural Kendal Oak MFC (H3170) throughout — 3 boards of 2800x2070mm.',
+    '3.  Joinery: 50mm Confirmat or 4x45mm twin-thread screws (pre-drill 3.5mm pilot) + 2mm matching Oak ABS edge tape.',
+    '4.  Hardware: 2730mm piano hinge (cable trench lid); 3 pairs 600mm soft-close slides (drawers); 750mm PC slides.',
+    '5.  Desktop has straight front edge with 150mm dual-channel rear cable trench and 2730mm aluminium divider.',
     '6.  Divider positions measured from the outer left edge. Confirm section widths sum to 2730mm.'
   ];
   notes.forEach(function(n,i){_tx(n,TM+3,ty+13+i*4.8);});

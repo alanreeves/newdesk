@@ -2,518 +2,483 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sound Desk - Cutting List & Material Schedule</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Desk — 1-Page Cutting List (18mm Egger MFC, 2730mm)</title>
   <style>
     @page {
       size: A4 portrait;
-      margin: 12mm 15mm;
+      margin: 10mm 12mm;
     }
-    
+
     * {
       box-sizing: border-box;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-    
+
     body {
-      color: #1e293b;
-      background: #ffffff;
+      color: #0f172a;
+      background: #f8fafc;
       margin: 0;
       padding: 0;
-      font-size: 10.5pt;
-      line-height: 1.4;
+      font-size: 9pt;
+      line-height: 1.32;
     }
-    
+
+    .top-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .top-bar-left, .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover { background: #e2e8f0; color: #0f172a; }
+
+    .nav-btn.primary {
+      background: #059669;
+      border-color: #059669;
+      color: #ffffff;
+    }
+
+    .nav-btn.primary:hover { background: #047857; }
+
+    .sheet {
+      max-width: 210mm;
+      margin: 16px auto 28px;
+      background: #ffffff;
+      padding: 12mm 14mm;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    }
+
     .header-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
-      border-bottom: 3px solid #b45309;
-      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: 2.5px solid #059669;
     }
-    
+
     .header-table td {
       vertical-align: bottom;
+      padding-bottom: 6px;
     }
-    
+
     .doc-title {
-      font-size: 20pt;
+      font-size: 16pt;
       font-weight: 800;
-      color: #78350f;
+      color: #064e3b;
       text-transform: uppercase;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
       margin: 0;
     }
-    
+
     .doc-subtitle {
-      font-size: 11pt;
-      color: #d97706;
-      font-weight: 600;
-      margin-top: 4px;
+      font-size: 9.2pt;
+      color: #059669;
+      font-weight: 700;
+      margin-top: 2px;
     }
-    
+
     .doc-meta {
       text-align: right;
-      font-size: 9.5pt;
-      color: #64748b;
+      font-size: 8.2pt;
+      color: #475569;
+      line-height: 1.35;
     }
 
-    .doc-meta strong {
-      color: #334155;
-    }
+    .doc-meta strong { color: #0f172a; }
 
     .summary-card {
-      background-color: #fef3c7;
-      border: 1px solid #fde68a;
-      border-left: 5px solid #d97706;
+      background-color: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-left: 4px solid #059669;
       border-radius: 4px;
-      padding: 10px 14px;
-      margin-bottom: 20px;
+      padding: 6px 10px;
+      margin-bottom: 9px;
+      font-size: 8.3pt;
+      color: #065f46;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 14px;
     }
 
-    .summary-card h3 {
-      margin: 0 0 6px 0;
-      font-size: 11pt;
-      color: #92400e;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .summary-grid {
-      display: table;
-      width: 100%;
-    }
-
-    .summary-row {
-      display: table-row;
-    }
-
-    .summary-cell {
-      display: table-cell;
-      padding: 3px 10px 3px 0;
-      font-size: 9.5pt;
-    }
+    .summary-card strong { color: #047857; }
 
     h2 {
-      font-size: 12pt;
-      color: #78350f;
-      border-bottom: 1.5px solid #fcd34d;
-      padding-bottom: 4px;
-      margin-top: 18px;
-      margin-bottom: 10px;
+      font-size: 9.2pt;
+      color: #065f46;
+      border-bottom: 1.2px solid #a7f3d0;
+      padding-bottom: 2px;
+      margin: 8px 0 5px 0;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
 
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 16px;
-      font-size: 9.5pt;
+      margin-bottom: 6px;
+      font-size: 8.1pt;
     }
 
     table.data-table th {
-      background-color: #78350f;
+      background-color: #065f46;
       color: #ffffff;
       text-align: left;
-      padding: 6px 8px;
-      font-weight: 600;
-      font-size: 9pt;
+      padding: 4px 6px;
+      font-weight: 700;
+      font-size: 7.5pt;
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
 
     table.data-table td {
-      padding: 6px 8px;
+      padding: 3.5px 6px;
       border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
     }
 
     table.data-table tr:nth-child(even) {
-      background-color: #fffbeb;
+      background-color: #f0fdf4;
     }
 
-    table.data-table tr {
-      page-break-inside: avoid;
+    .num {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 600;
+    }
+
+    .qty {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 800;
+      color: #b45309;
+      text-align: center;
     }
 
     .badge {
       display: inline-block;
-      padding: 2px 6px;
+      padding: 1px 5px;
       border-radius: 3px;
-      font-size: 8.5pt;
-      font-weight: 600;
-      background-color: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fde68a;
+      font-size: 7.4pt;
+      font-weight: 700;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      white-space: nowrap;
     }
 
-    .badge-thick {
-      background-color: #e0f2fe;
-      color: #0369a1;
-      border-color: #bae6fd;
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .notes-box {
       background-color: #f8fafc;
       border: 1px solid #e2e8f0;
       border-radius: 4px;
-      padding: 10px 14px;
-      font-size: 9pt;
+      padding: 6px 9px;
+      font-size: 7.6pt;
       color: #334155;
-      margin-top: 15px;
+      line-height: 1.35;
+    }
+
+    .notes-box h3 {
+      margin: 0 0 3px 0;
+      font-size: 8pt;
+      color: #065f46;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
     .notes-box ul {
-      margin: 4px 0 0 0;
-      padding-left: 18px;
+      margin: 0;
+      padding-left: 14px;
     }
 
     .notes-box li {
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .footer {
-      margin-top: 25px;
-      padding-top: 8px;
+      margin-top: 8px;
+      padding-top: 5px;
       border-top: 1px solid #cbd5e1;
-      text-align: center;
-      font-size: 8.5pt;
-      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: #64748b;
+    }
+
+    @media print {
+      body { background: #ffffff; }
+      .top-bar { display: none !important; }
+      .sheet {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
 <body>
 
-  <table class="header-table">
-    <tr>
-      <td>
-        <h1 class="doc-title">Sound Desk Cutting List</h1>
-        <div class="doc-subtitle">2.73m (2730mm) Custom Workstation • Timber Spec: Light Oak Faced MDF</div>
-      </td>
-      <td class="doc-meta">
-        <div><strong>Project:</strong> Sound Desk (Alan Reeves)</div>
-        <div><strong>Date:</strong> November 20, 2026</div>
-        <div><strong>Status:</strong> Approved Production Spec</div>
-      </td>
-    </tr>
-  </table>
-
-  <div class="summary-card">
-    <h3>📦 Material Estimation & Board Summary</h3>
-    <div class="summary-grid">
-      <div class="summary-row">
-        <div class="summary-cell"><strong>30mm Light Oak Faced MDF:</strong> 2 Boards (3050 × 1525 mm)</div>
-        <div class="summary-cell"><strong>12mm Light Oak / Birch MDF:</strong> 1 Board (2440 × 1220 mm)</div>
-      </div>
-      <div class="summary-row">
-        <div class="summary-cell"><strong>18mm Light Oak Faced MDF:</strong> 3 Boards (2440 × 1220 mm)</div>
-        <div class="summary-cell"><strong>6mm Plain / Oak MDF Backing:</strong> 1 Board (2440 × 1220 mm)</div>
-      </div>
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <a href="./index.html" class="nav-btn">&#8592; Back to 3D Desk</a>
+      <a href="./cutting_list_egger.html" class="nav-btn">Board Nesting Diagrams &rarr;</a>
+    </div>
+    <div class="top-bar-right">
+      <button class="nav-btn primary" onclick="window.print()">&#128438; Print / Save 1-Page PDF</button>
     </div>
   </div>
 
-  <h2>1. Desktop & Cable Trench (30mm Light Oak Faced MDF)</h2>
-  <table class="data-table">
-    <thead>
+  <div class="sheet">
+    <table class="header-table">
       <tr>
-        <th style="width: 8%;">Ref</th>
-        <th style="width: 32%;">Description</th>
-        <th style="width: 8%;">Qty</th>
-        <th style="width: 12%;">Length (mm)</th>
-        <th style="width: 12%;">Width (mm)</th>
-        <th style="width: 10%;">Thick</th>
-        <th style="width: 18%;">Edge Banding</th>
+        <td>
+          <h1 class="doc-title">Sound Desk — 1-Page Cutting List</h1>
+          <div class="doc-subtitle">2730 &times; 900 &times; 760 mm Workstation &bull; Single Material: 18mm Egger Natural Kendal Oak MFC (H3170)</div>
+        </td>
+        <td class="doc-meta">
+          <div><strong>Project:</strong> Sound Desk (Alan Reeves)</div>
+          <div><strong>Boards:</strong> 3 &times; 2800 &times; 2070 mm (18mm)</div>
+          <div><strong>Total Parts:</strong> 38 Pieces (incl. 3 Drawers)</div>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>D1</strong></td>
-        <td>Main Desktop (Straight Edge)</td>
-        <td>1</td>
-        <td>2730</td>
-        <td>900</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>2mm Oak ABS (All 4 Edges)</td>
-      </tr>
-      <tr>
-        <td><strong>D2</strong></td>
-        <td>Cable Trench Hinged Lid</td>
-        <td>1</td>
-        <td>2730</td>
-        <td>150</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>2mm Oak ABS (All 4 Edges)</td>
-      </tr>
-      <tr>
-        <td><strong>D3</strong></td>
-        <td>Trench Cable Slots (12 Off)</td>
-        <td>12</td>
-        <td>60 (R12.5)</td>
-        <td>25</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>Rubber Grommets Fitted</td>
-      </tr>
-    </tbody>
-  </table>
+    </table>
 
-  <h2>2. Main Carcase & Uprights (30mm Light Oak Faced MDF)</h2>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th style="width: 8%;">Ref</th>
-        <th style="width: 32%;">Description</th>
-        <th style="width: 8%;">Qty</th>
-        <th style="width: 12%;">Length (mm)</th>
-        <th style="width: 12%;">Width (mm)</th>
-        <th style="width: 10%;">Thick</th>
-        <th style="width: 18%;">Location / Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>V1</strong></td>
-        <td>Outer Left Gable</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = -1365 mm (End Panel)</td>
-      </tr>
-      <tr>
-        <td><strong>V2</strong></td>
-        <td>Left Pedestal Inner Wall</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = -915 mm</td>
-      </tr>
-      <tr>
-        <td><strong>V3</strong></td>
-        <td>PC Bay Left Divider</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = -400 mm</td>
-      </tr>
-      <tr>
-        <td><strong>V4</strong></td>
-        <td>Center Divider Panel</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = -100 mm</td>
-      </tr>
-      <tr>
-        <td><strong>V5</strong></td>
-        <td>Rack Bay Right Divider</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = +400 mm</td>
-      </tr>
-      <tr>
-        <td><strong>V6</strong></td>
-        <td>Right Pedestal Inner Wall</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = +915 mm</td>
-      </tr>
-      <tr>
-        <td><strong>V7</strong></td>
-        <td>Outer Right Gable</td>
-        <td>1</td>
-        <td>860</td>
-        <td>730</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>X = +1365 mm (End Panel)</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="summary-card">
+      <div><strong>Single-Material Build:</strong> 3 Boards of 18mm Egger MFC (2800 &times; 2070 mm) &middot; Ø 23% waste</div>
+      <div><strong>Layout (2730 mm):</strong> 450 Ped &middot; 515 Footwell &middot; 300 PC &middot; 500 Rack &middot; 515 Footwell &middot; 450 Ped</div>
+      <div><strong>Drawer Sheets Required:</strong> 0 separate sheets (all 3 drawer boxes cut from same 3 Egger boards)</div>
+      <div><strong>Edge Banding:</strong> ~55 m Egger 2mm Natural Kendal Oak ABS tape on all exposed edges</div>
+    </div>
 
-  <h2>3. Modesty Panels, Plinths & Shelves (18mm / 30mm Oak MDF)</h2>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th style="width: 8%;">Ref</th>
-        <th style="width: 32%;">Description</th>
-        <th style="width: 8%;">Qty</th>
-        <th style="width: 12%;">Length (mm)</th>
-        <th style="width: 12%;">Width (mm)</th>
-        <th style="width: 10%;">Thick</th>
-        <th style="width: 18%;">Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>B1</strong></td>
-        <td>Outer Left Back Modesty</td>
-        <td>1</td>
-        <td>450</td>
-        <td>730</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Flush to rear frame</td>
-      </tr>
-      <tr>
-        <td><strong>B2</strong></td>
-        <td>Left Operator Knee Modesty</td>
-        <td>1</td>
-        <td>515</td>
-        <td>730</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Recessed for legroom</td>
-      </tr>
-      <tr>
-        <td><strong>B3</strong></td>
-        <td>Right Operator Knee Modesty</td>
-        <td>1</td>
-        <td>515</td>
-        <td>730</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Recessed for legroom</td>
-      </tr>
-      <tr>
-        <td><strong>B4</strong></td>
-        <td>Outer Right Back Modesty</td>
-        <td>1</td>
-        <td>450</td>
-        <td>730</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Flush to rear frame</td>
-      </tr>
-      <tr>
-        <td><strong>P1</strong></td>
-        <td>Pedestal Base Plinths</td>
-        <td>2</td>
-        <td>860</td>
-        <td>450</td>
-        <td><span class="badge">35 mm</span></td>
-        <td>Doubled 18mm / Solid Base</td>
-      </tr>
-      <tr>
-        <td><strong>P2</strong></td>
-        <td>Operator Recess Base Rails</td>
-        <td>2</td>
-        <td>515</td>
-        <td>300</td>
-        <td><span class="badge">35 mm</span></td>
-        <td>Back 300mm depth only</td>
-      </tr>
-      <tr>
-        <td><strong>P3</strong></td>
-        <td>Center PC / Rack Bay Base</td>
-        <td>1</td>
-        <td>860</td>
-        <td>800</td>
-        <td><span class="badge">35 mm</span></td>
-        <td>Full depth under equipment</td>
-      </tr>
-      <tr>
-        <td><strong>S1</strong></td>
-        <td>Equipment Bay Fixed Shelf</td>
-        <td>1</td>
-        <td>780</td>
-        <td>480</td>
-        <td><span class="badge badge-thick">30 mm</span></td>
-        <td>Holds Power & Loop Amps</td>
-      </tr>
-      <tr>
-        <td><strong>S2</strong></td>
-        <td>Tower PC Pull-Out Tray</td>
-        <td>1</td>
-        <td>780</td>
-        <td>260</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Mounted on heavy slides</td>
-      </tr>
-    </tbody>
-  </table>
+    <h2>A &middot; Carcass, Worktop &amp; Structural Panels (18mm Egger MFC &mdash; 23 Parts)</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 8%;">Ref</th>
+          <th style="width: 31%;">Description</th>
+          <th style="width: 6%; text-align: center;">Qty</th>
+          <th style="width: 10%;">L (mm)</th>
+          <th style="width: 10%;">W (mm)</th>
+          <th style="width: 8%;">Thk</th>
+          <th style="width: 27%;">Position / Machining Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">A1</td>
+          <td><strong>Desktop Panel (cable trench routed)</strong></td>
+          <td class="qty">1</td>
+          <td class="num">2730</td>
+          <td class="num">900</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Seamless top; 150mm trench routed from underside</td>
+        </tr>
+        <tr>
+          <td class="num">A2</td>
+          <td><strong>Cable Trench Hinged Lid</strong></td>
+          <td class="qty">1</td>
+          <td class="num">2730</td>
+          <td class="num">150</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>12 U-slots (25&times;60mm); rear 2730mm piano hinge</td>
+        </tr>
+        <tr>
+          <td class="num">A3–A4</td>
+          <td>Outer Left &amp; Right End Panels (Gables)</td>
+          <td class="qty">2</td>
+          <td class="num">860</td>
+          <td class="num">742</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Visible outer ends; H = 760 &minus; 18mm top</td>
+        </tr>
+        <tr>
+          <td class="num">A5–A9</td>
+          <td>Internal Vertical Dividers (5 Off)</td>
+          <td class="qty">5</td>
+          <td class="num">860</td>
+          <td class="num">742</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>At 450, 965, 1265, 1765 &amp; 2280mm from left</td>
+        </tr>
+        <tr>
+          <td class="num">A10, A12</td>
+          <td>Base Plinths — Left &amp; Right Pedestals</td>
+          <td class="qty">2</td>
+          <td class="num">860</td>
+          <td class="num">450</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Full 860mm depth under pedestals</td>
+        </tr>
+        <tr>
+          <td class="num">A11</td>
+          <td>Base Plinth — Centre PC &amp; Rack Bay</td>
+          <td class="qty">1</td>
+          <td class="num">860</td>
+          <td class="num">800</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Full 860mm depth under centre equipment bay</td>
+        </tr>
+        <tr>
+          <td class="num">A13–A14</td>
+          <td>Base Plinths — Operator Leg Recesses</td>
+          <td class="qty">2</td>
+          <td class="num">515</td>
+          <td class="num">300</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Rear 300mm depth kickers under 515mm footwells</td>
+        </tr>
+        <tr>
+          <td class="num">A15, A18</td>
+          <td>Back Panels — Left &amp; Right Pedestals</td>
+          <td class="qty">2</td>
+          <td class="num">450</td>
+          <td class="num">760</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Full-height 760mm rear closure panels</td>
+        </tr>
+        <tr>
+          <td class="num">A16–A17</td>
+          <td>Back Panels — Operator Recesses</td>
+          <td class="qty">2</td>
+          <td class="num">515</td>
+          <td class="num">760</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Full-height rear panels for 515mm footwells</td>
+        </tr>
+        <tr>
+          <td class="num">A19</td>
+          <td>Equipment Bay Fixed Shelf</td>
+          <td class="qty">1</td>
+          <td class="num">780</td>
+          <td class="num">480</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Supports induction loop &amp; house speaker amps</td>
+        </tr>
+        <tr>
+          <td class="num">A20</td>
+          <td>Tower PC Pull-Out Tray</td>
+          <td class="qty">1</td>
+          <td class="num">780</td>
+          <td class="num">260</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>Mounted on 750mm heavy-duty telescopic slides</td>
+        </tr>
+        <tr>
+          <td class="num">A21</td>
+          <td>Drawer Front Panels</td>
+          <td class="qty">3</td>
+          <td class="num">404</td>
+          <td class="num">290</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>2 in left pedestal, 1 top right (open recess below)</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <h2>4. Drawer Units & Drawer Box Assembly</h2>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th style="width: 8%;">Ref</th>
-        <th style="width: 32%;">Component</th>
-        <th style="width: 8%;">Qty</th>
-        <th style="width: 12%;">Length (mm)</th>
-        <th style="width: 12%;">Width (mm)</th>
-        <th style="width: 10%;">Thick</th>
-        <th style="width: 18%;">Material Spec</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>DF1</strong></td>
-        <td>Pedestal Drawer Fronts</td>
-        <td>4</td>
-        <td>380</td>
-        <td>325</td>
-        <td><span class="badge">18 mm</span></td>
-        <td>Light Oak Faced MDF</td>
-      </tr>
-      <tr>
-        <td><strong>DB1</strong></td>
-        <td>Drawer Box Side Walls</td>
-        <td>8</td>
-        <td>600</td>
-        <td>250</td>
-        <td><span class="badge">12 mm</span></td>
-        <td>Birch / Light Oak MDF</td>
-      </tr>
-      <tr>
-        <td><strong>DB2</strong></td>
-        <td>Drawer Box Front / Back</td>
-        <td>8</td>
-        <td>336</td>
-        <td>250</td>
-        <td><span class="badge">12 mm</span></td>
-        <td>Birch / Light Oak MDF</td>
-      </tr>
-      <tr>
-        <td><strong>DB3</strong></td>
-        <td>Drawer Box Base Panels</td>
-        <td>4</td>
-        <td>576</td>
-        <td>336</td>
-        <td><span class="badge">6 mm</span></td>
-        <td>Plain / Veneered MDF</td>
-      </tr>
-    </tbody>
-  </table>
+    <h2>B &middot; Precision Drawer Boxes (18mm Egger MFC &mdash; 15 Parts, 3 Drawers)</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 8%;">Ref</th>
+          <th style="width: 31%;">Component</th>
+          <th style="width: 6%; text-align: center;">Qty</th>
+          <th style="width: 10%;">L (mm)</th>
+          <th style="width: 10%;">W (mm)</th>
+          <th style="width: 8%;">Thk</th>
+          <th style="width: 27%;">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">B1</td>
+          <td>Drawer Box Side Walls</td>
+          <td class="qty">6</td>
+          <td class="num">570</td>
+          <td class="num">220</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>2 sides &times; 3 drawers (sized for 600mm runners)</td>
+        </tr>
+        <tr>
+          <td class="num">B2</td>
+          <td>Drawer Box Front &amp; Back</td>
+          <td class="qty">6</td>
+          <td class="num">368</td>
+          <td class="num">220</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>1 front + 1 back &times; 3 drawers</td>
+        </tr>
+        <tr>
+          <td class="num">B3</td>
+          <td>Drawer Box Base Panels</td>
+          <td class="qty">3</td>
+          <td class="num">546</td>
+          <td class="num">340</td>
+          <td><span class="badge">18 mm</span></td>
+          <td>1 base &times; 3 drawers (rebated/grooved into sides)</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <h2>5. Hardware & Accessories Schedule</h2>
-  <div class="notes-box">
-    <ul>
-      <li><strong>Trench Lid Hinge:</strong> 1 × 2730 mm Continuous Heavy-Duty Stainless Steel Piano Hinge (fitted along rear edge of 150mm lid).</li>
-      <li><strong>Trench Aluminium Divider Barrier:</strong> 1 × 2730 mm (or 2 × 1365 mm) × 48 mm high × 1.5–2.0 mm brushed aluminium sheet, slotted into central floor rebate to isolate Audio vs AC Mains Power.</li>
-      <li><strong>Removable Floor Access Covers:</strong> 2 × Liftable Floor Panels with flush finger-pull holes (positioned over PC &amp; 19" Rack compartments) allowing large 13A UK mains plug tops and transformers to pass through from below.</li>
-      <li><strong>Drawer Runners:</strong> 4 Pairs × 600 mm Heavy-Duty Soft-Close Side-Mount Ball Bearing Slides.</li>
-      <li><strong>PC Extension Slides:</strong> 1 Pair × 750 mm Undermount/Side Heavy Extension Slides (Rated 45kg+).</li>
-      <li><strong>Drawer Pull Handles:</strong> 4 × Dark Anodised Matt Black Bar Pull Handles (120 mm hole centres).</li>
-      <li><strong>Cable Grommets:</strong> 24 × Black Rubber Capsule Grommet Inserts (25 × 60 mm cutout) — dedicated to Clean Audio/Data and AC Mains Power channels.</li>
-      <li><strong>Edge Banding:</strong> ~45 metres of 2mm Light Oak ABS Edging + ~30 metres of 1mm Light Oak Edging.</li>
-    </ul>
-  </div>
+    <div class="notes-grid">
+      <div class="notes-box">
+        <h3>Hardware Schedule</h3>
+        <ul>
+          <li><strong>Piano Hinge:</strong> 1&times; 2730mm stainless steel continuous hinge (rear edge of 150mm lid).</li>
+          <li><strong>Trench Divider:</strong> 1&times; 2730mm (or 2&times; 1365mm) &times; 48mm &times; 1.5–2mm aluminium sheet.</li>
+          <li><strong>Floor Hatches:</strong> 2&times; liftable plug-access panels (PC &amp; rack bays) with finger pulls.</li>
+          <li><strong>Slides:</strong> 3 pairs 600mm soft-close drawer slides (35kg) + 1 pair 750mm PC slides (45kg+).</li>
+          <li><strong>Handles &amp; Grommets:</strong> 3&times; black bar pulls (120mm) + 24&times; 25&times;60mm rubber grommets.</li>
+          <li><strong>Fixings:</strong> 50mm Confirmat / 4&times;45mm screws, 8&times; M6&times;50mm bolts, PVA glue, ~55m 2mm ABS.</li>
+        </ul>
+      </div>
+      <div class="notes-box">
+        <h3>Workshop &amp; Cable Segregation Notes</h3>
+        <ul>
+          <li><strong>Grain Direction:</strong> Run continuous grain along 2730mm length on desktop (A1) &amp; lid (A2).</li>
+          <li><strong>150mm Dual-Channel Trench:</strong> Machine 3–4mm &times; 6mm groove along trench floor centreline (75mm) for aluminium divider — Rear 75mm = 230V AC Mains, Front 75mm = Clean Audio/Data.</li>
+          <li><strong>Zero-Chip MFC Cutting:</strong> Use 80T triple-chip grind (TCG) blade or score cut lines first.</li>
+          <li><strong>Pilot Drilling:</strong> Pre-drill all MFC screw holes with 3.5mm bit and countersink cleanly.</li>
+          <li><strong>Board Nesting:</strong> All 38 pieces cut from 3&times; 2800&times;2070mm boards (see Nesting Diagrams).</li>
+        </ul>
+      </div>
+    </div>
 
-  <h2>6. Joinery Notes & Workshop Instructions</h2>
-  <div class="notes-box">
-    <ul>
-      <li><strong>Grain Direction:</strong> All visible faces (Desktop D1, Cable Lid D2, Gables V1-V7, and Drawer Fronts DF1) must have wood grain running horizontally along the desk length for unbroken visual alignment.</li>
-      <li><strong>Widened 150mm Dual-Channel Cable Segregation:</strong> The rear cable tidy trench is widened to 150mm and fitted with a central longitudinal divider creating two isolated 75mm physical channels. The front 75mm channel is dedicated exclusively to low-voltage audio cables (XLR microphones, TRS lines, snakes) and data networks (Dante, USB, video). The rear 75mm channel is dedicated to 230V mains power distribution, PDU cords, and equipment transformers. Power and audio cables must never run bundled in parallel; where crossings are necessary, they must cross at 90° right angles to prevent electromagnetic 50Hz hum.</li>
-      <li><strong>Central Aluminium Divider Groove:</strong> Machine a 3.0mm–4.0mm wide × 6mm deep longitudinal groove/rebate along the exact centerline of the trench floor (at 75mm from either wall, running full desk length). A 1.5mm–2mm aluminium plate slots into this groove, physically segregating the trench into power and audio halves.</li>
-      <li><strong>Trench Floor Construction &amp; Liftable Plug Hatches:</strong> The trench floor features cutouts and removable/liftable floor sections directly above the PC tower bay and 19" equipment rack. Technicians can lift these floor panels up by their finger pulls to feed bulky 13A UK plug tops, power bricks, and kettle leads straight up into the trench without having to rewire or disassemble plugs.</li>
-      <li><strong>Desktop Profile:</strong> Straight front edge with 2mm Light Oak ABS edge banding applied to all four outer edges.</li>
-      <li><strong>Ventilation:</strong> 80mm circular cutouts to be drilled through rear section of center PC & amp bay for active air cooling.</li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    Sound Desk Joinery Specification • Sheet 1 of 1 • Light Oak Faced MDF
+    <div class="footer">
+      <span>Sound Desk &mdash; 18mm Egger Natural Kendal Oak MFC (H3170) &middot; 2730 &times; 900 &times; 760 mm</span>
+      <span>1-Page Workshop Summary &middot; Rev C</span>
+    </div>
   </div>
 
 </body>
