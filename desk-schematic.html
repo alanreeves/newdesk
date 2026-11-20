@@ -30,7 +30,7 @@ h1 span{color:#38bdf8}
   <h1>Sound Desk<br><span>Technical Drawing</span></h1>
   <p class="sub">Professional orthographic schematic with dimensions &amp; full cutting list.</p>
   <div class="stats">
-    <div class="stat"><div class="v">3000</div><div class="l">Width mm</div></div>
+    <div class="stat"><div class="v">2730</div><div class="l">Width mm</div></div>
     <div class="stat"><div class="v">900</div><div class="l">Depth mm</div></div>
     <div class="stat"><div class="v">760</div><div class="l">Height mm</div></div>
     <div class="stat"><div class="v">22</div><div class="l">Panels</div></div>
@@ -48,9 +48,9 @@ function generatePDF(){
   var jsPDF=window.jspdf.jsPDF;
   var SCALE=20;
   var s=function(v){return v/SCALE;};
-  var W=3000,D=900,H=760,T=30,TP=35,DD=860,DH=730;
-  var W_LP=450,W_LR=650,W_CTR=800;
-  var DIVX=[0,450,1100,1400,1900,2550,3000];
+  var W=2730,D=900,H=760,T=30,TP=35,DD=860,DH=730;
+  var W_LP=450,W_LR=515,W_CTR=800;
+  var DIVX=[0,450,965,1265,1765,2280,2730];
   var DR_TOP=19,DR_H=332,DR_W=380,RECESS_TOP=355,RECESS_H=340,PLINTH_TOP=695;
   var C={
     navy:[14,30,65],white:[255,255,255],black:[15,15,20],
@@ -129,7 +129,7 @@ function generatePDF(){
   var fw=s(W),ft=s(T),fdh=s(DH),fh=s(H);
   var lpW=s(W_LP),lrW=s(W_LR),ctrW=s(W_CTR);
   var bodyY=FY+ft,floorY=FY+fh;
-  var lrX=FX+lpW,ctrX=FX+s(1100),cdX=FX+s(1400),rrX=FX+s(1900),rpX=FX+fw-lpW;
+  var lrX=FX+lpW,ctrX=FX+s(965),cdX=FX+s(1265),rrX=FX+s(1765),rpX=FX+fw-lpW;
   var drTopY=bodyY+s(DR_TOP),drH=s(DR_H),drW=s(DR_W);
   var rcY=bodyY+s(RECESS_TOP),rcH=s(RECESS_H),plY=bodyY+s(PLINTH_TOP);
 
@@ -183,11 +183,11 @@ function generatePDF(){
   _st(C.black);
 
   // Dims front
-  dimH(FX,FX+fw,FY,'3000',true,5);
+  dimH(FX,FX+fw,FY,'2730',true,5);
   dimH(FX,FX+lpW,floorY,'450',false,8);
-  dimH(lrX,lrX+lrW,floorY,'650',false,8);
+  dimH(lrX,lrX+lrW,floorY,'515',false,8);
   dimH(ctrX,ctrX+ctrW,floorY,'800',false,8);
-  dimH(rrX,rrX+lrW,floorY,'650',false,8);
+  dimH(rrX,rrX+lrW,floorY,'515',false,8);
   dimH(rpX,rpX+lpW,floorY,'450',false,8);
   dimV(FX+fw,FY,floorY,'760',false,5);
   dimV(FX+fw+12,FY,bodyY,'30',false,4);
@@ -240,33 +240,33 @@ function generatePDF(){
   _sf([230,212,188]);_sd(C.black);_lw(0.2);_rx(PLX,PLY,fw,pd,'FD');
   fr(PLX,PLY,fw,tD,C.trench,[110,108,104],0.2);
   doc.setFontSize(4.5);_st([60,58,55]);
-  _tx('CABLE TIDY TRENCH - 150mm deep x 3000mm (with lid, slots & alu divider)',PLX+fw/2,PLY+tD/2+1.5,{align:'center'});
+  _tx('CABLE TIDY TRENCH - 150mm deep x 2730mm (with lid, slots & alu divider)',PLX+fw/2,PLY+tD/2+1.5,{align:'center'});
   _st(C.black);
   fr(PLX+lpW,PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
-  fr(PLX+s(1900),PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
+  fr(PLX+s(1765),PLY+bkOH,lrW,s(DD),C.open,[178,172,158],0.15);
   _sf([198,178,150]);_rx(PLX+lpW,PLY+bkOH,lrW,s(300),'F');
-  _sf([198,178,150]);_rx(PLX+s(1900),PLY+bkOH,lrW,s(300),'F');
+  _sf([198,178,150]);_rx(PLX+s(1765),PLY+bkOH,lrW,s(300),'F');
   _sf(C.oak);_sd(C.black);_lw(0.1);
   DIVX.forEach(function(x){_rx(PLX+s(x)-divT/2,PLY+bkOH,divT,s(DD),'FD');});
   _sf(C.back);_sd(C.black);_lw(0.2);
   _rx(PLX,PLY,lpW,s(T),'FD');
   _rx(PLX+lpW,PLY,lrW,s(T),'FD');
-  _rx(PLX+s(1900),PLY,lrW,s(T),'FD');
-  _rx(PLX+s(2550),PLY,lpW,s(T),'FD');
+  _rx(PLX+s(1765),PLY,lrW,s(T),'FD');
+  _rx(PLX+s(2280),PLY,lpW,s(T),'FD');
   _sd(C.black);_lw(0.5);_rx(PLX,PLY,fw,pd,'S');
   doc.setFontSize(3.8);_st([60,40,20]);
-  [{x:1100,l:'1100'},{x:1400,l:'1400'},{x:1900,l:'1900'},{x:2550,l:'2550'}].forEach(function(d){
+  [{x:965,l:'965'},{x:1265,l:'1265'},{x:1765,l:'1765'},{x:2280,l:'2280'}].forEach(function(d){
     _tx(d.l+'\u2193',PLX+s(d.x),PLY-1,{align:'center'});
   });
   _st(C.black);
-  dimH(PLX,PLX+fw,PLY,'3000',true,5);
+  dimH(PLX,PLX+fw,PLY,'2730',true,5);
   dimH(PLX,PLX+lpW,PLY+pd,'450',false,8);
-  dimH(PLX+lpW,PLX+lpW+lrW,PLY+pd,'650',false,8);
-  dimH(PLX+s(1100),PLX+s(1900),PLY+pd,'800',false,8);
-  dimH(PLX+s(1900),PLX+s(2550),PLY+pd,'650',false,8);
-  dimH(PLX+s(2550),PLX+fw,PLY+pd,'450',false,8);
+  dimH(PLX+lpW,PLX+lpW+lrW,PLY+pd,'515',false,8);
+  dimH(PLX+s(965),PLX+s(1765),PLY+pd,'800',false,8);
+  dimH(PLX+s(1765),PLX+s(2280),PLY+pd,'515',false,8);
+  dimH(PLX+s(2280),PLX+fw,PLY+pd,'450',false,8);
   dimV(PLX+fw,PLY,PLY+pd,'900',false,5);
-  dimV(PLX-3,PLY,PLY+tD,'100',true,4);
+  dimV(PLX-3,PLY,PLY+tD,'150',true,4);
   dimV(PLX-10,PLY+bkOH,PLY+bkOH+s(300),'300',true,4);
   dimV(PLX+fw+10,PLY+bkOH,PLY+bkOH+s(DD),'860',false,5);
 
@@ -281,28 +281,28 @@ function generatePDF(){
   fr(REX+fw-lpW,rBodyY+s(PLINTH_TOP),lpW,s(TP),C.plinth,C.oakDk,0.15);
   fr(REX+lpW,rBodyY,lrW,ft,C.back,C.black,0.2);
   _sf(C.open);_lw(0.15);_sd([178,172,158]);_rx(REX+lpW,rBodyY+ft,lrW,fdh-ft,'FD');
-  fr(REX+s(1900),rBodyY,lrW,ft,C.back,C.black,0.2);
-  _sf(C.open);_rx(REX+s(1900),rBodyY+ft,lrW,fdh-ft,'FD');
-  fr(REX+s(1100),rBodyY,ctrW,fdh,C.interior,C.black,0.2);
-  fr(REX+s(1100),rBodyY+s(PLINTH_TOP),ctrW,s(TP),C.plinth,C.oakDk,0.15);
-  _sd([108,78,48]);_lw(0.2);_ln(REX+s(1400),rBodyY,REX+s(1400),rFloorY);
+  fr(REX+s(1765),rBodyY,lrW,ft,C.back,C.black,0.2);
+  _sf(C.open);_rx(REX+s(1765),rBodyY+ft,lrW,fdh-ft,'FD');
+  fr(REX+s(965),rBodyY,ctrW,fdh,C.interior,C.black,0.2);
+  fr(REX+s(965),rBodyY+s(PLINTH_TOP),ctrW,s(TP),C.plinth,C.oakDk,0.15);
+  _sd([108,78,48]);_lw(0.2);_ln(REX+s(1265),rBodyY,REX+s(1265),rFloorY);
   _sd(C.black);_lw(0.3);
   DIVX.slice(1,-1).forEach(function(x){var dx=REX+s(x);_ln(dx,REY,dx,rFloorY);});
   _ln(REX,rBodyY,REX+fw,rBodyY);
   fr(REX,REY,fw,ft*0.55,C.trench,[110,108,104],0.15);
   doc.setFontSize(3.8);_st([60,40,20]);
   _tx('450x760x30',REX+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('650x760x30',REX+lpW+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('650x760x30',REX+s(1900)+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
-  _tx('450x760x30',REX+s(2550)+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('515x760x30',REX+lpW+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('515x760x30',REX+s(1765)+lrW/2,rBodyY+ft/2+1.2,{align:'center'});
+  _tx('450x760x30',REX+s(2280)+lpW/2,rBodyY+ft/2+1.2,{align:'center'});
   _st(C.black);
   _sd(C.black);_lw(0.5);_rx(REX,REY,fw,fh,'S');
-  dimH(REX,REX+fw,REY,'3000',true,5);
+  dimH(REX,REX+fw,REY,'2730',true,5);
   dimH(REX,REX+lpW,rFloorY,'450',false,8);
-  dimH(REX+lpW,REX+lpW+lrW,rFloorY,'650',false,8);
-  dimH(REX+s(1100),REX+s(1900),rFloorY,'800',false,8);
-  dimH(REX+s(1900),REX+s(2550),rFloorY,'650',false,8);
-  dimH(REX+s(2550),REX+fw,rFloorY,'450',false,8);
+  dimH(REX+lpW,REX+lpW+lrW,rFloorY,'515',false,8);
+  dimH(REX+s(965),REX+s(1765),rFloorY,'800',false,8);
+  dimH(REX+s(1765),REX+s(2280),rFloorY,'515',false,8);
+  dimH(REX+s(2280),REX+fw,rFloorY,'450',false,8);
   dimV(REX+fw,REY,rFloorY,'760',false,5);
 
   // PAGE 3 - CUTTING LIST (A4 Portrait)
@@ -334,25 +334,25 @@ function generatePDF(){
   ];
   var items=[
     {cat:'A - MAIN CARCASS  (30mm — material to be decided)'},
-    {no:1,item:'Desktop Panel',l:3000,w:900,t:30,qty:1,note:'Curved front profile; rear cable trench cutout'},
-    {no:2,item:'Cable Trench Lid',l:3000,w:150,t:30,qty:1,note:'150mm lid with 12 slots; piano hinge at rear; liftable floor below'},
+    {no:1,item:'Desktop Panel',l:2730,w:900,t:30,qty:1,note:'Straight front profile; rear cable trench cutout'},
+    {no:2,item:'Cable Trench Lid',l:2730,w:150,t:30,qty:1,note:'150mm lid with 12 slots; piano hinge at rear; liftable floor below'},
     {no:3,item:'Outer Left Side Panel',l:860,w:730,t:30,qty:1,note:'Left outer carcass wall - full depth'},
     {no:4,item:'Left Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 450mm from left'},
-    {no:5,item:'Left Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1100mm from left'},
-    {no:6,item:'Centre Sub-Divider',l:860,w:730,t:30,qty:1,note:'PC/rack bay partition at 1400mm from left'},
-    {no:7,item:'Right Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1900mm from left'},
-    {no:8,item:'Right Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 2550mm from left'},
+    {no:5,item:'Left Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 965mm from left'},
+    {no:6,item:'Centre Sub-Divider',l:860,w:730,t:30,qty:1,note:'PC/rack bay partition at 1265mm from left'},
+    {no:7,item:'Right Centre Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 1765mm from left'},
+    {no:8,item:'Right Pedestal Inner Panel',l:860,w:730,t:30,qty:1,note:'Vertical divider at 2280mm from left'},
     {no:9,item:'Outer Right Side Panel',l:860,w:730,t:30,qty:1,note:'Right outer carcass wall - full depth'},
     {cat:'B - BACK PANELS  (30mm — material to be decided)'},
     {no:10,item:'Back Panel - Left Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of left pedestal'},
-    {no:11,item:'Back Panel - Left Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of left leg recess'},
-    {no:12,item:'Back Panel - Right Operator',l:650,w:760,t:30,qty:1,note:'Rear closure of right leg recess'},
+    {no:11,item:'Back Panel - Left Operator',l:515,w:760,t:30,qty:1,note:'Rear closure of left leg recess'},
+    {no:12,item:'Back Panel - Right Operator',l:515,w:760,t:30,qty:1,note:'Rear closure of right leg recess'},
     {no:13,item:'Back Panel - Right Pedestal',l:450,w:760,t:30,qty:1,note:'Full-height rear closure of right pedestal'},
     {cat:'C - PLINTHS  (35mm — material to be decided)'},
     {no:14,item:'Plinth - Left Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
-    {no:15,item:'Plinth - Left Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:15,item:'Plinth - Left Leg Recess',l:515,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
     {no:16,item:'Plinth - Centre Bay',l:800,w:860,t:35,qty:1,note:'Full depth under centre section'},
-    {no:17,item:'Plinth - Right Leg Recess',l:650,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
+    {no:17,item:'Plinth - Right Leg Recess',l:515,w:300,t:35,qty:1,note:'Rear 300mm only, recessed from front'},
     {no:18,item:'Plinth - Right Pedestal',l:450,w:860,t:35,qty:1,note:'Full depth 860mm front to back'},
     {cat:'D - DRAWER BOXES  (12mm — material to be decided, 2 in left pedestal, 1 in right pedestal)'},
     {no:19,item:'Drawer Side Wall',l:600,w:305,t:12,qty:6,note:'2 walls per box x 3 drawers (2 Left, 1 Right)'},
@@ -408,7 +408,7 @@ function generatePDF(){
     '3.  Drawer box construction: through-dovetail or Domino mortise & tenon joints recommended.',
     '4.  Hardware: Piano hinge (cable trench lid); full-extension 35kg ball-bearing slides 600mm (drawers).',
     '5.  Desktop shape requires CNC routing or full-scale MDF template for the ergonomic front curve.',
-    '6.  Divider positions measured from the outer left edge. Confirm section widths sum to 3000mm.'
+    '6.  Divider positions measured from the outer left edge. Confirm section widths sum to 2730mm.'
   ];
   notes.forEach(function(n,i){_tx(n,TM+3,ty+13+i*4.8);});
   _st(C.black);

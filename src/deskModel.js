@@ -313,7 +313,7 @@ export function buildDeskScene() {
   const interactiveEquipment = [];
   const equipmentPins = [];
 
-  const W_TOTAL = 2.80;
+  const W_TOTAL = 2.73;
   const D_TOTAL = 0.90;
   const H_DESK = 0.76;
   const THICKNESS = 0.019; // Standard build: 19mm Oak-Veneered MDF. Workshop & Egger use 18mm via applyVariant()
@@ -337,7 +337,7 @@ export function buildDeskScene() {
   desktopShape.lineTo(-halfW, -halfD + 0.04);
   desktopShape.quadraticCurveTo(-halfW, -halfD, -halfW + 0.04, -halfD);
 
-  // Rear Cable Tidy Trench Cutout (Full Length: 150mm wide x 2800mm long)
+  // Rear Cable Tidy Trench Cutout (Full Length: 150mm wide x 2730mm long)
   const trenchHole = new THREE.Path();
   trenchHole.moveTo(-halfW, -0.41);
   trenchHole.lineTo(halfW, -0.41);
@@ -366,7 +366,7 @@ export function buildDeskScene() {
     const x = posAttr.getX(i);
     const z = posAttr.getZ(i);
     // Map world X, Z to UV (scale down to stretch texture and reduce tiling)
-    uvAttr.setXY(i, (x + 1.40) * 0.7, (z + 0.45) * 0.7);
+    uvAttr.setXY(i, (x + 1.365) * 0.7, (z + 0.45) * 0.7);
   }
   uvAttr.needsUpdate = true;
 
@@ -379,7 +379,7 @@ export function buildDeskScene() {
   taggedMeshes.oak_exterior.push(desktopMesh);
   rootGroup.add(desktopMesh);
 
-  // Cable Tidy Trench Floor (150mm wide x 2800mm long: z = -0.41 to -0.26)
+  // Cable Tidy Trench Floor (150mm wide x 2730mm long: z = -0.41 to -0.26)
   // Halfway across the trench floor is z = -0.335 (75mm from rear edge)
   const floorDepth = 0.15;
   const floorFrontZ = -0.26;
@@ -399,8 +399,8 @@ export function buildDeskScene() {
   const numSlots = 12;
   const slots = [];
   for (let i = 0; i < numSlots; i++) {
-    // 2.80m total width, 40cm from each end means from 1.00 to -1.00
-    slots.push(1.00 - i * (2.00 / (numSlots - 1)));
+    // 2.73m total width, 40cm from each end means from 0.965 to -0.965
+    slots.push(0.965 - i * (1.93 / (numSlots - 1)));
   }
 
   // 12 pass-through apertures cut through the trench floor (staggered across audio vs power halves)
@@ -515,7 +515,7 @@ export function buildDeskScene() {
   rootGroup.add(floorGrooveMesh);
 
   // Aluminium Sheet Divider (Slotting into the floor groove to separate Power and Audio halves)
-  // Dimensions: 2800mm long x 45mm high x 2mm thick brushed aluminium plate
+  // Dimensions: 2730mm long x 45mm high x 2mm thick brushed aluminium plate
   const aluMaterial = new THREE.MeshStandardMaterial({
     color: 0xd9e1e8,
     metalness: 0.88,
@@ -606,11 +606,11 @@ export function buildDeskScene() {
 
   const plinthMeshes = {};
   const plinths = [
-    { key: 'leftPed',  start: -1.40, end: -0.95, fullDepth: true },  // Left pedestal (45cm)
-    { key: 'leftOp',   start: -0.95, end: -0.40, fullDepth: false }, // Left operator leg recess (55cm)
-    { key: 'center',   start: -0.40, end: 0.40,  fullDepth: true },  // PC & Rack bays (80cm)
-    { key: 'rightOp',  start: 0.40,  end: 0.95,  fullDepth: false }, // Right operator leg recess (55cm)
-    { key: 'rightPed', start: 0.95,  end: 1.40,  fullDepth: true }   // Right pedestal (45cm)
+    { key: 'leftPed',  start: -1.365, end: -0.915, fullDepth: true },  // Left pedestal (45cm)
+    { key: 'leftOp',   start: -0.915, end: -0.40,  fullDepth: false }, // Left operator leg recess (51.5cm)
+    { key: 'center',   start: -0.40,  end: 0.40,   fullDepth: true },  // PC & Rack bays (80cm)
+    { key: 'rightOp',  start: 0.40,   end: 0.915,  fullDepth: false }, // Right operator leg recess (51.5cm)
+    { key: 'rightPed', start: 0.915,  end: 1.365,  fullDepth: true }   // Right pedestal (45cm)
   ];
 
   plinths.forEach(p => {
@@ -640,10 +640,10 @@ export function buildDeskScene() {
     rootGroup.add(pMesh);
   });
 
-  // Outer end panels (x=-1.40 and x=1.40) → oak_exterior in Workshop Build
-  // Internal dividers (x=-0.95, -0.40, -0.10, 0.40, 0.95) → black_interior in Workshop Build
+  // Outer end panels (x=-1.365 and x=1.365) → oak_exterior in Workshop Build
+  // Internal dividers (x=-0.915, -0.40, -0.10, 0.40, 0.915) → black_interior in Workshop Build
   const outerGables = {};
-  const outerEndDivs = [-1.40, 1.40];
+  const outerEndDivs = [-1.365, 1.365];
   outerEndDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -660,7 +660,7 @@ export function buildDeskScene() {
   });
 
   const innerDivMeshes = {};
-  const innerDivs = [-0.95, -0.40, -0.10, 0.40, 0.95];
+  const innerDivs = [-0.915, -0.40, -0.10, 0.40, 0.915];
   innerDivs.forEach(x => {
     const vMesh = new THREE.Mesh(
       new THREE.BoxGeometry(THICKNESS, H_DESK - THICKNESS, D_TOTAL - 0.04),
@@ -672,33 +672,33 @@ export function buildDeskScene() {
     vMesh.userData.variantRole = 'black_interior';
     taggedMeshes.black_interior.push(vMesh);
     rootGroup.add(vMesh);
-    if (x === -0.95) innerDivMeshes.leftPed = vMesh;
+    if (x === -0.915) innerDivMeshes.leftPed = vMesh;
     else if (x === -0.40) innerDivMeshes.leftCenter = vMesh;
     else if (x === -0.10) innerDivMeshes.subCenter = vMesh;
     else if (x === 0.40) innerDivMeshes.rightCenter = vMesh;
-    else if (x === 0.95) innerDivMeshes.rightPed = vMesh;
+    else if (x === 0.915) innerDivMeshes.rightPed = vMesh;
   });
 
   const backLeftPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backLeftPedestal.position.set(-1.175, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backLeftPedestal.position.set(-1.14, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   backLeftPedestal.userData.variantRole = 'oak_exterior';
   taggedMeshes.oak_exterior.push(backLeftPedestal);
   rootGroup.add(backLeftPedestal);
 
-  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.55, H_DESK, THICKNESS), oakMaterial);
-  backLeftOperator.position.set(-0.675, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backLeftOperator = new THREE.Mesh(new THREE.BoxGeometry(0.515, H_DESK, THICKNESS), oakMaterial);
+  backLeftOperator.position.set(-0.6575, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   backLeftOperator.userData.variantRole = 'oak_exterior';
   taggedMeshes.oak_exterior.push(backLeftOperator);
   rootGroup.add(backLeftOperator);
 
-  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.55, H_DESK, THICKNESS), oakMaterial);
-  backRightOperator.position.set(0.675, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  const backRightOperator = new THREE.Mesh(new THREE.BoxGeometry(0.515, H_DESK, THICKNESS), oakMaterial);
+  backRightOperator.position.set(0.6575, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   backRightOperator.userData.variantRole = 'oak_exterior';
   taggedMeshes.oak_exterior.push(backRightOperator);
   rootGroup.add(backRightOperator);
 
   const backRightPedestal = new THREE.Mesh(new THREE.BoxGeometry(0.45, H_DESK, THICKNESS), oakMaterial);
-  backRightPedestal.position.set(1.175, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
+  backRightPedestal.position.set(1.14, H_DESK / 2, -D_TOTAL / 2 + THICKNESS / 2);
   backRightPedestal.userData.variantRole = 'oak_exterior';
   taggedMeshes.oak_exterior.push(backRightPedestal);
   rootGroup.add(backRightPedestal);
@@ -928,8 +928,8 @@ export function buildDeskScene() {
     }
   };
 
-  buildPedestalDrawers(-1.175, animatedGroups.leftDrawersGroup, 2, false);
-  buildPedestalDrawers(1.175, animatedGroups.rightDrawersGroup, 2, true);
+  buildPedestalDrawers(-1.14, animatedGroups.leftDrawersGroup, 2, false);
+  buildPedestalDrawers(1.14, animatedGroups.rightDrawersGroup, 2, true);
   rootGroup.add(animatedGroups.leftDrawersGroup);
   rootGroup.add(animatedGroups.rightDrawersGroup);
 
@@ -1057,16 +1057,16 @@ export function buildDeskScene() {
   rootGroup.add(houseAmpFace);
 
   const pduLocs = [
-    { x: -0.675, y: 0.66, z: -0.39, name: 'Left Operator PDU' },
-    { x: 0.675, y: 0.66, z: -0.39, name: 'Right Operator PDU' }
+    { x: -0.6575, y: 0.66, z: -0.39, name: 'Left Operator PDU' },
+    { x: 0.6575, y: 0.66, z: -0.39, name: 'Right Operator PDU' }
   ];
 
   pduLocs.forEach((loc, idx) => {
-    const pduMesh = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.044, 0.08), blackPlasticMaterial);
+    const pduMesh = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.044, 0.08), blackPlasticMaterial);
     pduMesh.position.set(loc.x, loc.y, loc.z);
     
     const pduSwitch = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.022, 0.006), new THREE.MeshBasicMaterial({ color: 0xf43f5e }));
-    pduSwitch.position.set(loc.x - 0.21, loc.y, loc.z + 0.043);
+    pduSwitch.position.set(loc.x - 0.19, loc.y, loc.z + 0.043);
     
     pduMesh.userData = {
       id: `power_strip_${idx}`,
@@ -1122,7 +1122,7 @@ export function buildDeskScene() {
   mixerGeo.computeVertexNormals();
 
   const mixerMesh = new THREE.Mesh(mixerGeo, mixerMaterials);
-  mixerMesh.position.set(0.68, H_DESK + 0.055, 0.02);
+  mixerMesh.position.set(0.6575, H_DESK + 0.055, 0.02);
   mixerMesh.castShadow = true;
 
   mixerMesh.userData = {
@@ -1139,24 +1139,24 @@ export function buildDeskScene() {
     note: 'Primary console for live sound, broadcast feed, and audio multitrack mixing.'
   };
   interactiveEquipment.push(mixerMesh);
-  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.68, H_DESK + 0.16, 0.02) });
+  equipmentPins.push({ userData: mixerMesh.userData, worldPos: new THREE.Vector3(0.6575, H_DESK + 0.16, 0.02) });
   rootGroup.add(mixerMesh);
 
   const mainMonitor = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.41, 0.02), blackPlasticMaterial);
-  mainMonitor.position.set(-0.675, H_DESK + 0.24, -0.15);
+  mainMonitor.position.set(-0.6575, H_DESK + 0.24, -0.15);
   mainMonitor.castShadow = true;
 
   const mainDisplay = new THREE.Mesh(
     new THREE.PlaneGeometry(0.70, 0.39),
     new THREE.MeshBasicMaterial({ map: createDAWScreenTexture() })
   );
-  mainDisplay.position.set(-0.675, H_DESK + 0.24, -0.139);
+  mainDisplay.position.set(-0.6575, H_DESK + 0.24, -0.139);
 
   const mainStand = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.18, 16), darkMetalMaterial);
-  mainStand.position.set(-0.675, H_DESK + 0.09, -0.15);
+  mainStand.position.set(-0.6575, H_DESK + 0.09, -0.15);
 
   const mainStandBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.008, 32), darkMetalMaterial);
-  mainStandBase.position.set(-0.675, H_DESK + 0.004, -0.15);
+  mainStandBase.position.set(-0.6575, H_DESK + 0.004, -0.15);
 
   mainMonitor.userData = {
     id: 'main_monitor',
@@ -1199,11 +1199,11 @@ export function buildDeskScene() {
   rootGroup.add(secMonitor);
   rootGroup.add(secDisplay);
 
-  const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.012, 0.16), blackPlasticMaterial);
-  keyboard.position.set(-0.675, H_DESK + 0.008, 0.18);
+  const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.012, 0.16), blackPlasticMaterial);
+  keyboard.position.set(-0.6575, H_DESK + 0.008, 0.18);
 
   const mouse = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.024, 0.10), blackPlasticMaterial);
-  mouse.position.set(-0.35, H_DESK + 0.014, 0.18);
+  mouse.position.set(-0.37, H_DESK + 0.014, 0.18);
 
   animatedGroups.keyboardGroup = new THREE.Group();
   animatedGroups.keyboardGroup.add(keyboard);
@@ -1213,8 +1213,8 @@ export function buildDeskScene() {
   // Sliding Keyboard Shelf
   animatedGroups.keyboardShelfGroup = new THREE.Group();
   
-  const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.015, 0.25), oakMaterial);
-  shelfTray.position.set(-0.675, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
+  const shelfTray = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.015, 0.25), oakMaterial);
+  shelfTray.position.set(-0.6575, H_DESK - THICKNESS - 0.04, 0.10); // hidden under desk
   shelfTray.castShadow = true;
   shelfTray.receiveShadow = true;
   shelfTray.userData.variantRole = 'oak_exterior';
@@ -1222,9 +1222,9 @@ export function buildDeskScene() {
   animatedGroups.keyboardShelfGroup.add(shelfTray);
 
   const shelfRailL = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailL.position.set(-0.675 - 0.255, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailL.position.set(-0.6575 - 0.2325, H_DESK - THICKNESS - 0.01, 0.19);
   const shelfRailR = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.02, 0.48), darkMetalMaterial);
-  shelfRailR.position.set(-0.675 + 0.255, H_DESK - THICKNESS - 0.01, 0.19);
+  shelfRailR.position.set(-0.6575 + 0.2325, H_DESK - THICKNESS - 0.01, 0.19);
   rootGroup.add(shelfRailL);
   rootGroup.add(shelfRailR);
   rootGroup.add(animatedGroups.keyboardShelfGroup);
@@ -1418,10 +1418,10 @@ export function buildDeskScene() {
   };
 
   const rightHp = createHeadphonesMesh(rightHpUserData, 0x38bdf8);
-  rightHp.position.set(1.18, H_DESK, 0.05);
+  rightHp.position.set(1.20, H_DESK, 0.05);
   rightHp.rotation.y = -0.3;
   rootGroup.add(rightHp);
-  equipmentPins.push({ userData: rightHpUserData, worldPos: new THREE.Vector3(1.18, H_DESK + 0.10, 0.05) });
+  equipmentPins.push({ userData: rightHpUserData, worldPos: new THREE.Vector3(1.20, H_DESK + 0.10, 0.05) });
 
   // Headphones 2: Left of Main Monitor
   const leftHpUserData = {
@@ -1439,10 +1439,10 @@ export function buildDeskScene() {
   };
 
   const leftHp = createHeadphonesMesh(leftHpUserData, 0xfbbf24);
-  leftHp.position.set(-1.18, H_DESK, -0.05);
+  leftHp.position.set(-1.16, H_DESK, -0.05);
   leftHp.rotation.y = 0.25;
   rootGroup.add(leftHp);
-  equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.18, H_DESK + 0.10, -0.05) });
+  equipmentPins.push({ userData: leftHpUserData, worldPos: new THREE.Vector3(-1.16, H_DESK + 0.10, -0.05) });
 
   const powerTray = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.04, 0.13), darkMetalMaterial);
   powerTray.position.set(-0.60, H_DESK - THICKNESS - 0.02, -0.335);
@@ -1491,7 +1491,7 @@ export function buildDeskScene() {
     new THREE.BoxGeometry(0.06, H_DESK - 0.05, 0.06), 
     new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 })
   );
-  cableTrunking.position.set(-1.43, (H_DESK - 0.05) / 2, -0.335);
+  cableTrunking.position.set(-1.395, (H_DESK - 0.05) / 2, -0.335);
   
   cableTrunking.userData = {
     id: 'cable_trunking',
@@ -1503,7 +1503,7 @@ export function buildDeskScene() {
     note: 'Routes the main cable bundle from the trench cleanly to the floor power sockets.'
   };
   interactiveEquipment.push(cableTrunking);
-  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.43, H_DESK - 0.1, -0.335) });
+  equipmentPins.push({ userData: cableTrunking.userData, worldPos: new THREE.Vector3(-1.395, H_DESK - 0.1, -0.335) });
   
   rootGroup.add(cableTrunking);
 
@@ -1511,7 +1511,7 @@ export function buildDeskScene() {
     id: 'cable_trays',
     name: 'Dual-Channel 150mm Cable Tidy Trench & Trays',
     category: 'INFRASTRUCTURE',
-    dims: '150mm Wide x 2800mm Full-Length Trench (Segregated Audio & Mains Power)',
+    dims: '150mm Wide x 2730mm Full-Length Trench (Segregated Audio & Mains Power)',
     location: 'Rear desktop cutout channel with central aluminium isolation sheet divider',
     specs: [
       'Widened 150mm channel with central routed groove (3mm x 6mm rebate at 75mm midpoint)',

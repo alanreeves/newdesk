@@ -96,10 +96,10 @@ def build_pdf():
     header_data = [
         [
             Paragraph("SOUND DESK CUTTING LIST", title_style),
-            Paragraph("<b>Project:</b> Sound Desk Workstation<br/><b>Date:</b> August 10, 2026<br/><b>Spec:</b> Production Approved", meta_style)
+            Paragraph("<b>Project:</b> Sound Desk Workstation<br/><b>Date:</b> November 20, 2026<br/><b>Spec:</b> Production Approved", meta_style)
         ],
         [
-            Paragraph("3.0m Custom Workstation • Timber Spec: <b>Light Oak Faced MDF</b>", subtitle_style),
+            Paragraph("2.73m (2730mm) Custom Workstation • Timber Spec: <b>Light Oak Faced MDF</b>", subtitle_style),
             Paragraph("", meta_style)
         ]
     ]
@@ -167,8 +167,8 @@ def build_pdf():
     story.append(Paragraph("1. Desktop & Cable Trench (30mm Light Oak Faced MDF)", section_style))
     d_headers = ["Ref", "Description", "Qty", "Length", "Width", "Thick", "Edge Banding"]
     d_rows = [
-        ["D1", "Main Desktop (Straight Edge)", "1", "3000 mm", "900 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
-        ["D2", "Cable Trench Hinged Lid", "1", "3000 mm", "150 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
+        ["D1", "Main Desktop (Straight Edge)", "1", "2730 mm", "900 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
+        ["D2", "Cable Trench Hinged Lid", "1", "2730 mm", "150 mm", "30 mm", "2mm Oak ABS (All 4 Edges)"],
         ["D3", "Trench Cable Slots (12 Off)", "12", "60 mm (R12.5)", "25 mm", "30 mm", "Rubber Grommets Fitted"]
     ]
     story.append(create_section_table(d_headers, d_rows, [12*mm, 52*mm, 10*mm, 24*mm, 22*mm, 16*mm, 50*mm]))
@@ -178,13 +178,13 @@ def build_pdf():
     story.append(Paragraph("2. Main Carcase & Uprights (30mm Light Oak Faced MDF)", section_style))
     v_headers = ["Ref", "Description", "Qty", "Length", "Width", "Thick", "Location / Notes"]
     v_rows = [
-        ["V1", "Outer Left Gable Panel", "1", "860 mm", "730 mm", "30 mm", "X = -1500 mm (Left End)"],
-        ["V2", "Left Pedestal Inner Wall", "1", "860 mm", "730 mm", "30 mm", "X = -1050 mm"],
+        ["V1", "Outer Left Gable Panel", "1", "860 mm", "730 mm", "30 mm", "X = -1365 mm (Left End)"],
+        ["V2", "Left Pedestal Inner Wall", "1", "860 mm", "730 mm", "30 mm", "X = -915 mm"],
         ["V3", "PC Bay Left Divider Wall", "1", "860 mm", "730 mm", "30 mm", "X = -400 mm"],
         ["V4", "Center Divider Panel Wall", "1", "860 mm", "730 mm", "30 mm", "X = -100 mm"],
         ["V5", "Rack Bay Right Divider", "1", "860 mm", "730 mm", "30 mm", "X = +400 mm"],
-        ["V6", "Right Pedestal Inner Wall", "1", "860 mm", "730 mm", "30 mm", "X = +1050 mm"],
-        ["V7", "Outer Right Gable Panel", "1", "860 mm", "730 mm", "30 mm", "X = +1500 mm (Right End)"]
+        ["V6", "Right Pedestal Inner Wall", "1", "860 mm", "730 mm", "30 mm", "X = +915 mm"],
+        ["V7", "Outer Right Gable Panel", "1", "860 mm", "730 mm", "30 mm", "X = +1365 mm (Right End)"]
     ]
     story.append(create_section_table(v_headers, v_rows, [12*mm, 52*mm, 10*mm, 24*mm, 22*mm, 16*mm, 50*mm]))
     story.append(Spacer(1, 6))
@@ -194,11 +194,11 @@ def build_pdf():
     m_headers = ["Ref", "Description", "Qty", "Length", "Width", "Thick", "Notes"]
     m_rows = [
         ["B1", "Outer Left Back Modesty", "1", "450 mm", "730 mm", "18 mm", "Flush to rear frame"],
-        ["B2", "Left Operator Knee Modesty", "1", "650 mm", "730 mm", "18 mm", "Recessed for legroom"],
-        ["B3", "Right Operator Knee Modesty", "1", "650 mm", "730 mm", "18 mm", "Recessed for legroom"],
+        ["B2", "Left Operator Knee Modesty", "1", "515 mm", "730 mm", "18 mm", "Recessed for legroom"],
+        ["B3", "Right Operator Knee Modesty", "1", "515 mm", "730 mm", "18 mm", "Recessed for legroom"],
         ["B4", "Outer Right Back Modesty", "1", "450 mm", "730 mm", "18 mm", "Flush to rear frame"],
         ["P1", "Pedestal Base Plinths", "2", "860 mm", "450 mm", "35 mm", "Doubled 18mm / Solid Base"],
-        ["P2", "Operator Recess Base Rails", "2", "650 mm", "300 mm", "35 mm", "Back 300mm depth only"],
+        ["P2", "Operator Recess Base Rails", "2", "515 mm", "300 mm", "35 mm", "Back 300mm depth only"],
         ["P3", "Center PC / Rack Bay Base", "1", "860 mm", "800 mm", "35 mm", "Full depth under equipment"],
         ["S1", "Equipment Bay Fixed Shelf", "1", "780 mm", "480 mm", "30 mm", "Holds Power & Loop Amps"],
         ["S2", "Tower PC Pull-Out Tray", "1", "780 mm", "260 mm", "18 mm", "Mounted on heavy slides"]
@@ -221,8 +221,8 @@ def build_pdf():
     # 7. Section 5 & 6: Hardware & Notes
     notes_elements = [
         Paragraph("5. Hardware & Workshop Instructions", section_style),
-        Paragraph("• <b>Trench Lid Hinge:</b> 1 × 3000 mm Heavy-Duty Continuous Stainless Steel Piano Hinge (fitted to 150mm lid).<br/>"
-                  "• <b>Trench Aluminium Divider:</b> 1 × 3000 mm × 48 mm × 1.5–2.0 mm aluminium sheet slotted into central floor rebate groove to separate Audio and Power.<br/>"
+        Paragraph("• <b>Trench Lid Hinge:</b> 1 × 2730 mm Heavy-Duty Continuous Stainless Steel Piano Hinge (fitted to 150mm lid).<br/>"
+                  "• <b>Trench Aluminium Divider:</b> 1 × 2730 mm × 48 mm × 1.5–2.0 mm aluminium sheet slotted into central floor rebate groove to separate Audio and Power.<br/>"
                   "• <b>Removable Floor Access:</b> Liftable floor panels with finger pulls above PC & rack bays allow large 13A UK plugs & transformers to pass through.<br/>"
                   "• <b>Drawer Runners:</b> 4 Pairs × 600 mm Heavy-Duty Soft-Close Side-Mount Ball Bearing Slides.<br/>"
                   "• <b>PC Extension Slides:</b> 1 Pair × 750 mm Undermount/Side Heavy Extension Slides (Rated 45kg+).<br/>"
